@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - design-unified-web-and-decks-20261111
+concurrency:
+  group: footmate-design-sync-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: write
 jobs:
