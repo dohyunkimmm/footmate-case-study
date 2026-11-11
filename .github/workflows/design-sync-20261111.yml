@@ -1,9 +1,6 @@
 name: FootMate Design Sync
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feat/three-slide-readability-20261111
 concurrency:
   group: footmate-design-sync-${{ github.ref }}
   cancel-in-progress: false
