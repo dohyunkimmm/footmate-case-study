@@ -892,3 +892,94 @@ tbody th{color:#263944}
     line-height:1.45;
   }
 }
+
+/* Unified web + editorial deck system — 2026-11-11. Design-only; keep model data intact. */
+:root{
+  --fm-elevation:0 12px 38px rgba(20,44,57,.075);
+  --fm-elevation-soft:0 3px 14px rgba(20,44,57,.045);
+  --fm-chart-positive:#087B60;
+  --fm-chart-neutral:#718B94;
+  --fm-chart-negative:#9C4339;
+  --fm-focus:#087B60;
+  --fm-reading-width:960px;
+}
+body{-webkit-font-smoothing:antialiased}
+.fm-reading-progress{position:fixed;top:0;left:0;width:100%;height:4px;z-index:20;pointer-events:none;background:rgba(20,44,57,.06)}
+.fm-reading-progress > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--fm-accent),#68A995);will-change:width;transition:width .12s linear}
+.sidebar{z-index:7}
+.slide{position:relative}
+.slide .section-head{max-width:var(--fm-reading-width)}
+.slide .section-head .section-title{text-wrap:balance}
+.slide :is(.lead,.reader-summary>p){max-width:790px}
+.section-head::after{content:"";display:block;width:42px;height:3px;background:var(--fm-accent);border-radius:4px;margin-top:19px;opacity:.84}
+#section-01 .section-head::after{display:none}
+.case-identity{letter-spacing:.02em}
+#section-01 .case-verdict{box-shadow:0 17px 38px rgba(13,37,49,.13)}
+#section-01 .case-verdict h2{max-width:720px}
+#section-01 .case-verdict p{max-width:740px}
+#section-01 .case-kpi{transition:box-shadow .18s ease,transform .18s ease;box-shadow:var(--fm-elevation-soft)}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+  #section-01 .case-kpi:hover{box-shadow:0 10px 26px rgba(20,44,57,.095);transform:translateY(-2px)}
+}
+.case-kpi dt{letter-spacing:.005em}
+.case-kpi dd{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.case-economics-chart,.case-scenario-visual,#section-09 .strategy-year-economics{
+  box-shadow:var(--fm-elevation-soft);background:#FBFCFB
+}
+.case-economics-track,.case-scenario-track{box-shadow:inset 0 1px 2px rgba(20,44,57,.05)}
+.case-economics-row.is-best .case-economics-track>span{background:var(--fm-accent)}
+.case-economics-row.is-best .case-economics-value{font-size:18px}
+.case-economics-name,.case-scenario-name{word-break:keep-all}
+.case-profit-summary>div{border-radius:12px}
+.case-profit-summary strong{font-variant-numeric:tabular-nums}
+.case-profit-results strong{font-feature-settings:"tnum" 1}
+.case-deck-stack .case-doc-preview{box-shadow:var(--fm-elevation-soft)}
+.case-deck-stack .case-doc-preview[open]{box-shadow:0 11px 28px rgba(20,44,57,.095)}
+.case-documents .case-downloads a{border-color:#BCD4CA}
+.case-cash-chart,.case-profit-model{box-shadow:var(--fm-elevation-soft)}
+.case-profit-inputs input:hover{border-color:var(--fm-accent)}
+.case-profit-inputs input:focus-visible{outline:3px solid var(--fm-focus);outline-offset:2px;box-shadow:0 0 0 4px rgba(8,123,96,.08)}
+.slide .table-wrap{box-shadow:0 1px 3px rgba(20,44,57,.025)}
+.slide .table-wrap table{font-variant-numeric:tabular-nums}
+.slide .table-wrap thead th{border-bottom:1px solid #CADDD5;letter-spacing:.004em}
+.slide .table-wrap .key-result{background:#EEF6F2}
+.slide .table-wrap tbody tr.key-result:nth-child(even){background:#EAF4EF}
+.slide .table-wrap tbody tr.key-result>th{color:#075A48}
+.slide .table-wrap tbody td.is-negative{color:var(--fm-chart-negative);font-weight:750}
+.slide :is(.decision-grid,.case-decision-points,.case-roadmap,.model-funnel,.transaction-flow){max-width:var(--fm-reading-width)}
+.slide .source-note{max-width:860px}
+.slide details>summary{position:relative;padding-right:28px}
+.slide details>summary::after{content:"+";position:absolute;right:7px;top:50%;transform:translateY(-50%);font-size:21px;font-weight:400;color:var(--fm-accent);line-height:1}
+.slide details[open]>summary::after{content:"−"}
+.slide details.case-doc-preview>summary::after{display:none}
+.slide details>summary:hover{color:#05634E}
+.toc-item{position:relative}
+.toc-item.on{font-weight:750}
+.case-roadmap li:last-child{border-top-color:var(--fm-accent)}
+.case-roadmap-index,.case-roadmap-period{font-variant-numeric:tabular-nums}
+#section-09 .economics-line{stroke-width:4.5}
+#section-09 .economics-point.is-bep{filter:drop-shadow(0 2px 4px rgba(8,123,96,.18))}
+@media(min-width:1101px){
+ .slide{padding-inline:clamp(48px,4.45vw,72px)}
+ .section-title{font-size:clamp(34px,2.5vw,39px)}
+ .slide .table-wrap tbody tr:hover:not(.key-result){background:#F4F9F6}
+}
+@media(min-width:801px){
+ .slide .table-wrap tbody tr:focus-within{background:#EEF6F2}
+ .case-deck-stack .case-doc-preview>summary{min-height:108px}
+}
+@media(max-width:800px){
+ .fm-reading-progress{height:3px}
+ .section-head::after{margin-top:15px;width:34px;height:3px}
+ .slide .section-title{text-wrap:pretty}
+ .slide .table-wrap tbody tr.key-result{background:#EEF6F2}
+ .slide .table-wrap tbody tr.key-result:nth-child(even){background:#EAF4EF}
+ .case-economics-row.is-best .case-economics-value{font-size:15px}
+ #section-01 .case-kpi{box-shadow:none}
+ .case-deck-stack .case-doc-preview{box-shadow:none}
+ .slide .source-note{font-size:13px;line-height:1.65}
+ .case-deck-stack .case-doc-preview>summary{min-height:88px}
+}
+@media(prefers-reduced-motion:reduce){
+ .fm-reading-progress > span,#section-01 .case-kpi{transition:none;transform:none}
+}
