@@ -983,3 +983,27 @@ body{-webkit-font-smoothing:antialiased}
 @media(prefers-reduced-motion:reduce){
  .fm-reading-progress > span,#section-01 .case-kpi{transition:none;transform:none}
 }
+
+
+/* Heading rhythm and sidebar bottom breathing room (2026-11-11).
+   Separate the case-study label from the section index without copy changes. */
+.section-head .case-identity{
+  display:flex;
+  width:fit-content;
+  max-width:100%;
+  margin:0 0 16px;
+}
+.section-head .eyebrow{
+  display:block;
+  margin:0 0 12px;
+  line-height:1.5;
+}
+.section-head .section-title{
+  margin:0 0 16px;
+}
+.section-head .lead{margin:0}
+@media(min-width:801px){
+  .sidebar .toc{
+    padding-bottom:clamp(24px,4vh,48px);
+  }
+}

@@ -1151,3 +1151,37 @@ test('unified web design retains 9-section reading progress and supporting page 
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),path).toBe(true);
  }
 });
+
+
+test('section headers have readable spacing and desktop sidebar has bottom breathing room',async({page})=>{
+ for(const width of [320,390,800,1024,1440,1920]){
+  await page.setViewportSize({width,height:900});
+  await page.goto('/');
+  await page.evaluate(()=>document.fonts.ready);
+  for(let i=1;i<=9;i++){
+   const section=page.locator('#section-'+String(i).padStart(2,'0'));
+   const positions=await section.evaluate(node=>{
+    const bounds=selector=>{const rect=node.querySelector(selector).getBoundingClientRect();return {top:rect.top,bottom:rect.bottom,left:rect.left,right:rect.right};};
+    return {
+     identity:node.querySelector('.case-identity')?bounds('.case-identity'):null,
+     eyebrow:bounds('.eyebrow'),
+     title:bounds('.section-title'),
+     lead:bounds('.lead')
+    };
+   });
+   if(i===1){
+    expect(positions.eyebrow.top-positions.identity.bottom,`identity/index overlap at ${width}px`).toBeGreaterThanOrEqual(10);
+   }
+   expect(positions.title.top-positions.eyebrow.bottom,`index/title overlap at ${width}px, section ${i}`).toBeGreaterThanOrEqual(8);
+   expect(positions.lead.top-positions.title.bottom,`title/lead overlap at ${width}px, section ${i}`).toBeGreaterThanOrEqual(10);
+  }
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`horizontal overflow at ${width}px`).toBe(true);
+  if(width>800){
+   const bottomGap=await page.locator('.sidebar').evaluate(sidebar=>{
+    const last=sidebar.querySelector('.toc-item:last-child').getBoundingClientRect();
+    return sidebar.getBoundingClientRect().bottom-last.bottom;
+   });
+   expect(bottomGap,`sidebar last-item bottom gap at ${width}px`).toBeGreaterThanOrEqual(36);
+  }
+ }
+});
