@@ -19,19 +19,19 @@ DECKS = (
     ("report", ASSETS / "footmate_report.pptx", 9),
     ("strategy", ASSETS / "footmate_5year_strategy.pptx", 6),
 )
-NUMERIC = re.compile(r"(?<!\\d)[+\\-−–]?\\d[\\d,]*(?:\\.\\d+)?%?")
-YEAR = re.compile(r"(\\d+)\\s*년\\s*차(?=\\b|[^가-힣])")
-MONEY = re.compile(r"(\\d[\\d,]*(?:\\.\\d+)?)\\s+만\\s*원")
-COUNTERS = re.compile(r"(\\d[\\d,]*(?:\\.\\d+)?)\\s+(?=개년|개월|곳|건|회|명|석|주|원|%)")
-BEFORE_PUNCT = re.compile(r"(?<=[가-힣0-9)])\\s+([,:])")
-OPEN_PAREN = re.compile(r"\\(\\s+")
-CLOSE_PAREN = re.compile(r"\\s+\\)")
+NUMERIC = re.compile(r"(?<!\d)[+\-−–]?\d[\d,]*(?:\.\d+)?%?")
+YEAR = re.compile(r"(\d+)\s*년\s*차(?=\b|[^가-힣])")
+MONEY = re.compile(r"(\d[\d,]*(?:\.\d+)?)\s+만\s*원")
+COUNTERS = re.compile(r"(\d[\d,]*(?:\.\d+)?)\s+(?=개년|개월|곳|건|회|명|석|주|원|%)")
+BEFORE_PUNCT = re.compile(r"(?<=[가-힣0-9)])\s+([,:])")
+OPEN_PAREN = re.compile(r"\(\s+")
+CLOSE_PAREN = re.compile(r"\s+\)")
 
 def cleaned(text: str) -> str:
-    text = YEAR.sub(r"\\1년 차", text)
-    text = MONEY.sub(r"\\1만 원", text)
-    text = COUNTERS.sub(r"\\1", text)
-    text = BEFORE_PUNCT.sub(r"\\1", text)
+    text = YEAR.sub(r"\1년 차", text)
+    text = MONEY.sub(r"\1만 원", text)
+    text = COUNTERS.sub(r"\1", text)
+    text = BEFORE_PUNCT.sub(r"\1", text)
     text = OPEN_PAREN.sub("(", text)
     text = CLOSE_PAREN.sub(")", text)
     return text
