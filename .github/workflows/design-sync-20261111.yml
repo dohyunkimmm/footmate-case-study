@@ -1,6 +1,9 @@
 name: FootMate Design Sync
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - feat/three-slide-readability-20261111
 concurrency:
   group: footmate-design-sync-${{ github.ref }}
   cancel-in-progress: false
@@ -44,6 +47,15 @@ jobs:
           render()
           PY
           python qa/polish-presentation-spacing-20261111.py --check
+      - name: Refine business 8-9 and strategy 4, then sync all 15 previews
+        run: |
+          python qa/refine-three-slides-20261111.py
+          python - <<'PY'
+          from runpy import run_path
+          render=run_path("qa/unify-web-and-presentations-20261111.py")["convert_decks_and_publish_previews"]
+          render()
+          PY
+          python qa/refine-three-slides-20261111.py --check
       - name: Verify PPT numbers, slide counts and report terminology
         run: python qa/crosscheck-case-study-presentations.py
       - name: Verify source JS and rendered slide assets
