@@ -90,9 +90,9 @@ def left_rule(slide, x, y, h, color=TEAL):
     bar.fill.fore_color.rgb = color
     bar.line.fill.background()
 
-def top_marker(slide):
+def top_marker(slide, slide_width_inches):
     """Shared visual identity; no content change."""
-    x = slide.part.presentation.slide_width / 914400 - .63
+    x = slide_width_inches - .63
     dot = slide.shapes.add_shape(MSO_SHAPE.OVAL,
                                  Inches(x), Inches(.37), Inches(.083), Inches(.083))
     dot.fill.solid()
@@ -115,7 +115,7 @@ def add_design(deck, kind):
         for slide in deck.slides:
             for shape in slide.shapes:
                 recolor_existing(shape)
-            top_marker(slide)
+            top_marker(slide, deck.slide_width / 914400)
         if kind == "report":
             # Three cover evidence cards; underline the risk/decision card.
             outline(deck.slides[0], 8.87, 4.48, 3.86, 1.38, TEAL, 1.7)
