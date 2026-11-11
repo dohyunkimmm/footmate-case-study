@@ -1195,3 +1195,39 @@ test('section headers have readable spacing and desktop sidebar has bottom breat
   }
  }
 });
+
+
+test('editorial whitespace and vertical-rhythm audit across all nine sections',async({page})=>{
+ for(const width of [320,390,768,1024,1440]){
+  await page.setViewportSize({width,height:900});
+  await page.goto('/');
+  await page.evaluate(()=>document.fonts.ready);
+  const report=await page.evaluate(()=>{
+   return [...document.querySelectorAll('.slide')].map((section,index)=>{
+    const elements=[...section.children].filter(node=>{
+      const style=getComputedStyle(node);
+      return style.display!=='none'&&style.visibility!=='hidden'&&node.getBoundingClientRect().height>0;
+    });
+    const label=node=>node.tagName.toLowerCase()+(node.classList.length?'.'+[...node.classList].slice(0,2).join('.'):'');
+    const pairs=[];
+    for(let i=1;i<elements.length;i++){
+     const previous=elements[i-1],current=elements[i];
+     pairs.push({from:label(previous),to:label(current),gap:Math.round(current.getBoundingClientRect().top-previous.getBoundingClientRect().bottom)});
+    }
+    return {section:index+1,count:elements.length,pairs};
+   });
+  });
+  const notable=report.flatMap(x=>x.pairs.filter(p=>p.gap>76||p.gap< -10).map(p=>({section:x.section,...p})));
+  console.log('FOOTMATE_RHYTHM_AUDIT '+JSON.stringify({width,notable,firstPairGaps:report.map(x=>({section:x.section,first:x.pairs.slice(0,3)}))}));
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+  const text=await page.locator('#section-05').innerText();
+  expect(text).toContain('충원 75% / 예약 60% / 취소 8% / 완료 97% / 유지 100%');
+  expect(text).toContain('주 4회');
+  expect(text).not.toContain('기준 산정 기준');
+  const yearText=await page.locator('#section-08').innerText();
+  for(const year of [1,2,3,4,5]){
+   expect(yearText).toContain(year+'년 차');
+   expect(yearText).not.toContain(year+'년차');
+  }
+ }
+});
