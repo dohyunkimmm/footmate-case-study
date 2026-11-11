@@ -150,7 +150,7 @@ test('05 and 08 keep one representative table visible and preserve expandable ev
  await expect(plan).toContainText('기본 현금 예산 1,070만 원');
  await expect(plan.getByRole('table',{name:'5개년 경영계획 · 금액 단위 만 원'})).toContainText('2,998');
  await expect(plan).toContainText('기존 수수료·결제 조건 유지 시 현금수지');
- await expect(plan).toContainText('3년차 · 제휴 운영 확대');
+ await expect(plan).toContainText('3년 차 · 제휴 운영 확대');
  const monthly=page.locator('#section-08 details').filter({has:page.getByText('월간 경영보고 예시 · KPI·손익 비교',{exact:true})});
  await monthly.locator('summary').click();
  await expect(monthly).toContainText('가상 실적 1,019건');
@@ -1218,7 +1218,7 @@ test('editorial whitespace and vertical-rhythm audit across all nine sections',a
    });
   });
   const notable=report.flatMap(x=>x.pairs.filter(p=>p.gap>76||p.gap< -10).map(p=>({section:x.section,...p})));
-  console.log('FOOTMATE_RHYTHM_AUDIT '+JSON.stringify({width,notable,firstPairGaps:report.map(x=>({section:x.section,first:x.pairs.slice(0,3)}))}));
+  expect(notable,JSON.stringify({width,notable})).toHaveLength(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   const text=await page.locator('#section-05').textContent();
   expect(text).toContain('충원 75% / 예약 60% / 취소 8% / 완료 97% / 유지 100%');
