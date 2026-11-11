@@ -1017,5 +1017,5 @@ body{-webkit-font-smoothing:antialiased}
     border-bottom-left-radius:0;
   }
   .viewer{border-bottom-right-radius:0}
-  .sidebar .toc{padding-bottom:0}
+  .sidebar .toc{padding-bottom:0;justify-content:space-between}
 }
