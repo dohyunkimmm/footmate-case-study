@@ -14,10 +14,17 @@
 | [`docs/`](docs/) | [분석 근거](docs/IT-STRATEGY-CASE-STUDY.md), [디자인 기준](docs/DESIGN-SYSTEM.md), [발표자료 15장 검토 기록](docs/PRESENTATION-SPACING-REVIEW-20261111.md) |
 | [`qa/`](qa/) | 원본 산출물 재생성·수치 대조·발표자료 가독성 검사 도구 |
 | [`tests/e2e/`](tests/e2e/) | 보고서 UI·반응형·접근성 회귀 검사 |
-| [`.github/workflows/`](.github/workflows/) | `FootMate Case Study QA` 및 수동 `FootMate Design Sync` |
+| [`.github/workflows/`](.github/workflows/) · [`.github/scripts/`](.github/scripts/) | 보고서 QA·수동 디자인 동기화·병합 브랜치 보존 및 생성 파일 PR 게시 스크립트 |
 | [`.assetsignore`](.assetsignore) | 내부 검증·문서 파일을 정적 사이트 배포에서 제외 |
 
-### `main` 현황 · 2026-11-11 점검 스냅샷
+### 2026-11-11 브랜치·폴더 클렌징 완료
+
+- [정리 작업](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43036247106) **성공**: 기존 작업 브랜치 **13개**의 PR 상태·HEAD SHA를 대조하고 `archive/20261111/reviewed/pr-*/` 보존 태그 **13개**를 모두 생성·확인한 뒤 브랜치 참조만 삭제했습니다. 정리 직후 원격 브랜치는 `main` **1개**입니다.
+- [PR #15](https://github.com/dohyunkimmm/footmate-case-study/pull/15)에서 병합 후 자동 태그 보존·브랜치 정리 워크플로를 도입했고, [PR #14](https://github.com/dohyunkimmm/footmate-case-study/pull/14)에서 수동 PPT 재생성을 검토용 PR 게시로 전환했습니다. 실제 병합된 PR #14·#15·#16·#17의 브랜치도 자동 보존·정리 작업 성공을 확인했습니다.
+- 완료된 **일회성** `.github/workflows/retire-legacy-branches-20261111.yml`은 이 정리 PR에서 제거하며, **상시** `.github/workflows/archive-merged-pr-branches.yml`은 유지합니다.
+- 정리 후 예상 재귀 트리는 **파일 80개·디렉터리 14개**(루트 파일 6개·최상위 폴더 5개)입니다. 기존 `qa/` 원본 생성 도구, 근거 이미지, PPTX/XLSX 및 15장 미리보기는 삭제하지 않습니다. 원본 사업 가정·수치·계산식 및 공개 경로도 유지합니다.
+
+### `main` 현황 · 2026-11-11 초기 점검 스냅샷
 
 - 기준 커밋: [`0c0d61d`](https://github.com/dohyunkimmm/footmate-case-study/commit/0c0d61d0cda1ddd32b126b0a798cb3c1f9ce4c32). 재귀 트리 **파일 78개·디렉터리 13개**(루트 파일 6개·최상위 폴더 5개). 파일의 Git blob SHA 기준 동일 내용 중복 **0건**.
 - 보고서 본문 **9개 섹션**, 편집 가능한 발표자료 **사업성 9장 + 전략 6장**, XLSX 모델 1개. 본편 미리보기 9장은 [`report-previews.js`](src/case-study/report-previews.js)에 포함되고, 전략 미리보기 JPG 6장은 [`src/case-study/previews/strategy/`](src/case-study/previews/strategy/)에 있습니다. 원본 PPTX·계산식·기존 다운로드 경로는 유지합니다.
@@ -27,7 +34,7 @@
 ### 폴더·브랜치 클렌징 검토
 
 - `main`에 즉시 삭제할 것으로 검증된 파일은 없습니다. `qa/`의 재생성 스크립트와 `src/case-study/`의 증빙·다운로드·미리보기는 사용·보존 필요성을 확인하기 전 삭제하지 않습니다.
-- 점검 시 `main` 외 원격 작업 브랜치 **12개**가 남아 있습니다. 일부는 squash 병합으로 `main`과 이력이 갈라져 있으므로 단순 ahead/behind 수치로 중복·삭제 가능 여부를 판단할 수 없습니다. **각 PR의 병합 상태와 브랜치 HEAD를 확인하고 원본 SHA를 보존한 후에만 정리**합니다. 이번 점검에서는 브랜치를 삭제하지 않았습니다.
+- 최초 점검 당시 `main` 외 작업 브랜치 **12개**가 남아 있었고, 문서 정리 PR까지 포함해 총 13개를 검증·태그 보존 후 삭제했습니다. squash 병합의 커밋 차이를 미반영으로 취급하지 않았으며, 상세 실행과 현재 상태는 위 **클렌징 완료** 기록을 따릅니다.
 - 수동 `FootMate Design Sync`는 **`main`에서만 실행**하며, 변경된 원본 PPTX·미리보기는 `automation/design-sync-*` 브랜치와 **검토용 PR**로 게시합니다. `main` 직접 푸시·자동 병합은 하지 않습니다. GitHub Actions가 PR을 생성하도록 설정에서 권한 허용이 필요하며, 봇 PR의 QA 실행은 별도 승인/재실행이 필요할 수 있습니다.
 
 ## 검증
