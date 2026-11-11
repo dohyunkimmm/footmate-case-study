@@ -39,6 +39,12 @@
 - **월 경제적 손익(기회비용 포함)**과 **연간 투자 후 현금수지(기회비용 별도)**를 동일 지표처럼 표시하지 않는다.
 - 원본 15장의 텍스트 값과 개수, 핵심 시나리오 수치는 원본 그대로 보존한다.
 
+## 2026-11-11 산출물·문서 동기화
+
+- [PR #11](https://github.com/dohyunkimmm/footmate-case-study/pull/11)의 15장 띄어쓰기·여백 검토에 이어 [PR #12](https://github.com/dohyunkimmm/footmate-case-study/pull/12)에서 사업성 8·9장과 전략 4장을 개선했다. 발표자료 원본은 9+6장, 미리보기는 본편 9개(웹 JS 내장)와 전략 JPG 6개로 유지한다.
+- 현재 `main` 기준 재귀 트리 수량 및 브랜치·클렌징 보류 조건은 [README의 현황](../README.md#main-현황--2026-11-11-점검-스냅샷)과 [클렌징 검토](../README.md#폴더브랜치-클렌징-검토)를 참조한다. 기존 설계 토큰·사업 가정·수치·계산식은 이번 문서 동기화에서 변경하지 않았다.
+- 수동 디자인 재생성 작업은 실행 브랜치에 직접 푸시하므로 `main`에서 실행하기 전 PR 기반 게시 방식으로 전환할지 검토한다.
+
 ## 검증 명령
 - `python qa/unify-web-and-presentations-20261111.py`: PPTX 수정 + 15개 미리보기 재생성(렌더 도구 필요)
 - `python qa/crosscheck-case-study-presentations.py`: 웹 본문·PPT 2종 숫자와 핵심 문구 대조
