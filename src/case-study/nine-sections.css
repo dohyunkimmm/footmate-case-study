@@ -961,7 +961,7 @@ body{-webkit-font-smoothing:antialiased}
 #section-09 .economics-point.is-bep{filter:drop-shadow(0 2px 4px rgba(8,123,96,.18))}
 @media(min-width:1101px){
  .slide{padding-inline:clamp(48px,4.45vw,72px)}
- .section-title{font-size:clamp(34px,2.5vw,39px)}
+ .section-title{font-size:36px}
  .slide .table-wrap tbody tr:hover:not(.key-result){background:#F4F9F6}
 }
 @media(min-width:801px){
