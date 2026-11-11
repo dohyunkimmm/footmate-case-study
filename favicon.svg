@@ -1,0 +1,4 @@
+<!-- Vercel edge alias refresh: no visual change -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs><linearGradient id="g" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse"><stop stop-color="#4F8EF7"/><stop offset=".5" stop-color="#8B6CF7"/><stop offset="1" stop-color="#5EEAD4"/></linearGradient></defs>
+<rect width="64" height="64" rx="16" fill="#07111F"/><circle cx="32" cy="32" r="22" fill="none" stroke="url(#g)" stroke-width="4"/><path d="M32 18l8 6-3 10H27l-3-10 8-6Z" fill="url(#g)"/><path d="M32 18v-7M40 24l6-4M37 34l5 7M24 24l-6-4" stroke="url(#g)" stroke-width="3" stroke-linecap="round"/></svg>
