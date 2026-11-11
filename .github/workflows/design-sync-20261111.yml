@@ -6,9 +6,11 @@ concurrency:
   cancel-in-progress: false
 permissions:
   contents: write
+  pull-requests: write
 jobs:
   sync-design:
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    # Generated assets must be reviewed via PR, never written directly to main.
+    if: "github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -78,14 +80,13 @@ jobs:
                   assert image.width>=1000 and image.height>=500
           print('PASS: 9 report previews, 6 strategy previews, 15 editable slides')
           PY
-      - name: Commit generated PPTX and visual preview assets
+      - name: Publish changed PPTX and previews for review as a PR
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/case-study/downloads/footmate_report.pptx src/case-study/downloads/footmate_5year_strategy.pptx src/case-study/report-previews.js src/case-study/previews/strategy/
-          if ! git diff --cached --quiet; then
-            git commit -m 'build: sync editable decks and 15 slide previews [skip ci]'
-            git push origin "HEAD:${GITHUB_REF_NAME}"
-          else
-            echo 'Generated slide assets already in sync'
-          fi
+          bash .github/scripts/publish-generated-pr.sh design-sync \
+            'build: review editable FootMate decks and 15 previews' \
+            src/case-study/downloads/footmate_report.pptx \
+            src/case-study/downloads/footmate_5year_strategy.pptx \
+            src/case-study/report-previews.js \
+            src/case-study/previews/strategy/

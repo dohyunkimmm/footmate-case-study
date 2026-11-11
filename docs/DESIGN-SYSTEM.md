@@ -43,7 +43,7 @@
 
 - [PR #11](https://github.com/dohyunkimmm/footmate-case-study/pull/11)의 15장 띄어쓰기·여백 검토에 이어 [PR #12](https://github.com/dohyunkimmm/footmate-case-study/pull/12)에서 사업성 8·9장과 전략 4장을 개선했다. 발표자료 원본은 9+6장, 미리보기는 본편 9개(웹 JS 내장)와 전략 JPG 6개로 유지한다.
 - 현재 `main` 기준 재귀 트리 수량 및 브랜치·클렌징 보류 조건은 [README의 현황](../README.md#main-현황--2026-11-11-점검-스냅샷)과 [클렌징 검토](../README.md#폴더브랜치-클렌징-검토)를 참조한다. 기존 설계 토큰·사업 가정·수치·계산식은 이번 문서 동기화에서 변경하지 않았다.
-- 수동 디자인 재생성 작업은 실행 브랜치에 직접 푸시하므로 `main`에서 실행하기 전 PR 기반 게시 방식으로 전환할지 검토한다.
+- 수동 디자인 재생성 작업은 `main`에서만 실행하며 생성 산출물 변경 시 `automation/design-sync-*` 검토용 PR을 게시한다. 사용자 확인·보고서 QA 통과 후 병합한다. 자동 `main` 푸시나 자동 병합은 하지 않는다.
 
 ## 검증 명령
 - `python qa/unify-web-and-presentations-20261111.py`: PPTX 수정 + 15개 미리보기 재생성(렌더 도구 필요)
