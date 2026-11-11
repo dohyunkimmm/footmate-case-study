@@ -1,0 +1,68 @@
+name: FootMate Design Sync
+on:
+  push:
+    branches:
+      - design-unified-web-and-decks-20261111
+permissions:
+  contents: write
+jobs:
+  sync-design:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PPT editing and rendering dependencies
+        run: |
+          python -m pip install --disable-pip-version-check python-pptx Pillow
+          if ! command -v libreoffice >/dev/null || ! command -v pdftoppm >/dev/null; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libreoffice-impress poppler-utils fontconfig
+          fi
+          mkdir -p ~/.local/share/fonts
+          curl --retry 2 -fLsS 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/public/static/Pretendard-Regular.otf' -o ~/.local/share/fonts/Pretendard-Regular.otf || true
+          curl --retry 2 -fLsS 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/public/static/Pretendard-Bold.otf' -o ~/.local/share/fonts/Pretendard-Bold.otf || true
+          fc-cache -f ~/.local/share/fonts
+      - name: Polish two editable PPTX decks and rebuild all slide previews
+        run: python qa/unify-web-and-presentations-20261111.py
+      - name: Verify PPT numbers, slide counts and report terminology
+        run: python qa/crosscheck-case-study-presentations.py
+      - name: Verify source JS and rendered slide assets
+        run: |
+          node --check src/case-study/nine-sections.js
+          node --check src/case-study/report-previews.js
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from pptx import Presentation
+          from PIL import Image
+          root=Path('src/case-study')
+          report=Presentation(root/'downloads/footmate_report.pptx')
+          strategy=Presentation(root/'downloads/footmate_5year_strategy.pptx')
+          assert len(report.slides)==9 and len(strategy.slides)==6
+          s=(root/'report-previews.js').read_text()
+          slides=json.loads(s[len('window.REPORT_SLIDES='):-2])
+          assert len(slides)==9
+          for i, slide in enumerate(slides, 1):
+              assert slide['src'].startswith('data:image/png;base64,')
+          for i in range(1,7):
+              with Image.open(root/f'previews/strategy/slide-{i}.jpg') as image:
+                  assert image.width>=1000 and image.height>=500
+          print('PASS: 9 report previews, 6 strategy previews, 15 editable slides')
+          PY
+      - name: Commit generated PPTX and visual preview assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/case-study/downloads/footmate_report.pptx src/case-study/downloads/footmate_5year_strategy.pptx src/case-study/report-previews.js src/case-study/previews/strategy/
+          if ! git diff --cached --quiet; then
+            git commit -m 'build: sync editable decks and 15 slide previews [skip ci]'
+            git push origin HEAD:design-unified-web-and-decks-20261111
+          else
+            echo 'Generated slide assets already in sync'
+          fi
