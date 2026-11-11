@@ -1,0 +1,12 @@
+# Cloudflare Workers Static Assets: publish only the report, not repository internals.
+**/node_modules
+**/.git
+**/.github
+**/.DS_Store
+tests/
+docs/
+test-results/
+playwright-report/
+README.md
+package.json
+playwright.config.cjs
