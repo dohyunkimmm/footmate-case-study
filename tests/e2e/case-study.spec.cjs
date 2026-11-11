@@ -1128,3 +1128,26 @@ test('final typography audit keeps preview captions and mobile controls legible'
   expect(size,selector).toBeGreaterThanOrEqual(12);
  }
 });
+
+
+test('unified web design retains 9-section reading progress and supporting page styles',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.setViewportSize({width:390,height:844});
+ await page.goto('/');
+ const progress=page.locator('.fm-reading-progress > span');
+ await expect(progress).toHaveCount(1);
+ const palette=await page.evaluate(()=>{
+   const css=getComputedStyle(document.documentElement);
+   return [css.getPropertyValue('--fm-navy').trim().toUpperCase(),css.getPropertyValue('--fm-accent').trim().toUpperCase()];
+ });
+ expect(palette).toEqual(['#142C39','#087B60']);
+ await page.evaluate(()=>window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'}));
+ await expect.poll(async()=>progress.evaluate(el=>parseFloat(el.style.width)||0)).toBeGreaterThan(90);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ for(const path of ['/src/case-study/materials.html','/src/case-study/forecast.html','/src/case-study/decision-memos.html']){
+   await page.goto(path);
+   const shared=await page.evaluate(()=>[...document.styleSheets].some(sheet=>sheet.href?.includes('/src/shared/case-study-design.css')));
+   expect(shared,path).toBe(true);
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),path).toBe(true);
+ }
+});
