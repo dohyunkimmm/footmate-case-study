@@ -1183,10 +1183,12 @@ test('section headers have readable spacing and desktop sidebar has bottom breat
     return {
      bottomGap:box.bottom-last.bottom,
      viewportGap:innerHeight-box.bottom,
-     tocBottomPadding:parseFloat(getComputedStyle(sidebar.querySelector('.toc')).paddingBottom)
+     tocBottomPadding:parseFloat(getComputedStyle(sidebar.querySelector('.toc')).paddingBottom),
+     tocJustify:getComputedStyle(sidebar.querySelector('.toc')).justifyContent
     };
    });
    expect(sidebarLayout.tocBottomPadding,`nested toc padding at ${width}px`).toBe(0);
+   expect(sidebarLayout.tocJustify,`desktop menu distribution at ${width}px`).toBe('space-between');
    expect(Math.abs(sidebarLayout.viewportGap),`outer sidebar bottom gap at ${width}px`).toBeLessThanOrEqual(2);
    expect(sidebarLayout.bottomGap,`sidebar last-item bottom gap at ${width}px`).toBeGreaterThanOrEqual(10);
    expect(sidebarLayout.bottomGap,`sidebar extra blank area at ${width}px`).toBeLessThanOrEqual(18);
