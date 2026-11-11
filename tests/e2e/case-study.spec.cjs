@@ -1151,3 +1151,37 @@ test('unified web design retains 9-section reading progress and supporting page 
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),path).toBe(true);
  }
 });
+
+
+test('opening header labels and desktop sidebar keep readable spacing',async({page})=>{
+ for(const width of [1920,1440,1024,800,390,320]){
+  await page.setViewportSize({width,height:900});
+  await page.goto('/');
+  await page.evaluate(()=>document.fonts.ready);
+  const result=await page.evaluate(()=>{
+   const identity=document.querySelector('#section-01 .case-identity');
+   const eyebrow=document.querySelector('#section-01 .eyebrow');
+   const heading=document.querySelector('#section-01 .section-title');
+   const rect=node=>node.getBoundingClientRect();
+   const sidebar=document.querySelector('.sidebar');
+   const last=document.querySelector('.sidebar .toc-item:last-child');
+   return {
+    identityBottom:rect(identity).bottom,eyebrowTop:rect(eyebrow).top,
+    eyebrowBottom:rect(eyebrow).bottom,headingTop:rect(heading).top,
+    identityDisplay:getComputedStyle(identity).display,
+    eyebrowDisplay:getComputedStyle(eyebrow).display,
+    lastBottomInset:rect(sidebar).bottom-rect(last).bottom,
+    sidebarScrolls:sidebar.scrollHeight>sidebar.clientHeight+1,
+    overflow:document.documentElement.scrollWidth>innerWidth+1
+   };
+  });
+  expect(result.identityDisplay,width+'px identity layout').not.toBe('inline-flex');
+  expect(result.eyebrowDisplay,width+'px eyebrow layout').toBe('block');
+  expect(result.eyebrowTop-result.identityBottom,width+'px opening labels').toBeGreaterThanOrEqual(10);
+  expect(result.headingTop-result.eyebrowBottom,width+'px heading gap').toBeGreaterThanOrEqual(10);
+  expect(result.overflow,width+'px horizontal overflow').toBe(false);
+  if(width>800&&!result.sidebarScrolls){
+   expect(result.lastBottomInset,width+'px sidebar bottom').toBeGreaterThanOrEqual(20);
+  }
+ }
+});
