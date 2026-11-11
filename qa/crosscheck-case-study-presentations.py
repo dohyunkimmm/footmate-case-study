@@ -82,13 +82,13 @@ for filename,count in (("footmate_report.pptx",9),("footmate_5year_strategy.pptx
                     assert len(line) <= 50, (filename, number, "description too long", line)
                     # Check actual editable text, not OCR or a scaled JPEG preview.
                     assert not re.search(
-                        r"\\d[\\d,]*(?:\\.\\d+)?\\s+(?:개년|개월|곳|건|회|명|석|주|원|%)",
+                        r"\d[\d,]*(?:\.\d+)?\s+(?:개년|개월|곳|건|회|명|석|주|원|%)",
                         line), (filename, number, "number/unit whitespace", line)
                     assert not re.search(
-                        r"\\d[\\d,]*(?:\\.\\d+)?\\s+만\\s*원",
+                        r"\d[\d,]*(?:\.\d+)?\s+만\s*원",
                         line), (filename, number, "currency unit whitespace", line)
                     assert not re.search(
-                        r"(?<=[가-힣0-9)])\\s+,",
+                        r"(?<=[가-힣0-9)])\s+,",
                         line), (filename, number, "space before comma", line)
             families=set(re.findall(rb'<a:(?:latin|ea|cs)\b[^>]*\btypeface="([^"]+)"',slide_xml))
             assert families and families <= {b"Pretendard"}, (filename,number,families)
