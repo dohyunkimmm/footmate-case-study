@@ -1002,8 +1002,20 @@ body{-webkit-font-smoothing:antialiased}
   margin:0 0 16px;
 }
 .section-head .lead{margin:0}
+/* Keep the desktop left rail flush with the viewport bottom.
+   Remove the former nested bottom spacing instead of accumulating overrides. */
 @media(min-width:801px){
-  .sidebar .toc{
-    padding-bottom:clamp(24px,4vh,48px);
+  .fm-cs-shell{
+    margin-bottom:0;
+    min-height:calc(100svh - 24px);
+    border-bottom-left-radius:0;
+    border-bottom-right-radius:0;
   }
+  .sidebar{
+    height:calc(100svh - 24px);
+    padding-bottom:12px;
+    border-bottom-left-radius:0;
+  }
+  .viewer{border-bottom-right-radius:0}
+  .sidebar .toc{padding-bottom:0}
 }
