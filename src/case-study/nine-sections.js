@@ -309,10 +309,22 @@ const sections = [
     const subheading=document.createElement('h3');subheading.className=heading.className;
     subheading.innerHTML=heading.innerHTML;heading.replaceWith(subheading);
   });
+  // Non-interactive reading progress: helps orient readers in the 9-section report.
+  const readerProgress=document.createElement('div');
+  readerProgress.className='fm-reading-progress';
+  readerProgress.setAttribute('aria-hidden','true');
+  readerProgress.innerHTML='<span></span>';
+  document.body.append(readerProgress);
+  function updateReadingProgress(){
+    const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+    const position=Math.max(0,Math.min(1,scrollY/max));
+    readerProgress.firstElementChild.style.width=(position*100).toFixed(2)+'%';
+  }
   const slides=[...track.children],links=[...toc.children];
   let current=-1,scheduled=false;
   function updateCurrent(){
     scheduled=false;
+    updateReadingProgress();
     const offset=120;
     let index=0;
     slides.forEach((slide,i)=>{if(slide.getBoundingClientRect().top<=offset)index=i;});
