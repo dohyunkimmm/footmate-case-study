@@ -1,0 +1,12 @@
+{
+  "name": "footmate-case-study",
+  "private": true,
+  "description": "Standalone FootMate strategy report quality checks",
+  "scripts": {
+    "test:report": "playwright test --project=chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.1",
+    "@axe-core/playwright": "4.10.2"
+  }
+}

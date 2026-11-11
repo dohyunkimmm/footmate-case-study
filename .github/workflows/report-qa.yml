@@ -1,0 +1,39 @@
+name: FootMate Case Study QA
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  report:
+    name: Report Browser + Documents QA
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned test tools
+        run: npm install --no-package-lock --ignore-scripts --no-audit --no-fund
+      - name: Validate report scripts
+        run: |
+          node --check src/case-study/nine-sections.js
+          node --check tests/e2e/case-study.spec.cjs
+          node --check tests/e2e/server.cjs
+      - name: Check report, responsive layout, accessibility, PPTX and XLSX
+        run: npm run test:report
+      - name: Store browser test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: case-study-qa-${{ github.run_id }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: warn
+          retention-days: 14
