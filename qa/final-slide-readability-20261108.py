@@ -1,6 +1,6 @@
 """Lightly improve the readable table/footnote hierarchy on the existing final slide.
 
-Keep all 10 slides, chart values, business assumptions and textual content intact.
+Keep all 9 slides, chart values, business assumptions and textual content intact.
 Works on the editable PPTX and is safe on repeated preview builds.
 """
 from pathlib import Path
@@ -10,7 +10,7 @@ from pptx.util import Inches, Pt
 PPTX = Path("src/case-study/downloads/footmate_report.pptx")
 MARKER = "footmate-final-readability-20261108"
 prs = Presentation(PPTX)
-assert len(prs.slides) == 10
+assert len(prs.slides) == 9
 if MARKER in (prs.core_properties.keywords or ""):
     print("PASS FootMate final-slide readability already applied; bytes unchanged")
     raise SystemExit(0)
@@ -28,7 +28,7 @@ def snapshot(p):
     return result
 
 before = snapshot(prs)
-last = prs.slides[9]
+last = prs.slides[8]
 # The source deck draws the financial table with editable text boxes, not a PPT table shape.
 # Scope the change to its 7 columns × 6 rows, excluding the chart, title and decision banner.
 cells = []
@@ -78,7 +78,7 @@ assert snapshot(prs) == before, "Financial copy or numerical values changed"
 prs.core_properties.keywords = ((prs.core_properties.keywords or "") + " " + MARKER).strip()
 prs.save(PPTX)
 verified = Presentation(PPTX)
-assert len(verified.slides) == 10
+assert len(verified.slides) == 9
 assert snapshot(verified) == before
 assert MARKER in (verified.core_properties.keywords or "")
-print("PASS FootMate 10-slide final table and financial footnote readability; text and charts unchanged")
+print("PASS FootMate 9-slide final table and financial footnote readability; text and charts unchanged")
