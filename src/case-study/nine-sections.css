@@ -983,3 +983,30 @@ body{-webkit-font-smoothing:antialiased}
 @media(prefers-reduced-motion:reduce){
  .fm-reading-progress > span,#section-01 .case-kpi{transition:none;transform:none}
 }
+
+/* Spacing QA 2026-11-11: separate the first-page identity from its section index,
+   and balance the desktop sidebar's last item with its bottom inset. */
+.section-head .case-identity{
+  display:flex;
+  width:fit-content;
+  max-width:100%;
+  margin:0 0 16px;
+}
+.section-head .eyebrow{
+  display:block;
+  margin:0 0 12px;
+  line-height:1.55;
+}
+@media(min-width:801px){
+  .sidebar{padding-bottom:24px}
+  .sidebar .toc{
+    min-height:0;
+    padding-bottom:10px;
+    justify-content:space-between;
+    row-gap:8px;
+  }
+}
+@media(max-width:800px){
+  .section-head .case-identity{margin-bottom:14px}
+  .section-head .eyebrow{margin-bottom:12px}
+}
