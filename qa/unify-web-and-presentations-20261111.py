@@ -69,10 +69,9 @@ def recolor_existing(shape):
             visit_color(shape.fill.fore_color)
     except (AttributeError, ValueError):
         pass
-    try:
-        visit_color(shape.line.color)
-    except (AttributeError, ValueError):
-        pass
+    # Preserve PowerPoint's original stroke/no-stroke state. In particular,
+    # do not read/write line.color on text frames without an explicit line;
+    # LibreOffice otherwise shows unwanted thin box borders.
 
 def outline(slide, x, y, w, h, color=TEAL, width=2):
     """Non-occluding outline to emphasize one decision without duplicating slide text."""
