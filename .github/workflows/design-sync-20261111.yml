@@ -35,6 +35,15 @@ jobs:
           fc-match 'Noto Sans CJK KR:lang=ko'
       - name: Polish two editable PPTX decks and rebuild all slide previews
         run: python qa/unify-web-and-presentations-20261111.py
+      - name: Proofread editable PPT copy without changing figures or geometry
+        run: |
+          python qa/polish-presentation-spacing-20261111.py
+          python - <<'PY'
+          from runpy import run_path
+          render = run_path("qa/unify-web-and-presentations-20261111.py")["convert_decks_and_publish_previews"]
+          render()
+          PY
+          python qa/polish-presentation-spacing-20261111.py --check
       - name: Verify PPT numbers, slide counts and report terminology
         run: python qa/crosscheck-case-study-presentations.py
       - name: Verify source JS and rendered slide assets
