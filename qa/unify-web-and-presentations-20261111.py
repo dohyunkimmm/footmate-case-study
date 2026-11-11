@@ -133,7 +133,7 @@ def add_design(deck, kind):
             outline(deck.slides[1], 8.36, 2.10, 2.43, 2.17, TEAL, 2.3)
             # The negotiated 940 KRW contribution margin is the selected scenario.
             outline(deck.slides[2], 8.90, 2.09, 3.68, 2.17, TEAL, 2.3)
-            emphasize_text(deck.slides[2], ("940", "28곳"), TEAL_DARK)
+            emphasize_text(deck.slides[2], ("940",), TEAL_DARK)
             # De-emphasize adjacent management rows; show the four workstreams.
             for y in (2.08, 3.12, 4.17, 5.22):
                 left_rule(deck.slides[4], .74, y, .77, TEAL)
