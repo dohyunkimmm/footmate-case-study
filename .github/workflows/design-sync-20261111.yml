@@ -17,20 +17,28 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Restore pristine editable PPTX baseline before rebuilding
+        run: |
+          git show c68d4ca46a02face75170c20432c452a86151b25:src/case-study/downloads/footmate_report.pptx > src/case-study/downloads/footmate_report.pptx
+          git show c68d4ca46a02face75170c20432c452a86151b25:src/case-study/downloads/footmate_5year_strategy.pptx > src/case-study/downloads/footmate_5year_strategy.pptx
       - name: Install PPT editing and rendering dependencies
         run: |
           python -m pip install --disable-pip-version-check python-pptx Pillow
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq fonts-noto-cjk fontconfig
           if ! command -v libreoffice >/dev/null || ! command -v pdftoppm >/dev/null; then
-            sudo apt-get update -qq
-            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libreoffice-impress poppler-utils fontconfig
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libreoffice-impress poppler-utils
           fi
           mkdir -p ~/.local/share/fonts
           curl --retry 2 -fLsS 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/public/static/Pretendard-Regular.otf' -o ~/.local/share/fonts/Pretendard-Regular.otf || true
           curl --retry 2 -fLsS 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/public/static/Pretendard-Bold.otf' -o ~/.local/share/fonts/Pretendard-Bold.otf || true
-          fc-cache -f ~/.local/share/fonts
+          fc-cache -f
+          fc-match 'Pretendard:lang=ko'
+          fc-match 'Noto Sans CJK KR:lang=ko'
       - name: Polish two editable PPTX decks and rebuild all slide previews
         run: python qa/unify-web-and-presentations-20261111.py
       - name: Verify PPT numbers, slide counts and report terminology
