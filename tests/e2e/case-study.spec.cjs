@@ -1177,11 +1177,19 @@ test('section headers have readable spacing and desktop sidebar has bottom breat
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`horizontal overflow at ${width}px`).toBe(true);
   if(width>800){
-   const bottomGap=await page.locator('.sidebar').evaluate(sidebar=>{
+   const sidebarLayout=await page.locator('.sidebar').evaluate(sidebar=>{
+    const box=sidebar.getBoundingClientRect();
     const last=sidebar.querySelector('.toc-item:last-child').getBoundingClientRect();
-    return sidebar.getBoundingClientRect().bottom-last.bottom;
+    return {
+     bottomGap:box.bottom-last.bottom,
+     viewportGap:innerHeight-box.bottom,
+     tocBottomPadding:parseFloat(getComputedStyle(sidebar.querySelector('.toc')).paddingBottom)
+    };
    });
-   expect(bottomGap,`sidebar last-item bottom gap at ${width}px`).toBeGreaterThanOrEqual(36);
+   expect(sidebarLayout.tocBottomPadding,`nested toc padding at ${width}px`).toBe(0);
+   expect(Math.abs(sidebarLayout.viewportGap),`outer sidebar bottom gap at ${width}px`).toBeLessThanOrEqual(2);
+   expect(sidebarLayout.bottomGap,`sidebar last-item bottom gap at ${width}px`).toBeGreaterThanOrEqual(10);
+   expect(sidebarLayout.bottomGap,`sidebar extra blank area at ${width}px`).toBeLessThanOrEqual(18);
   }
  }
 });
