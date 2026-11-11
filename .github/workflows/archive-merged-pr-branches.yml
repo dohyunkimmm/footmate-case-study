@@ -1,0 +1,71 @@
+# Read-only checks precede tag creation and any unprotected branch deletion.
+# Preserve exact merged PR SHA under a tag before deleting its closed branch.
+name: Archive merged FootMate PR branches
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: safe-ref-retirement-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  retire-merged-pr:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+      EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+    steps:
+      - name: Preserve exact merged PR SHA before retiring its branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          api="repos/${GITHUB_REPOSITORY}"
+          name="$BRANCH_NAME"
+          expected="$EXPECTED_SHA"
+          [[ "$name" =~ ^[A-Za-z0-9._/-]+$ && "$name" != main && "$name" != HEAD ]] || exit 1
+          [[ "$expected" =~ ^[0-9a-f]{40}$ && "$PR_NUMBER" =~ ^[0-9]+$ ]] || exit 1
+          info="$(gh api "$api/pulls/$PR_NUMBER")"
+          jq -e --arg b "$name" --arg s "$expected" --arg r "$GITHUB_REPOSITORY" '
+            .merged==true and .head.ref==$b and .head.sha==$s and
+            .head.repo.full_name==$r and .base.ref=="main"
+          ' <<< "$info" >/dev/null || exit 1
+          open_prs="$(gh api "$api/pulls?state=open&per_page=100")"
+          [[ "$(jq length <<< "$open_prs")" -lt 100 ]] || exit 1
+          if jq -e --arg b "$name" 'any(.[]; .head.ref==$b)' <<< "$open_prs" >/dev/null; then
+            echo "::error::Branch belongs to another open PR"; exit 1
+          fi
+          if actual="$(gh api "$api/git/ref/heads/$name" --jq .object.sha 2>/dev/null)"; then
+            [[ "$actual" == "$expected" ]] || { echo "::error::Branch moved"; exit 1; }
+            ref_present=1
+          else
+            ref_present=0
+          fi
+          archive_date="$(date -u +%Y%m%d)"
+          tag="archive/merged/$archive_date/pr-$PR_NUMBER/$name"
+          if actual="$(gh api "$api/git/ref/tags/$tag" --jq .object.sha 2>/dev/null)"; then
+            [[ "$actual" == "$expected" ]] || { echo "::error::Conflicting archive"; exit 1; }
+          else
+            gh api -X POST "$api/git/refs" -f ref="refs/tags/$tag" -f sha="$expected" >/dev/null
+          fi
+          [[ "$(gh api "$api/git/ref/tags/$tag" --jq .object.sha)" == "$expected" ]] || exit 1
+          if (( ref_present )); then
+            [[ "$(gh api "$api/git/ref/heads/$name" --jq .object.sha)" == "$expected" ]] || exit 1
+            gh api -X DELETE "$api/git/refs/heads/$name" >/dev/null
+            if gh api "$api/git/ref/heads/$name" >/dev/null 2>&1; then
+              echo "::error::Branch ref remained after retirement"; exit 1
+            fi
+          fi
+          echo "PASS archived merged PR #$PR_NUMBER as $tag"
