@@ -60,9 +60,9 @@ jobs:
               echo "::error::Open PR still uses $name"; exit 1
             fi
             tag="archive/20261111/reviewed/pr-$number/$name"
-            tagged="$(gh api "$api/git/ref/tags/$tag" --jq .object.sha 2>/dev/null || true)"
+            tagged="$(gh api "$api/git/ref/tags/$tag" --jq '.object.sha // empty' 2>/dev/null || true)"
             [[ -z "$tagged" || "$tagged" == "$sha" ]] || { echo "::error::Conflicting archive $tag"; exit 1; }
-            branchsha="$(gh api "$api/git/ref/heads/$name" --jq .object.sha 2>/dev/null || true)"
+            branchsha="$(gh api "$api/git/ref/heads/$name" --jq '.object.sha // empty' 2>/dev/null || true)"
             [[ "$branchsha" == "$sha" || ( -z "$branchsha" && "$tagged" == "$sha" ) ]] || { echo "::error::Branch SHA mismatch $name"; exit 1; }
             echo "VERIFIED PR #$number $name"
           done
@@ -78,7 +78,7 @@ jobs:
           # Exact-SHA lease and open-PR check immediately precede deletion.
           for row in "${rows[@]}"; do
             IFS='|' read -r number name sha mode <<< "$row"
-            actual="$(gh api "$api/git/ref/heads/$name" --jq .object.sha 2>/dev/null || true)"
+            actual="$(gh api "$api/git/ref/heads/$name" --jq '.object.sha // empty' 2>/dev/null || true)"
             if [[ -n "$actual" ]]; then
               [[ "$actual" == "$sha" ]] || exit 1
               now_open="$(gh api "$api/pulls?state=open&per_page=100")"
