@@ -425,7 +425,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   const preview=documents.locator('.case-report-preview');
   const frame=preview.locator('.case-ppt-frame');
   await expect(preview).not.toHaveAttribute('open',/.+/);
-  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261112-layout');
+  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261112-copy');
   const summary=preview.locator('summary');
   await expect(summary).toContainText('사업성 분석·경영계획');
   const resourceFonts=await summary.evaluate(el=>({
@@ -462,7 +462,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect(summary).toBeFocused();
   await testInfo.attach('visual-'+width+'-PPT-closed-focus',{body:await documents.screenshot({animations:'disabled'}),contentType:'image/png'});
   await summary.click();
-  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-layout');
+  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-copy');
   const slides=frame.contentFrame();
   // A preview shows the full thumbnail contact sheet, not the presentation controls.
   await expect(slides.locator('.slide-gallery-card')).toHaveCount(9,{timeout:15000});
@@ -698,7 +698,7 @@ test('reader-facing copy avoids accidental adjacent repetition',async({page})=>{
  }
  await expect(page.locator('#section-08')).not.toContainText('30일 30일');
  await expect(page.locator('#section-08')).not.toContainText('목표 · 충원 75% / 재참가 30%. 8주 후');
- await expect(page.locator('#section-08')).toContainText('8주 후 현금·약정·미완료 보고.');
+ await expect(page.locator('#section-08')).toContainText('8주 후 현금 지출·약정 금액·남은 과제 보고');
  await expect(page.locator('#section-07 .flow-branches')).not.toContainText('참가·잔여 자리 동시 갱신. 반복 요청은 기존 결과 반환.');
  await expect(page.locator('.track')).not.toContainText('시간 기회비용');
  await expect(page.locator('.track')).not.toContainText('창업자 시간 기회비용');
@@ -748,7 +748,7 @@ test('PPT preview closes explicitly and the contents control section navigation'
   await expect(preview.locator('summary')).toBeFocused();
   await preview.locator('summary').click();
   await expect(preview).toHaveAttribute('open','');
-  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-layout');
+  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-copy');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }
 });
