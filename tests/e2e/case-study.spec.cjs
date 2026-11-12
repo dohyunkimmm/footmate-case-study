@@ -13,9 +13,9 @@ for(const width of [1920,1440,800,390,320]){
   await expect(page.locator('.sidebar')).toHaveAttribute('aria-label','본문 목차');
   await expect(page.locator('.toc-item')).toHaveCount(9);
   await expect(page.locator('#section-01 .case-identity')).toHaveText('신사업 사업성 분석·경영계획');
-  await expect(page.locator('#section-01 .case-evidence-note')).toContainText('보조 자료:');
+  await expect(page.locator('#section-01 .case-evidence-note')).toHaveCount(0);
   await expect(page.locator('#section-08 .case-roadmap-heading')).not.toContainText('실제 성과 아님');
-  await expect(page.locator('#section-01 .case-quicklinks a')).toHaveCount(2);
+  await expect(page.locator('#section-01 .case-quicklinks a')).toHaveCount(0);
   await expect(page.locator('#section-04 .case-scenario-row')).toHaveCount(3);
   await expect(page.locator('.slide')).toHaveCount(9);
   await expect(page.locator('h1')).toHaveCount(1);
@@ -165,11 +165,7 @@ test('recruiter scanning: 01 ownership, 03 options, 06 evidence remain concise a
   await page.emulateMedia({reducedMotion:'reduce'});
   await page.setViewportSize({width,height:900});
   await page.goto('/');
-  const roleCards=page.locator('#section-01 .decision-card');
-  await expect(roleCards).toHaveCount(3);
-  await expect(roleCards.nth(0)).toContainText('지역 공급과 참가 수요');
-  await expect(roleCards.nth(1)).toContainText('수행 범위');
-  await expect(roleCards.nth(2)).toContainText('기존 운영자 제휴 우선');
+  await expect(page.locator('#section-01 .decision-card')).toHaveCount(0);
   await expect(page.locator('#section-01 .case-kpi')).toHaveCount(3);
   await expect(page.locator('#section-03 > .table-wrap')).toHaveCount(1);
   await expect(page.locator('#section-03 table')).toHaveCount(4);
@@ -238,10 +234,10 @@ test('case study distinguishes implementation evidence from proposed business re
  await expect(page.locator('#section-06 a[href="https://footmate.fmate.workers.dev/demo"]')).toHaveAttribute('target','_blank');
  for(const text of ['626건','340원','1,765건','7,648건','−387,160원'])await expect(page.locator('.track')).toContainText(text);
  await expect(page.locator('#section-08')).toContainText('추진 일정과 목표, 예산 및 결정 기준.');
- await expect(page.locator('#section-01')).toContainText('수행 범위');
+ await expect(page.locator('#section-01 .case-next-decision')).toContainText('현금 집행 상한 461만 원');
  await expect(page.locator('.track')).not.toContainText('김도현');
  await expect(page.locator('#section-01')).not.toContainText('실제 계약·매출 실적이 아닙니다');
- await expect(page.locator('#section-01 .lead')).toHaveText('시장·경쟁 분석부터 수익구조 설계, 손익분기점 분석, 5개년 경영계획 및 투자 판단까지.');
+ await expect(page.locator('#section-01 .lead')).toHaveCount(0);
  await expect(page.locator('#section-06')).not.toContainText('직접 구축·외부 활용·후속 투자 구분. 접근·복구·비용 검토.');
  await expect(page.locator('#section-09')).toContainText('건당 공헌이익·플랫폼 예약 비중·재참가 확인.');
  await expect(page.locator('#section-06')).toContainText('구현·검증 요약');
@@ -613,7 +609,7 @@ test('decision story, economic comparison and roadmap have consistent visual evi
   await expect(roadmap.locator('li')).toHaveCount(4);
   await expect(roadmap).toContainText('8주 이후');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
-  for(const section of [page.locator('#section-01 .decision-grid'),chart,roadmap]){
+  for(const section of [page.locator('#section-01 .case-next-decision'),chart,roadmap]){
    expect(await section.evaluate(el=>el.scrollWidth<=el.clientWidth+1),'responsive content overflow').toBe(true);
   }
   await testInfo.attach('visual-'+width+'-economics-chart',{body:await chart.screenshot({animations:'disabled'}),contentType:'image/png'});
@@ -962,7 +958,7 @@ with ZipFile(xlsx) as x:
 test('body card descriptions stay concise',async({page})=>{
  await page.goto('/');
  const descriptions=await page.locator('.story-card p,.decision-card>p:last-child').allTextContents();
- expect(descriptions).toHaveLength(15);
+ expect(descriptions).toHaveLength(12);
  for(const description of descriptions){
   expect([...description.trim()].length,description).toBeLessThanOrEqual(40);
  }
@@ -1179,14 +1175,14 @@ test('section headers have readable spacing and desktop sidebar has bottom breat
      identity:node.querySelector('.case-identity')?bounds('.case-identity'):null,
      eyebrow:bounds('.eyebrow'),
      title:bounds('.section-title'),
-     lead:bounds('.lead')
+     lead:node.querySelector('.lead')?bounds('.lead'):null
     };
    });
    if(i===1){
     expect(positions.eyebrow.top-positions.identity.bottom,`identity/index overlap at ${width}px`).toBeGreaterThanOrEqual(10);
    }
    expect(positions.title.top-positions.eyebrow.bottom,`index/title overlap at ${width}px, section ${i}`).toBeGreaterThanOrEqual(8);
-   expect(positions.lead.top-positions.title.bottom,`title/lead overlap at ${width}px, section ${i}`).toBeGreaterThanOrEqual(10);
+   if(positions.lead)expect(positions.lead.top-positions.title.bottom,`title/lead overlap at ${width}px, section ${i}`).toBeGreaterThanOrEqual(10);
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`horizontal overflow at ${width}px`).toBe(true);
   if(width>800){
