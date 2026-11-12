@@ -1031,3 +1031,26 @@ body{-webkit-font-smoothing:antialiased}
 .case-profit-advanced{margin:.65rem 0}
 .case-profit-advanced summary{cursor:pointer;font-weight:650}
 .case-profit-advanced[open] summary{margin-bottom:.55rem}
+
+/* Keep the opening summary, slide actions and calculator results together. */
+#section-01 .section-head{margin-bottom:clamp(18px,2.2vw,30px)}
+.case-deck-card{display:flex;flex-direction:column;border:1px solid var(--fm-stroke);border-radius:14px;background:#fff}
+.case-deck-stack .case-deck-card .case-doc-preview{border:0;box-shadow:none;background:transparent}
+.case-deck-stack .case-deck-card .case-doc-preview>summary{min-height:0}
+.case-documents .case-deck-card .case-downloads{margin:0;padding:0 12px 12px;justify-content:flex-start}
+.case-deck-card:has(details[open]) .case-downloads{padding-top:12px}
+.case-profit-controls{min-width:0}
+.case-cash-chart .cash-line{color:#087b60}
+.case-cash-chart .cash-line-1{color:#63778b}
+.case-cash-chart .cash-line polyline{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.case-cash-chart .cash-line-1 polyline{stroke-dasharray:7 5}
+.case-cash-chart .cash-line circle,.case-cash-chart .cash-line text{fill:currentColor}
+.case-cash-chart .cash-line text{font-weight:750}
+.case-cash-legend li+li::before{border-top-style:dashed}
+@media(min-width:1200px){
+ .case-deck-stack{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .case-deck-card:has(details[open]){grid-column:1/-1}
+ .case-profit-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:20px}
+ .case-profit-layout .case-profit-inputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .case-profit-layout .case-profit-results{margin:0}
+}

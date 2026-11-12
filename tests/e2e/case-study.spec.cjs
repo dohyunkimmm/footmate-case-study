@@ -146,7 +146,7 @@ test('05 and 08 keep one representative table visible and preserve expandable ev
  await expect(page.locator('#section-05 details:not(.case-profit-advanced)')).toHaveCount(3);
  await expect(page.locator('#section-08 details')).toHaveCount(5);
  await expect(page.locator('.case-cash-chart .cash-line')).toHaveCount(2);
- await expect(page.locator('.case-cash-chart rect')).toHaveCount(10);
+ await expect(page.locator('.case-cash-chart polyline')).toHaveCount(2);
  await expect(plan).toContainText('기본 현금 예산 1,070만 원');
  await expect(plan.getByRole('table',{name:'5개년 경영계획 · 금액 단위 만 원'})).toContainText('2,998');
  await expect(plan).toContainText('기존 수수료·결제 조건 유지 시 현금수지');
@@ -425,7 +425,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   const preview=documents.locator('.case-report-preview');
   const frame=preview.locator('.case-ppt-frame');
   await expect(preview).not.toHaveAttribute('open',/.+/);
-  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261112-review');
+  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261112-layout');
   const summary=preview.locator('summary');
   await expect(summary).toContainText('사업성 분석·경영계획');
   const resourceFonts=await summary.evaluate(el=>({
@@ -462,7 +462,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect(summary).toBeFocused();
   await testInfo.attach('visual-'+width+'-PPT-closed-focus',{body:await documents.screenshot({animations:'disabled'}),contentType:'image/png'});
   await summary.click();
-  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-review');
+  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-layout');
   const slides=frame.contentFrame();
   // A preview shows the full thumbnail contact sheet, not the presentation controls.
   await expect(slides.locator('.slide-gallery-card')).toHaveCount(9,{timeout:15000});
@@ -748,7 +748,7 @@ test('PPT preview closes explicitly and the contents control section navigation'
   await expect(preview.locator('summary')).toBeFocused();
   await preview.locator('summary').click();
   await expect(preview).toHaveAttribute('open','');
-  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-review');
+  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-layout');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }
 });
@@ -1243,5 +1243,20 @@ test('editorial whitespace and vertical-rhythm audit across all nine sections',a
    expect(yearText).toContain(year+'년 차');
    expect(yearText).not.toContain(year+'년차');
   }
+ }
+});
+
+test('standalone presentation fits without scrolling on desktop',async({page})=>{
+ await page.setViewportSize({width:1920,height:935});
+ for(const deck of ['', '&deck=strategy']){
+  await page.goto('/src/case-study/materials.html?preview=1&mode=slides'+deck);
+  await expect(page.locator('html')).toHaveClass(/standalone-slides/);
+  await expect(page.locator('#slide')).toBeVisible();
+  const fit=await page.evaluate(()=>{
+   const image=document.querySelector('#slide').getBoundingClientRect();
+   const note=document.querySelector('#slide-keypoint').getBoundingClientRect();
+   return image.bottom<=innerHeight+1&&note.bottom<=innerHeight+1&&document.documentElement.scrollHeight<=innerHeight+1;
+  });
+  expect(fit).toBe(true);
  }
 });
