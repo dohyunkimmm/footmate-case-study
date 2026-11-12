@@ -83,7 +83,6 @@ const sections = [
           <text x="90" y="181" text-anchor="middle">−238.7만</text><text x="240" y="128" text-anchor="middle">−139.8만</text><text x="390" y="92" text-anchor="middle">−69.6만</text><text class="economics-bep-label" x="540" y="48" text-anchor="middle">+0.6만</text><text x="690" y="17" text-anchor="middle">+70.7만</text>
           <text class="economics-axis" x="90" y="225" text-anchor="middle">1년 · 5곳</text><text class="economics-axis" x="240" y="225" text-anchor="middle">2년 · 12곳</text><text class="economics-axis" x="390" y="225" text-anchor="middle">3년 · 20곳</text><text class="economics-axis economics-bep-label" x="540" y="225" text-anchor="middle">4년 · 28곳</text><text class="economics-axis" x="690" y="225" text-anchor="middle">5년 · 36곳</text>
         </svg>
-        <p class="strategy-chart-note">월 손익은 인력 기회비용을 포함합니다.</p>
         <p class="strategy-chart-note">1년 차 건당 340원, 2~5년 차 940원 적용.</p>
       </figure>
       <h3>경영계획과 투자 조정</h3>
