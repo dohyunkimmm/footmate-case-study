@@ -143,7 +143,7 @@ test('05 and 08 keep one representative table visible and preserve expandable ev
  const plan=page.locator('#section-08 details').filter({has:page.getByText('중장기 사업계획 · 예산과 확대 기준',{exact:true})});
  await plan.locator('summary').click();
  await expect(plan.getByRole('table')).toHaveCount(3);
- await expect(page.locator('#section-05 details')).toHaveCount(3);
+ await expect(page.locator('#section-05 details.case-extra')).toHaveCount(3);
  await expect(page.locator('#section-08 details')).toHaveCount(5);
  await expect(page.locator('.case-cash-chart .cash-line')).toHaveCount(2);
  await expect(page.locator('.case-cash-chart rect')).toHaveCount(10);
@@ -1234,7 +1234,8 @@ test('editorial whitespace and vertical-rhythm audit across all nine sections',a
   expect(notable,JSON.stringify({width,notable})).toHaveLength(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   const text=await page.locator('#section-05').textContent();
-  expect(text).toContain('충원 75% / 예약 60% / 취소 8% / 완료 97% / 유지 100%');
+  expect(text).toContain('충원 75% · 취소 8% · 취소 후 완료 97%');
+  expect(text).toContain('공급 유지율 100% · 플랫폼 예약 비중 60%');
   expect(text).toContain('주 4회');
   expect(text).not.toContain('기준 산정 기준');
   const yearText=await page.locator('#section-08').textContent();
