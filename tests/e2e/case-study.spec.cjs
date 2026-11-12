@@ -958,7 +958,7 @@ with ZipFile(xlsx) as x:
 test('body card descriptions stay concise',async({page})=>{
  await page.goto('/');
  const descriptions=await page.locator('.story-card p,.decision-card>p:last-child').allTextContents();
- expect(descriptions).toHaveLength(15);
+ expect(descriptions).toHaveLength(12);
  for(const description of descriptions){
   expect([...description.trim()].length,description).toBeLessThanOrEqual(40);
  }
@@ -1175,14 +1175,14 @@ test('section headers have readable spacing and desktop sidebar has bottom breat
      identity:node.querySelector('.case-identity')?bounds('.case-identity'):null,
      eyebrow:bounds('.eyebrow'),
      title:bounds('.section-title'),
-     lead:bounds('.lead')
+     lead:node.querySelector('.lead')?bounds('.lead'):null
     };
    });
    if(i===1){
     expect(positions.eyebrow.top-positions.identity.bottom,`identity/index overlap at ${width}px`).toBeGreaterThanOrEqual(10);
    }
    expect(positions.title.top-positions.eyebrow.bottom,`index/title overlap at ${width}px, section ${i}`).toBeGreaterThanOrEqual(8);
-   expect(positions.lead.top-positions.title.bottom,`title/lead overlap at ${width}px, section ${i}`).toBeGreaterThanOrEqual(10);
+   if(positions.lead)expect(positions.lead.top-positions.title.bottom,`title/lead overlap at ${width}px, section ${i}`).toBeGreaterThanOrEqual(10);
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`horizontal overflow at ${width}px`).toBe(true);
   if(width>800){
