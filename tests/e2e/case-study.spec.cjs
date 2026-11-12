@@ -387,7 +387,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect(documents.locator('.case-documents-lead')).toHaveCount(0);
   await expect(documents).not.toContainText('PPT 10장 · Excel 손익 모델');
   await expect(page.locator('#section-01 .case-scenario-note')).toHaveText('가정 기반 월간 시나리오 · 제휴 5곳 · 수수료 10% · 결제비 3%');
-  await expect(documents.locator('.case-downloads a')).toHaveCount(2);
+  await expect(documents.locator('.case-downloads a[download]')).toHaveCount(2);
   await expect(page.getByRole('link',{name:'기획 자료 받기'})).toHaveCount(1);
   await expect(page.getByRole('link',{name:'Excel 다운로드'})).toHaveCount(0);
   await expect(documents.getByRole('link',{name:'기획 자료 받기'})).toHaveAttribute('download','footmate_report.pptx');
@@ -416,7 +416,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   const preview=documents.locator('.case-report-preview');
   const frame=preview.locator('.case-ppt-frame');
   await expect(preview).not.toHaveAttribute('open',/.+/);
-  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261111-priority-slides');
+  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261112-decision');
   const summary=preview.locator('summary');
   await expect(summary).toContainText('사업성 분석·경영계획');
   const resourceFonts=await summary.evaluate(el=>({
@@ -452,7 +452,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect(summary).toBeFocused();
   await testInfo.attach('visual-'+width+'-PPT-closed-focus',{body:await documents.screenshot({animations:'disabled'}),contentType:'image/png'});
   await summary.click();
-  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261111-priority-slides');
+  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-decision');
   const slides=frame.contentFrame();
   // A preview shows the full thumbnail contact sheet, not the presentation controls.
   await expect(slides.locator('.slide-gallery-card')).toHaveCount(9,{timeout:15000});
@@ -738,7 +738,7 @@ test('PPT preview closes explicitly and the contents control section navigation'
   await expect(preview.locator('summary')).toBeFocused();
   await preview.locator('summary').click();
   await expect(preview).toHaveAttribute('open','');
-  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261111-priority-slides');
+  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-decision');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }
 });

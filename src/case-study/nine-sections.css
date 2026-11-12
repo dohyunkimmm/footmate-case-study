@@ -1019,3 +1019,15 @@ body{-webkit-font-smoothing:antialiased}
   .viewer{border-bottom-right-radius:0}
   .sidebar .toc{padding-bottom:0;justify-content:space-between}
 }
+
+.case-next-decision{display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem 1rem;padding:.85rem 1rem;border-inline-start:4px solid #087b60;background:#eaf5f1;color:#142c39}
+.case-next-decision span{flex:1 1 20rem}
+.case-deck-card{min-width:0}
+.case-deck-card .case-downloads{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 .5rem;justify-content:flex-start}
+.case-deck-card .case-downloads a:first-child{background:#143c34;color:#fff}
+.case-profit-presets{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem}
+.case-profit-presets button{border:1px solid #9fb8ad;background:white;color:#143c34;border-radius:6px;padding:.35rem .7rem;cursor:pointer}
+.case-profit-presets button[aria-pressed=true]{background:#143c34;color:white}
+.case-profit-advanced{margin:.65rem 0}
+.case-profit-advanced summary{cursor:pointer;font-weight:650}
+.case-profit-advanced[open] summary{margin-bottom:.55rem}

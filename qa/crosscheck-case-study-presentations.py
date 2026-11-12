@@ -152,3 +152,39 @@ assert "자료 보완" in body and "목표 재점검" in body
 assert "공급·책임 불명확 시 보류" not in body
 assert "구독료·전환율 미확정" not in body
 print("PASS: body vs 9-slide report vs 6-slide strategy figures, copy, and decisions match")
+
+# Recompute the negotiated baseline and both sensitivity rows from their assumptions.
+def monthly(partners, retention=1, share=.60):
+    bookings = round(partners * 4 * 4.33 * 18 * .75 * share * .92 * .97 * retention)
+    return bookings, bookings * 940 - 2_600_000 - max(0, partners - 5) * 30_000
+
+assert [monthly(28), monthly(23), monthly(23, .8), monthly(23, .8, .48)] == [
+    (3506, 5640), (2880, -432800), (2304, -974240), (1843, -1407580)
+]
+assert next(p for p in range(1, 501) if monthly(p)[1] >= 0) == 28
+for term in ("8주", "461만원"):
+    assert term in no_spaces(sections[0]["body"]) and term in no_spaces(main[0])
+for term in ("공급유지율100%", "플랫폼예약비중60%", "월3만원"):
+    assert term in no_spaces(plain(sections[4]["body"])) and term in no_spaces(main[3])
+for term in ("75%", "30일재참가30%", "공헌이익"):
+    assert term in no_spaces(main[8])
+assert "3개월연속" in no_spaces(strategy[-1]) and "3개월연속" in no_spaces(body)
+
+# The strategy chart must use the same annual series as the body table.
+C = "{http://schemas.openxmlformats.org/drawingml/2006/chart}"
+with ZipFile(CASE / "downloads" / "footmate_5year_strategy.pptx") as archive:
+    line_charts = [
+        chart for name in archive.namelist()
+        if re.fullmatch(r"ppt/charts/chart[0-9]+\.xml", name)
+        for chart in ET.fromstring(archive.read(name)).iter(C + "lineChart")
+    ]
+    assert len(line_charts) == 1
+    chart_values = [
+        [int(float(value.text)) for value in series.find(C + "val").iter(C + "v")]
+        for series in line_charts[0].findall(C + "ser")
+    ]
+assert chart_values == [
+    [int(value.replace(",", "").replace("−", "-")) for value in matrix[key]]
+    for key in ("투자후현금수지", "기존수수료·결제조건유지시현금수지")
+]
+print("PASS: calculator sensitivity, slide decision criteria, and annual chart data")
