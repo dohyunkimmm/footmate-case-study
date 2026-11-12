@@ -106,7 +106,7 @@ assert "월별 계획 차이·현금수지" in strategy[-1], "Scenario compariso
 assert "재무 수치는 계획 시나리오" in strategy[-1], "Financial scenario statement is ambiguous"
 assert "복합안 손익분기" in main[3], "Fourth-slide concise decision label missing"
 assert "현금수지 = 매출" in main[8], "Ninth-slide cash-flow calculation missing"
-assert "12개월 동일 예약 가정" in main[7], "Identical monthly booking premise must be explicit in ROI"
+assert "월 예약 건수가 12개월간 같다고 가정" in main[7], "Identical monthly booking premise must be explicit in ROI"
 assert "관리 지표 · 공급 유지" in strategy[1], "Five-year deck metric caption did not sync"
 assert "월 경제적 손익 · 기회비용 포함" in strategy[3]
 assert "연간 투자 후 현금수지 · 기회비용 별도" in strategy[3]
@@ -194,5 +194,6 @@ for copy in (body, main[3], strategy[2]):
     assert all(term in no_spaces(copy) for term in ("2,766건", "3,506건", "관리비제외"))
 for copy in (body, main[8]):
     assert "30일추적완료후확대심사" in no_spaces(copy)
-for copy in (body, strategy[-1]):
-    assert "관리비·기회비용포함월손익분기3개월연속" in no_spaces(copy)
+assert "관리비·기회비용포함월손익분기3개월연속" in no_spaces(body)
+assert "월손익이3개월연속손익분기이상" in no_spaces(strategy[-1])
+assert "1년차현금운영비에시범운영비50만원포함" in no_spaces(body)
