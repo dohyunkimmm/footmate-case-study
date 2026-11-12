@@ -425,7 +425,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   const preview=documents.locator('.case-report-preview');
   const frame=preview.locator('.case-ppt-frame');
   await expect(preview).not.toHaveAttribute('open',/.+/);
-  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261112-copy');
+  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261112-viewer');
   const summary=preview.locator('summary');
   await expect(summary).toContainText('사업성 분석·경영계획');
   const resourceFonts=await summary.evaluate(el=>({
@@ -462,7 +462,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect(summary).toBeFocused();
   await testInfo.attach('visual-'+width+'-PPT-closed-focus',{body:await documents.screenshot({animations:'disabled'}),contentType:'image/png'});
   await summary.click();
-  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-copy');
+  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-viewer');
   const slides=frame.contentFrame();
   // A preview shows the full thumbnail contact sheet, not the presentation controls.
   await expect(slides.locator('.slide-gallery-card')).toHaveCount(9,{timeout:15000});
@@ -748,7 +748,7 @@ test('PPT preview closes explicitly and the contents control section navigation'
   await expect(preview.locator('summary')).toBeFocused();
   await preview.locator('summary').click();
   await expect(preview).toHaveAttribute('open','');
-  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-copy');
+  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-viewer');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }
 });
@@ -855,7 +855,7 @@ test('six-slide strategy PPT has its own lazy-loaded preview',async({page})=>{
  await expect(slides.locator('#slideTitle')).toContainText('5개년 성장 전략');
  await expect(slides.locator('#slide')).toHaveAttribute('src',/decision-2\.jpg/);
  await slides.locator('#slide-picker').selectOption('3');
- await expect(slides.locator('#slide-permalink')).toHaveAttribute('href',/deck=strategy&slide=3$/);
+ await expect(slides.locator('#slide-permalink')).toHaveCount(0);
  await expect(slides.locator('#slide-keypoint')).toContainText('+2,998만 원');
  await preview.locator('summary').click();
  await expect(preview).not.toHaveAttribute('open','');
