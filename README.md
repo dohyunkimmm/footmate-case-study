@@ -17,6 +17,25 @@
 | [`.github/workflows/`](.github/workflows/) · [`.github/scripts/`](.github/scripts/) | 보고서 QA·수동 디자인 동기화·병합 브랜치 보존 및 생성 파일 PR 게시 스크립트 |
 | [`.assetsignore`](.assetsignore) | 내부 검증·문서 파일을 정적 사이트 배포에서 제외 |
 
+### 2026-11-13 `main` 폴더 점검 · 문서 동기화
+
+- GitHub [`main` `26b5ad8`](https://github.com/dohyunkimmm/footmate-case-study/commit/26b5ad8483969e794b013286cf8257eb50994496)의 잘리지 않은 재귀 트리에서 **파일 95개·디렉터리 15개**(루트 파일 6개·최상위 폴더 5개)를 확인했습니다. 아래의 11월 11일 **78개/80개 파일**은 해당 시점의 초기·정리 후 예상 스냅샷이며 현재 합계가 아닙니다.
+
+| 최상위 경로 | 파일 수 | 관리 범위 |
+| --- | ---: | --- |
+| `.github/` | 4 | QA·디자인 동기화·브랜치 보존 자동화 |
+| `docs/` | 3 | 분석·디자인·발표자료 검토 문서 |
+| `qa/` | 12 | 생성·검증 스크립트 |
+| `src/` | 68 | 본문·공용 스타일·이미지·PPTX·XLSX·미리보기 |
+| `tests/` | 2 | 보고서 브라우저 회귀 및 테스트 서버 |
+| 루트 파일 | 6 | 웹 진입점·패키지·설정 |
+| **합계** | **95** | **디렉터리 15개** |
+
+- [PR #19~#25](https://github.com/dohyunkimmm/footmate-case-study/pulls?q=is%3Apr+is%3Amerged+sort%3Aupdated-desc)의 본문·투자 판단·계산기·발표자료 및 문구·타이포그래피 개선이 `main`에 반영됐습니다. 해당 [FootMate Case Study QA #43238202984](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43238202984)는 **SUCCESS**입니다. 이 결과는 운영 배포·실제 사업 가정 검증을 뜻하지 않습니다.
+- 현재 열린 PR·이슈 **0건**, 원격 브랜치 **`main` 1개**입니다. Git blob SHA가 같은 중복 파일 **0건**, 명백한 임시 확장자 파일 **0건**으로 확인됐으며 **안전하게 삭제 확정된 경로는 없습니다**. 보존 태그·과거 PR 브랜치 정리 기록은 유지합니다.
+- 본편 9장·전략 6장 편집 가능한 PPTX, 모델 XLSX, 보고서 9개 섹션을 유지합니다. `src/case-study/previews/report/decision-*.jpg` 9개와 `previews/strategy/decision-*.jpg` 6개는 현행 뷰어에서 참조되며, 기존 `report-previews.js` 및 전략 `slide-*.jpg`도 남아 있습니다. 외형상 유사하다는 이유만으로 자산을 삭제하지 않습니다.
+- 메인 목록·관련 디자인 문서만 수정합니다. 보고서 본문·사업 수치·원본 PPTX/XLSX·이미지·QA·배포 경로는 변경하지 않습니다. 문서 PR 자체의 QA는 별도로 확인합니다.
+
 ### 2026-11-11 브랜치·폴더 클렌징 완료
 
 - [정리 작업](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43036247106) **성공**: 기존 작업 브랜치 **13개**의 PR 상태·HEAD SHA를 대조하고 `archive/20261111/reviewed/pr-*/` 보존 태그 **13개**를 모두 생성·확인한 뒤 브랜치 참조만 삭제했습니다. 정리 직후 원격 브랜치는 `main` **1개**입니다.
