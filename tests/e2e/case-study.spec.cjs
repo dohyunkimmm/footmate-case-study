@@ -143,7 +143,7 @@ test('05 and 08 keep one representative table visible and preserve expandable ev
  const plan=page.locator('#section-08 details').filter({has:page.getByText('중장기 사업계획 · 예산과 확대 기준',{exact:true})});
  await plan.locator('summary').click();
  await expect(plan.getByRole('table')).toHaveCount(3);
- await expect(page.locator('#section-05 details')).toHaveCount(3);
+ await expect(page.locator('#section-05 details:not(.case-profit-advanced)')).toHaveCount(3);
  await expect(page.locator('#section-08 details')).toHaveCount(5);
  await expect(page.locator('.case-cash-chart .cash-line')).toHaveCount(2);
  await expect(page.locator('.case-cash-chart rect')).toHaveCount(10);
@@ -387,7 +387,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect(documents.locator('.case-documents-lead')).toHaveCount(0);
   await expect(documents).not.toContainText('PPT 10장 · Excel 손익 모델');
   await expect(page.locator('#section-01 .case-scenario-note')).toHaveText('가정 기반 월간 시나리오 · 제휴 5곳 · 수수료 10% · 결제비 3%');
-  await expect(documents.locator('.case-downloads a')).toHaveCount(2);
+  await expect(documents.locator('.case-downloads a[download]')).toHaveCount(2);
   await expect(page.getByRole('link',{name:'기획 자료 받기'})).toHaveCount(1);
   await expect(page.getByRole('link',{name:'Excel 다운로드'})).toHaveCount(0);
   await expect(documents.getByRole('link',{name:'기획 자료 받기'})).toHaveAttribute('download','footmate_report.pptx');
@@ -404,10 +404,19 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect(model.locator('#case-profit-economic')).toHaveText('+5,640원');
   await expect(model.locator('#case-profit-bep')).toHaveText('28곳');
   await testInfo.attach('visual-'+width+'-financial-model',{body:await model.screenshot({animations:'disabled'}),contentType:'image/png'});
+  await model.getByRole('button',{name:'기준 10% · 3%'}).click();
+  await expect(model.locator('#case-profit-economic')).toHaveText('-2,097,960원');
+  await model.getByRole('button',{name:'우선 12% · 0%'}).click();
   await model.locator('#case-profit-partners').fill('23');
   await expect(model.locator('#case-profit-economic')).toHaveText('-432,800원');
+  await model.getByText('공급 유지율·예약 비중 조정',{exact:true}).click();
+  await model.locator('#case-profit-retention').fill('80');
+  await expect(model.locator('#case-profit-economic')).toHaveText('-974,240원');
+  await model.locator('#case-profit-share').fill('48');
+  await expect(model.locator('#case-profit-economic')).toHaveText('-1,407,580원');
   await model.getByRole('button',{name:'초기화'}).click();
   await expect(model.locator('#case-profit-economic')).toHaveText('+5,640원');
+  await model.getByText('공급 유지율·예약 비중 조정',{exact:true}).click();
   await model.locator('#case-profit-rate').fill('101');
   await expect(model.locator('#case-profit-error')).toBeVisible();
   await model.getByRole('button',{name:'초기화'}).click();
@@ -416,7 +425,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   const preview=documents.locator('.case-report-preview');
   const frame=preview.locator('.case-ppt-frame');
   await expect(preview).not.toHaveAttribute('open',/.+/);
-  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261111-priority-slides');
+  await expect(frame).toHaveAttribute('data-src','/src/case-study/materials.html?preview=1&viewer=20261112-decision');
   const summary=preview.locator('summary');
   await expect(summary).toContainText('사업성 분석·경영계획');
   const resourceFonts=await summary.evaluate(el=>({
@@ -429,7 +438,8 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   const colorAudit=await documents.evaluate(root=>{
     const selectors=[
       ['PPT CTA','summary',null],
-      ['PPT download','.case-downloads a','.case-documents'],
+      ['PPT download','.case-downloads a[download]',null],
+      ['PPT reader','.case-downloads a:not([download])',null],
       ['Section heading','.case-documents-head h2','.case-documents'],
       ['Deck description','.case-preview-description','.case-documents']
     ];
@@ -452,7 +462,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect(summary).toBeFocused();
   await testInfo.attach('visual-'+width+'-PPT-closed-focus',{body:await documents.screenshot({animations:'disabled'}),contentType:'image/png'});
   await summary.click();
-  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261111-priority-slides');
+  await expect(frame).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-decision');
   const slides=frame.contentFrame();
   // A preview shows the full thumbnail contact sheet, not the presentation controls.
   await expect(slides.locator('.slide-gallery-card')).toHaveCount(9,{timeout:15000});
@@ -499,7 +509,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect.poll(()=>slides.locator('#slide').evaluate(image=>image.complete&&image.naturalWidth>200&&image.naturalHeight>100),{timeout:15000}).toBe(true);
   await expect(slides.locator('#slideTitle')).toHaveText('수익성 개선안');
   await expect(slides.locator('#slideSummary')).toContainText('수수료·결제비');
-  await expect(slides.locator('#slide')).toHaveAttribute('aria-describedby','slideSummary');
+  await expect(slides.locator('#slide')).toHaveAttribute('aria-describedby','slideSummary slide-keypoint');
   await expect(slides.locator('#slideProgressTrack')).toHaveAttribute('aria-valuenow','4');
   // Arrow keys work even when a viewer control button has focus.
   const nextButton=slides.getByRole('button',{name:'다음 슬라이드'});
@@ -738,7 +748,7 @@ test('PPT preview closes explicitly and the contents control section navigation'
   await expect(preview.locator('summary')).toBeFocused();
   await preview.locator('summary').click();
   await expect(preview).toHaveAttribute('open','');
-  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261111-priority-slides');
+  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-decision');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }
 });
@@ -843,7 +853,10 @@ test('six-slide strategy PPT has its own lazy-loaded preview',async({page})=>{
  await slides.getByRole('button',{name:'다음 슬라이드',exact:true}).click();
  await expect(slides.locator('#page')).toHaveText('02 / 06');
  await expect(slides.locator('#slideTitle')).toContainText('5개년 성장 전략');
- await expect(slides.locator('#slide')).toHaveAttribute('src',/slide-2\.jpg/);
+ await expect(slides.locator('#slide')).toHaveAttribute('src',/decision-2\.jpg/);
+ await slides.locator('#slide-picker').selectOption('3');
+ await expect(slides.locator('#slide-permalink')).toHaveAttribute('href',/deck=strategy&slide=3$/);
+ await expect(slides.locator('#slide-keypoint')).toContainText('+2,998만 원');
  await preview.locator('summary').click();
  await expect(preview).not.toHaveAttribute('open','');
  await expect(page.locator('.case-report-preview')).toHaveCount(1);
@@ -1221,7 +1234,8 @@ test('editorial whitespace and vertical-rhythm audit across all nine sections',a
   expect(notable,JSON.stringify({width,notable})).toHaveLength(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   const text=await page.locator('#section-05').textContent();
-  expect(text).toContain('충원 75% / 예약 60% / 취소 8% / 완료 97% / 유지 100%');
+  expect(text).toContain('충원 75% · 취소 8% · 취소 후 완료 97%');
+  expect(text).toContain('공급 유지율 100% · 플랫폼 예약 비중 60%');
   expect(text).toContain('주 4회');
   expect(text).not.toContain('기준 산정 기준');
   const yearText=await page.locator('#section-08').textContent();
