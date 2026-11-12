@@ -188,3 +188,10 @@ assert chart_values == [
     for key in ("투자후현금수지", "기존수수료·결제조건유지시현금수지")
 ]
 print("PASS: calculator sensitivity, slide decision criteria, and annual chart data")
+
+for copy in (body, main[3], strategy[2]):
+    assert all(term in no_spaces(copy) for term in ("2,766건", "3,506건", "관리비제외"))
+for copy in (body, main[8]):
+    assert "30일추적완료후확대심사" in no_spaces(copy)
+for copy in (body, strategy[-1]):
+    assert "관리비·기회비용포함월손익분기3개월연속" in no_spaces(copy)
