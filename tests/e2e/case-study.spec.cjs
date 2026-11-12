@@ -143,7 +143,7 @@ test('05 and 08 keep one representative table visible and preserve expandable ev
  const plan=page.locator('#section-08 details').filter({has:page.getByText('중장기 사업계획 · 예산과 확대 기준',{exact:true})});
  await plan.locator('summary').click();
  await expect(plan.getByRole('table')).toHaveCount(3);
- await expect(page.locator('#section-05 details.case-extra')).toHaveCount(3);
+ await expect(page.locator('#section-05 details:not(.case-profit-advanced)')).toHaveCount(3);
  await expect(page.locator('#section-08 details')).toHaveCount(5);
  await expect(page.locator('.case-cash-chart .cash-line')).toHaveCount(2);
  await expect(page.locator('.case-cash-chart rect')).toHaveCount(10);
@@ -509,7 +509,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect.poll(()=>slides.locator('#slide').evaluate(image=>image.complete&&image.naturalWidth>200&&image.naturalHeight>100),{timeout:15000}).toBe(true);
   await expect(slides.locator('#slideTitle')).toHaveText('수익성 개선안');
   await expect(slides.locator('#slideSummary')).toContainText('수수료·결제비');
-  await expect(slides.locator('#slide')).toHaveAttribute('aria-describedby','slideSummary');
+  await expect(slides.locator('#slide')).toHaveAttribute('aria-describedby','slideSummary slide-keypoint');
   await expect(slides.locator('#slideProgressTrack')).toHaveAttribute('aria-valuenow','4');
   // Arrow keys work even when a viewer control button has focus.
   const nextButton=slides.getByRole('button',{name:'다음 슬라이드'});
