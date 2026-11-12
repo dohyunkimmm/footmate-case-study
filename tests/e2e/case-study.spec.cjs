@@ -404,10 +404,19 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   await expect(model.locator('#case-profit-economic')).toHaveText('+5,640원');
   await expect(model.locator('#case-profit-bep')).toHaveText('28곳');
   await testInfo.attach('visual-'+width+'-financial-model',{body:await model.screenshot({animations:'disabled'}),contentType:'image/png'});
+  await model.getByRole('button',{name:'기준 10% · 3%'}).click();
+  await expect(model.locator('#case-profit-economic')).toHaveText('-2,097,960원');
+  await model.getByRole('button',{name:'우선 12% · 0%'}).click();
   await model.locator('#case-profit-partners').fill('23');
   await expect(model.locator('#case-profit-economic')).toHaveText('-432,800원');
+  await model.getByText('공급 유지율·예약 비중 조정',{exact:true}).click();
+  await model.locator('#case-profit-retention').fill('80');
+  await expect(model.locator('#case-profit-economic')).toHaveText('-974,240원');
+  await model.locator('#case-profit-share').fill('48');
+  await expect(model.locator('#case-profit-economic')).toHaveText('-1,407,580원');
   await model.getByRole('button',{name:'초기화'}).click();
   await expect(model.locator('#case-profit-economic')).toHaveText('+5,640원');
+  await model.getByText('공급 유지율·예약 비중 조정',{exact:true}).click();
   await model.locator('#case-profit-rate').fill('101');
   await expect(model.locator('#case-profit-error')).toBeVisible();
   await model.getByRole('button',{name:'초기화'}).click();
@@ -429,7 +438,8 @@ test('single resource section, inline financial model and PPT viewer',async({pag
   const colorAudit=await documents.evaluate(root=>{
     const selectors=[
       ['PPT CTA','summary',null],
-      ['PPT download','.case-downloads a','.case-documents'],
+      ['PPT download','.case-downloads a[download]',null],
+      ['PPT reader','.case-downloads a:not([download])',null],
       ['Section heading','.case-documents-head h2','.case-documents'],
       ['Deck description','.case-preview-description','.case-documents']
     ];
@@ -843,7 +853,10 @@ test('six-slide strategy PPT has its own lazy-loaded preview',async({page})=>{
  await slides.getByRole('button',{name:'다음 슬라이드',exact:true}).click();
  await expect(slides.locator('#page')).toHaveText('02 / 06');
  await expect(slides.locator('#slideTitle')).toContainText('5개년 성장 전략');
- await expect(slides.locator('#slide')).toHaveAttribute('src',/slide-2\.jpg/);
+ await expect(slides.locator('#slide')).toHaveAttribute('src',/decision-2\.jpg/);
+ await slides.locator('#slide-picker').selectOption('3');
+ await expect(slides.locator('#slide-permalink')).toHaveAttribute('href',/deck=strategy&slide=3$/);
+ await expect(slides.locator('#slide-keypoint')).toContainText('+2,998만 원');
  await preview.locator('summary').click();
  await expect(preview).not.toHaveAttribute('open','');
  await expect(page.locator('.case-report-preview')).toHaveCount(1);
