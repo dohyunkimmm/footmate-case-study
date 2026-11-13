@@ -108,8 +108,8 @@ assert "복합안 손익분기" in main[3], "Fourth-slide concise decision label
 assert "현금수지 = 매출" in main[8], "Ninth-slide cash-flow calculation missing"
 assert "월 예약 건수가 12개월간 같다고 가정" in main[7], "Identical monthly booking premise must be explicit in ROI"
 assert "관리 지표 · 공급 유지" in strategy[1], "Five-year deck metric caption did not sync"
-assert "월 경제적 손익 · 기회비용 포함" in strategy[3]
-assert "연간 투자 후 현금수지 · 기회비용 별도" in strategy[3]
+assert "월 손익은 기회비용 포함" in strategy[3]
+assert "연간 현금수지는 기회비용 별도" in strategy[3]
 assert "월 공급·거래 시나리오" in body and "월 공급·거래 시나리오 · 플랫폼 예약·취소 반영 산정 기준" not in body, "Table caption still verbose"
 assert "추적 완료자만 분모" in body, "30-day cohort denominator disclosure missing"
 assert "인력 기회비용 월 200만원 별도" in body, "Financial scenario assumptions missing"
