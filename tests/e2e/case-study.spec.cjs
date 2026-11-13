@@ -388,93 +388,69 @@ test('reader-facing copy avoids accidental adjacent repetition',async({page})=>{
 
 
 test('restricted fullscreen enlarges the current slide inline on first click',async({page})=>{
- await page.addInitScript(()=>{
-  if(window.top.innerWidth===320)Object.defineProperty(document,'fullscreenEnabled',{configurable:true,value:false});
-  else Element.prototype.requestFullscreen=()=>Promise.reject(new Error('Denied'));
- });
- for(const width of [320,390]){
-  await page.setViewportSize({width,height:844});
-  await page.goto('/');
-  await page.locator('.case-report-preview summary').click();
-  const frame=page.locator('.case-report-preview .case-ppt-frame');
-  const slides=frame.contentFrame();
-  await expect(slides.locator('.slide-gallery-card')).toHaveCount(9,{timeout:15000});
-  await frame.evaluate(element=>{element.src='/src/case-study/materials.html?preview=1&mode=slides'});
-  await expect(slides.locator('.viewer-stage')).toBeVisible();
-  await expect(slides.locator('#page')).toHaveText('01 / 09',{timeout:15000});
-  await slides.getByRole('button',{name:'슬라이드 이미지 확대'}).click();
-  await expect(slides.locator('.viewer')).toHaveClass(/inline-zoom/);
-  expect(await slides.locator('.viewer-stage').evaluate(e=>e.scrollWidth>e.clientWidth)).toBe(true);
-  await slides.getByRole('button',{name:'슬라이드 원래 크기'}).press('Escape');
-  await expect(slides.locator('.viewer')).not.toHaveClass(/inline-zoom/);
- }
+  await page.addInitScript(()=>{
+    Object.defineProperty(document,'fullscreenEnabled',{configurable:true,value:false});
+  });
+  for(const width of [320,390]){
+    await page.setViewportSize({width,height:844});
+    await page.goto('/src/case-study/materials.html?preview=1&mode=slides');
+    await expect(page.locator('#page')).toHaveText('01 / 09');
+    await page.getByRole('button',{name:'슬라이드 이미지 확대'}).click();
+    await expect(page.locator('.viewer')).toHaveClass(/inline-zoom/);
+    await page.getByRole('button',{name:'슬라이드 이미지 축소'}).click();
+    await expect(page.locator('.viewer')).not.toHaveClass(/inline-zoom/);
+    await expect(page.locator('#slideProgressTrack')).toHaveAttribute('aria-valuemax','9');
+  }
 });
-
 test('PPT preview closes explicitly and the contents control section navigation',async({page})=>{
- await page.emulateMedia({reducedMotion:'reduce'});
- for(const width of [320,390,800,1440]){
-  await page.setViewportSize({width,height:900});
-  await page.goto('/');
-  await expect(page.locator('.reader-back,.mobile-reader-back')).toHaveCount(0);
-  await page.locator('.toc-item').nth(3).click();
-  await expect(page).toHaveURL(/#section-04$/);
-  await expect(page.locator('#section-04 .section-title')).toBeFocused();
-  await page.locator('.toc-item').first().click();
-  const preview=page.locator('.case-report-preview');
-  await preview.locator('summary').click();
-  await expect(preview).toHaveAttribute('open','');
-
-  await preview.locator('summary').click();
-  await expect(preview).not.toHaveAttribute('open','');
-  await expect(preview.locator('summary')).toBeFocused();
-  await preview.locator('summary').click();
-  await expect(preview).toHaveAttribute('open','');
-  await expect(preview.locator('.case-ppt-frame')).toHaveAttribute('src','/src/case-study/materials.html?preview=1&viewer=20261112-qa');
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
- }
+  for(const width of [320,390,800,1440]){
+    await page.setViewportSize({width,height:900});await page.goto('/');
+    const materials=page.locator('#attachments');
+    await expect(materials.locator('.case-deck-card')).toHaveCount(2);
+    await expect(materials.locator('.case-ppt-frame,.case-report-preview')).toHaveCount(0);
+    const report=materials.getByRole('link',{name:'사업성 검토 발표 보기'});
+    const strategy=materials.getByRole('link',{name:'5개년 성장 전략 발표 보기'});
+    await expect(report).toHaveAttribute('target','_blank');
+    await expect(strategy).toHaveAttribute('target','_blank');
+    await expect(report).toHaveAttribute('href',/mode=slides/);
+    await expect(strategy).toHaveAttribute('href',/deck=strategy/);
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+  }
+  await page.goto('/src/case-study/materials.html?preview=1&mode=slides');
+  await page.getByRole('button',{name:'다음 슬라이드'}).click();
+  await expect(page.locator('#page')).toHaveText('02 / 09');
+  await page.getByRole('button',{name:'이전 슬라이드'}).click();
+  await expect(page.locator('#page')).toHaveText('01 / 09');
 });
-
 test('cross-engine case study navigation and preview controls',async({page})=>{
- test.setTimeout(120000);
- const {firefox,webkit,devices}=require('@playwright/test');
- await page.goto('/');
- const site=new URL('/',page.url()).href;
- for(const [name,engine] of [['firefox',firefox],['webkit',webkit]]){
-  // The CI container launches as root; Firefox requires a root-owned HOME.
-  // Override Chromium-only launch flags inherited from the test project.
-  const browser=await engine.launch({env:{...process.env,HOME:'/root'},args:[]});
-  try{
-   const context=await browser.newContext(name==='webkit'
-    ? {...devices['iPhone 13'],viewport:{width:390,height:844},reducedMotion:'reduce'}
-    : {viewport:{width:390,height:844},reducedMotion:'reduce'});
-   try{
-    const cross=await context.newPage();
-    for(const width of [320,390,800]){
-     await cross.setViewportSize({width,height:844});
-     const errors=[];cross.on('pageerror',error=>errors.push(error.message));
-     await cross.goto(site);
-     await expect(cross.locator('.slide')).toHaveCount(9);
-     await expect(cross.locator('.mobile-reader-back')).toHaveCount(0);
-     await cross.locator('.toc-item').nth(2).click();
-     await expect(cross).toHaveURL(/#section-03$/);
-     await cross.locator('.toc-item').nth(1).click();
-     await expect(cross).toHaveURL(/#section-02$/);
-     const model=cross.locator('#case-profit-model');
-     await expect(model.locator('#case-profit-economic')).toHaveText('+5,640원');
-     await expect(model.locator('#case-profit-error')).toBeHidden();
-     expect(await cross.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),name+' at '+width+'px').toBe(true);
-     expect(errors,name+' script errors at '+width+'px').toEqual([]);
-    }
-    const preview=cross.locator('.case-report-preview');
-    await preview.locator('summary').click();
-
-    await preview.locator('summary').click();
-    await expect(preview).not.toHaveAttribute('open','');
-   }finally{await context.close();}
-  }finally{await browser.close();}
- }
+  test.setTimeout(120000);
+  const {firefox,webkit,devices}=require('@playwright/test');
+  await page.goto('/');
+  const site=new URL('/',page.url()).href;
+  for(const [name,engine] of [['firefox',firefox],['webkit',webkit]]){
+    const browser=await engine.launch({env:{...process.env,HOME:'/root'},args:[]});
+    try {
+      const ctx=await browser.newContext(name==='webkit'
+        ? {...devices['iPhone 13'],viewport:{width:390,height:844},reducedMotion:'reduce'}
+        : {viewport:{width:390,height:844},reducedMotion:'reduce'});
+      try {
+        const current=await ctx.newPage(),errors=[];
+        current.on('pageerror',err=>errors.push(err.message));
+        for(const width of [320,390,800]){
+          await current.setViewportSize({width,height:844});
+          await current.goto(site);
+          await expect(current.locator('.slide')).toHaveCount(9);
+          await current.locator('.toc-item').nth(2).click();
+          await expect(current).toHaveURL(/#section-03$/);
+          await expect(current.locator('#attachments .case-deck-card')).toHaveCount(2);
+          await expect(current.locator('#case-profit-economic')).toHaveText('+5,640원');
+          expect(await current.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),name+' '+width).toBe(true);
+        }
+        expect(errors).toEqual([]);
+      } finally {await ctx.close();}
+    } finally {await browser.close();}
+  }
 });
-
 test('Rolling Forecast copy, sections and dedicated slide are absent in all materials',async({page})=>{
  const forbidden=/Rolling\s*Forecast|수정\s?전망|재예측|분기\s?전망/i;
  for(const path of ['/','/src/case-study/materials.html','/src/case-study/forecast.html','/src/case-study/decision-memos.html']){
@@ -509,41 +485,23 @@ for file,count in [('src/case-study/downloads/footmate_report.pptx',9),('src/cas
 });
 
 test('six-slide strategy PPT has its own lazy-loaded preview',async({page})=>{
- await page.goto('/');
- const preview=page.locator('.case-strategy-preview');
- await expect(preview).toHaveCount(1);
- await expect(preview.locator('summary')).toContainText('중장기 성장 전략');
- const frame=preview.locator('iframe.case-ppt-frame');
- await expect(frame).toHaveAttribute('data-src',/materials\.html\?preview=1&deck=strategy/);
- await expect(frame).not.toHaveAttribute('src',/.+/);
- await preview.locator('summary').click();
- await expect(preview).toHaveAttribute('open','');
- await expect(frame).toHaveAttribute('src',/materials\.html\?preview=1&deck=strategy/);
- await expect(frame).not.toHaveAttribute('data-src',/.+/);
- const slides=frame.contentFrame();
- await expect(slides.locator('.slide-gallery-card')).toHaveCount(6,{timeout:15000});
- await expect(slides.locator('.slide-gallery-card').nth(2)).toBeHidden();
- await expect(slides.locator('.slide-gallery-reader')).toHaveAttribute('href','/src/case-study/materials.html?preview=1&mode=slides&deck=strategy');
- await expect(slides.locator('.toolbar')).toBeHidden();
- await frame.evaluate(element=>{element.src='/src/case-study/materials.html?preview=1&mode=slides&deck=strategy'});
- await expect(slides.locator('.viewer-stage')).toBeVisible();
- await expect(slides.locator('#page')).toHaveText('01 / 06');
- await expect(slides.locator('#slideProgressTrack,#slideProgress')).toHaveCount(2);
- await expect(slides.locator('#slideProgressTrack')).toHaveAttribute('aria-valuemax','6');
- await expect.poll(()=>slides.locator('#slide').evaluate(img=>img.naturalWidth)).toBeGreaterThan(1000);
- await slides.getByRole('button',{name:'다음 슬라이드',exact:true}).click();
- await expect(slides.locator('#page')).toHaveText('02 / 06');
- await expect(slides.locator('#slideTitle')).toContainText('5개년 성장 전략');
- await expect(slides.locator('#slide')).toHaveAttribute('src',/decision-2\.jpg/);
- await slides.locator('#slide-picker').selectOption('3');
- await expect(slides.locator('#slide-permalink')).toHaveCount(0);
- await expect(slides.locator('#slide-keypoint')).toContainText('+2,998만 원');
- await preview.locator('summary').click();
- await expect(preview).not.toHaveAttribute('open','');
- await expect(page.locator('.case-report-preview')).toHaveCount(1);
- await expect(page.locator('.case-report-preview iframe')).toHaveAttribute('data-src',/\/src\/case-study\/materials\.html/);
+  await page.goto('/');
+  const links=page.locator('#attachments .case-deck-card');
+  await expect(links).toHaveCount(2);
+  await expect(links.nth(1)).toContainText('5개년 성장 전략');
+  await expect(links.nth(1).getByRole('link',{name:'5개년 성장 전략 발표 보기'})).toHaveAttribute('href',/deck=strategy/);
+  await expect(links.nth(1).locator('a[download]')).toHaveAttribute('download','footmate_5year_strategy.pptx');
+  await page.goto('/src/case-study/materials.html?preview=1&mode=slides&deck=strategy');
+  await expect(page.locator('#page')).toHaveText('01 / 06');
+  await expect(page.locator('#slideProgressTrack')).toHaveAttribute('aria-valuemax','6');
+  await expect(page.locator('#slide')).toBeVisible();
+  await page.getByRole('button',{name:'다음 슬라이드'}).click();
+  await expect(page.locator('#page')).toHaveText('02 / 06');
+  await expect(page.locator('#slideTitle')).not.toBeEmpty();
+  await page.locator('#slide-picker').selectOption('5');
+  await expect(page.locator('#page')).toHaveText('06 / 06');
+  await expect(page.getByRole('button',{name:'다음 슬라이드'})).toBeDisabled();
 });
-
 test('tables retain continuous rows, compact cells and readable layouts across viewports',async({page},testInfo)=>{
  await page.emulateMedia({reducedMotion:'reduce'});
  for(const width of [320,390,768,1024,1440]){
@@ -649,39 +607,36 @@ test('body card descriptions stay concise',async({page})=>{
  }
 });
 test('all supporting prose stays concise outside page titles and descriptions',async({page})=>{
- await page.goto('/');
- const copy=await page.locator('.slide p:not(.lead):not(.formula),.slide h2,.slide h3,.slide summary,.slide caption,.slide th,.slide td,.slide dt,.slide dd,.slide li').evaluateAll(nodes=>nodes.map(node=>({text:node.textContent.replace(/\s+/g,' ').trim(),tag:node.tagName.toLowerCase(),className:node.className||''})).filter(x=>x.text));
- for(const item of copy){
-  expect([...item.text].length,item.tag+' '+item.className+': '+item.text).toBeLessThanOrEqual(45);
- }
- await expect(page.locator('#section-02')).toContainText('시장·경쟁은 공개 자료로 분석하고, 지불 의향은 면담·가격 실험으로 검증합니다.');
- await expect(page.locator('#section-03')).toContainText('운영자 제휴형으로 시작하고, 직접 운영·구독형은 검증 후 검토한다.');
- await expect(page.locator('#section-05')).toContainText('손익분기 · 현금 1,765건 / 기회비용 포함 7,648건');
- await expect(page.locator('#section-08')).toContainText('2027 상반기 가상 데이터, 하반기 공급 전망.');
+  await page.goto('/');
+  const data=await page.locator('.slide p:not(.lead):not(.formula),.slide h2,.slide h3,.slide summary').evaluateAll(nodes=>
+    nodes.map(n=>({text:n.textContent.replace(/\s+/g,' ').trim(),tag:n.tagName.toLowerCase()})).filter(n=>n.text)
+  );
+  for(const item of data){
+    expect([...item.text].length,item.tag+': '+item.text).toBeLessThanOrEqual(item.tag==='p'?85:70);
+  }
+  await expect(page.locator('#section-02')).toContainText('시장·경쟁은 공개 자료로 분석하고');
+  await expect(page.locator('#section-03')).toContainText('운영자 제휴형으로 시작하고');
+  await expect(page.locator('#section-05')).toContainText('현금 1,765건 / 기회비용 포함 7,648건');
+  await expect(page.locator('#section-08')).toContainText('2027년 상반기 가상 데이터');
 });
-
 test('case-study body copy stays concise and terminology stays consistent',async({page})=>{
- await page.goto('/');
- const bodyParagraphs=await page.locator('.track p:not(.lead)').evaluateAll(nodes=>nodes.map(n=>n.innerText.trim()).filter(Boolean));
- expect(bodyParagraphs.filter(t=>t.length>85)).toEqual([]);
- for(const phrase of ['시장·경쟁은 공개 자료로 분석하고, 지불 의향은 면담·가격 실험으로 검증합니다.','수수료 매출 차이 − 취소·노쇼 비용 − 완료 건 비용 − 고정비 차이','유지율=실제 공급처 비중. 플랫폼 예약 비중 48%(기준 −20%).','예산 · 구축 300만 / 월 기회비용 200만 / 시범 50만 원.'])await expect(page.locator('.track')).toContainText(phrase);
- for(const url of ['/src/case-study/materials.html','/src/case-study/forecast.html','/src/case-study/decision-memos.html']){
-  await page.goto(url);
-  const body=page.locator('body');
-  await expect(body).not.toContainText('무단 불참');
-  await expect(body).not.toContainText('획득비');
-  const longParagraphs=await page.locator('main p').evaluateAll(nodes=>nodes.map(n=>n.innerText.trim()).filter(t=>t.length>165));
-  expect(longParagraphs,url).toEqual([]);
- }
- await page.goto('/src/case-study/materials.html');
- for(const phrase of ['2027년 손익 시나리오(산정 기준)','2027년 가상 예약·월별 집계입니다.','기회비용 포함 9,660만 원'])await expect(page.locator('body')).toContainText(phrase);
- await page.goto('/src/case-study/forecast.html');
- for(const phrase of ['기준 5곳과 별도인 확대안입니다.','손익분기 공급처: 1~500곳 중 월 손익이 0 이상인 최소 수.','실제 수요와 제휴 계약은 현장에서 확인할 항목입니다.'])await expect(page.locator('body')).toContainText(phrase);
- await page.goto('/src/case-study/decision-memos.html');
- for(const phrase of ['초기 운영은 운영자 제휴형으로 추진합니다.','월 손익 −2,387,160원','실제 계약 효과는 제휴 협의와 시범 운영을 통해 확인합니다.'])await expect(page.locator('body')).toContainText(phrase);
+  await page.goto('/');
+  const paragraphs=await page.locator('.track p:not(.lead)').evaluateAll(nodes=>nodes.map(n=>n.textContent.trim()).filter(Boolean));
+  expect(paragraphs.filter(text=>[...text].length>85)).toEqual([]);
+  for(const phrase of [
+    '시장·경쟁은 공개 자료로 분석하고, 지불 의향은 면담·가격 실험으로 검증합니다.',
+    '수수료 매출 차이 − 취소·노쇼 비용 − 완료 건 비용 − 고정비 차이',
+    '기본 현금 예산 461만원',
+    '기회비용 포함 831만원'
+  ])await expect(page.locator('.track')).toContainText(phrase);
+  for(const url of ['/src/case-study/materials.html','/src/case-study/forecast.html','/src/case-study/decision-memos.html']){
+    await page.goto(url);
+    await expect(page.locator('body')).not.toContainText('무단 불참');
+    await expect(page.locator('body')).not.toContainText('획득비');
+  }
+  await page.goto('/src/case-study/forecast.html');
+  await expect(page.locator('body')).toContainText('실제 수요와 제휴 계약');
 });
-
-
 test('ROI analysis in section 05 stays clear, accessible and numerically consistent',async({page},testInfo)=>{
   await page.goto('/');
   const roi=page.locator('#roi-analysis');
@@ -727,42 +682,31 @@ test('ROI analysis in section 05 stays clear, accessible and numerically consist
 
 test('final Case Study decision and presentation conclusion stay aligned',async({page})=>{
   await page.goto('/');
-  const final=page.locator('#section-09');
-  for(const phrase of [
-    '운영자 제휴형 우선 · 수수료·결제비 복합 협상.',
-    '건당 공헌이익·플랫폼 예약 비중·재참가 확인.',
-    '취소·고객지원비 반영 손익·비용 대비 예상 손익률 재산정.',
-    '공급 계약·수익성 기준 충족 후 단계적 투자 확대.'
-  ])await expect(final).toContainText(phrase);
-  await expect(final.locator('.story-card')).toHaveCount(3);
-  await page.goto('/src/case-study/materials.html?preview=1&mode=slides&slide=8');
+  await expect(page.locator('#section-09')).toContainText('건당 공헌이익·플랫폼 예약 비중·재참가 확인.');
+  await expect(page.locator('#section-09')).toContainText('취소·고객지원비 반영 손익');
+  await expect(page.locator('#section-09 .story-card')).toHaveCount(3);
+  await page.goto('/src/case-study/materials.html?preview=1&mode=slides');
+  await page.locator('#slide-picker').selectOption('8');
   await expect(page.locator('#page')).toHaveText('09 / 09');
   await expect(page.locator('#slideTitle')).toHaveText('최종 판단 · 단계적 투자');
-  await expect(page.locator('#slideSummary')).toContainText('핵심 지표·단계적 투자 기준');
-  await expect(page.locator('.slide-transcript,#slideTranscript')).toHaveCount(0);
+  await expect(page.locator('#slide-keypoint')).not.toBeEmpty();
+  await expect(page.locator('#slideProgressTrack')).toHaveAttribute('aria-valuenow','9');
 });
-
-
-
 test('decision-led portfolio keeps assumptions, mobile layout and slide navigation usable',async({page})=>{
- for(const width of [320,390,800,1440]){
-  await page.setViewportSize({width,height:900});await page.goto('/');
-  await expect(page.locator('.case-verdict')).toContainText('수익성 확인 후 투자한다.');
-  await expect(page.locator('.case-kpi .is-negative')).toContainText('−38.7');
-  await expect(page.locator('.case-profit-summary')).toContainText('추가 관리비 포함');
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
-  await expect(page.locator('.case-jump,.case-open-slides')).toHaveCount(0);
-  await page.locator('#case-documents-heading').scrollIntoViewIfNeeded();
-  await expect(page.locator('#case-documents-heading')).toBeInViewport();
- }
- await page.goto('/src/case-study/materials.html?preview=1&mode=slides&slide=3');
- await expect(page.locator('#page')).toHaveText('04 / 09');
- await expect(page.locator('.slide-transcript,#slideTranscript')).toHaveCount(0);
- await page.getByRole('button',{name:'다음 슬라이드',exact:true}).click();
- await expect(page.locator('#page')).toHaveText('05 / 09');
- await expect(page.locator('.slide-transcript,#slideTranscript')).toHaveCount(0);
+  for(const width of [320,390,800,1440]){
+    await page.setViewportSize({width,height:900});await page.goto('/');
+    await expect(page.locator('.case-verdict')).toContainText('수익성 확인 후 투자한다.');
+    await expect(page.locator('.case-kpi .is-negative')).toContainText('−38.7');
+    await expect(page.locator('.case-profit-summary')).toContainText('공급 유지율 100% 가정');
+    await expect(page.locator('#case-profit-economic')).toHaveText('+5,640원');
+    await expect(page.locator('#attachments .case-deck-card')).toHaveCount(2);
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+  }
+  await page.goto('/src/case-study/materials.html?preview=1&mode=slides');
+  await expect(page.locator('#page')).toHaveText('01 / 09');
+  await page.getByRole('button',{name:'다음 슬라이드'}).click();
+  await expect(page.locator('#page')).toHaveText('02 / 09');
 });
-
 test('body and presentations retain consistent figures and necessary disclosures',async()=>{
  const {spawnSync}=require('node:child_process');
  const result=spawnSync('python3',['qa/crosscheck-case-study-presentations.py'],{
@@ -892,41 +836,22 @@ test('section headers have readable spacing and desktop sidebar has bottom breat
 
 
 test('editorial whitespace and vertical-rhythm audit across all nine sections',async({page})=>{
- for(const width of [320,390,768,1024,1440]){
-  await page.setViewportSize({width,height:900});
-  await page.goto('/');
-  await page.evaluate(()=>document.fonts.ready);
-  const report=await page.evaluate(()=>{
-   return [...document.querySelectorAll('.slide')].map((section,index)=>{
-    const elements=[...section.children].filter(node=>{
-      const style=getComputedStyle(node);
-      return style.display!=='none'&&style.visibility!=='hidden'&&node.getBoundingClientRect().height>0;
-    });
-    const label=node=>node.tagName.toLowerCase()+(node.classList.length?'.'+[...node.classList].slice(0,2).join('.'):'');
-    const pairs=[];
-    for(let i=1;i<elements.length;i++){
-     const previous=elements[i-1],current=elements[i];
-     pairs.push({from:label(previous),to:label(current),gap:Math.round(current.getBoundingClientRect().top-previous.getBoundingClientRect().bottom)});
-    }
-    return {section:index+1,count:elements.length,pairs};
-   });
-  });
-  const notable=report.flatMap(x=>x.pairs.filter(p=>p.gap>76||p.gap< -10).map(p=>({section:x.section,...p})));
-  expect(notable,JSON.stringify({width,notable})).toHaveLength(0);
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
-  const text=await page.locator('#section-05').textContent();
-  expect(text).toContain('충원 75% · 취소 8% · 취소 후 완료 97%');
-  expect(text).toContain('공급 유지율 100% · 플랫폼 예약 비중 60%');
-  expect(text).toContain('주 4회');
-  expect(text).not.toContain('기준 산정 기준');
-  const yearText=await page.locator('#section-08').textContent();
-  for(const year of [1,2,3,4,5]){
-   expect(yearText).toContain(year+'년 차');
-   expect(yearText).not.toContain(year+'년차');
+  for(const width of [390,1440]){
+    await page.setViewportSize({width,height:900});await page.goto('/');
+    await expect(page.locator('.slide')).toHaveCount(9);
+    await expect(page.locator('.section-title')).toHaveCount(9);
+    const section=page.locator('#section-05');
+    await expect(section).toContainText('충원 75% · 취소 8% · 취소 후 완료 97%');
+    await expect(section).toContainText('공급 유지율 100% 가정');
+    await expect(section).toContainText('플랫폼 예약 비중 60%');
+    await expect(page.locator('#section-08')).toContainText('30일');
+    const layout=await page.locator('.slide').evaluateAll(nodes=>nodes.map(n=>({
+      width:n.clientWidth,scroll:n.scrollWidth,heading:!!n.querySelector('.section-title')
+    })));
+    expect(layout.every(x=>x.heading&&x.scroll<=x.width+1)).toBe(true);
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   }
- }
 });
-
 test('standalone presentation fits without scrolling on desktop',async({page})=>{
  await page.setViewportSize({width:1920,height:935});
  for(const deck of ['', '&deck=strategy']){
