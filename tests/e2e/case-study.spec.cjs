@@ -170,7 +170,7 @@ test('reader summary, detailed numbers and optional tables remain consistent',as
   await expect(page.locator('#section-08 .reader-summary')).toContainText('831만원');
   await expect(page.locator('.track table')).toHaveCount(31);
   const detail=page.locator('#section-05 details').filter({has:page.getByText('제휴 손익과 협상 근거',{exact:true})});
-  await expect(detail.locator('table')).toBeHidden();
+  await expect(detail.locator('table').first()).toBeHidden();
   await detail.locator('summary').click();
   await expect(detail.locator('table').first()).toBeVisible();
   await expect(page.locator('#section-05')).toContainText('−387,160원');
@@ -665,8 +665,16 @@ test('ROI analysis in section 05 stays clear, accessible and numerically consist
     await page.goto('/#roi-analysis');
     await expect(page.locator('#roi-analysis')).toBeVisible();
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),String(width)).toBe(true);
-    const box=await roi.evaluate(el=>({scroll:el.scrollWidth,client:el.clientWidth}));
-    expect(box.scroll,String(width)).toBeLessThanOrEqual(box.client+1);
+    const box=await roi.evaluate(el=>{
+      const edge=el.getBoundingClientRect().right;
+      const overflow=[...el.querySelectorAll('*')].map(node=>({
+        tag:node.tagName.toLowerCase(),cls:String(node.className).slice(0,80),
+        right:Math.round(node.getBoundingClientRect().right-edge),
+        width:Math.round(node.getBoundingClientRect().width)
+      })).filter(x=>x.right>1).sort((a,b)=>b.right-a.right).slice(0,8);
+      return {scroll:el.scrollWidth,client:el.clientWidth,overflow};
+    });
+    expect(box.scroll,JSON.stringify({width,...box})).toBeLessThanOrEqual(box.client+1);
     if(width===390||width===1440)await testInfo.attach('roi-review-'+width,{body:await roi.screenshot({animations:'disabled'}),contentType:'image/png'});
   }
   await page.setViewportSize({width:1440,height:900});
