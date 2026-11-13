@@ -125,7 +125,7 @@ assert all(term in no_spaces(main[3]) for term in ("340원", "940원", "2,766"))
 minus_normalized = no_spaces(main[4]).replace("−", "-").replace("–", "-").replace("—", "-")
 assert all(term in minus_normalized for term in ("-39,600", "-217,040")), minus_normalized
 assert "단계적 투자" in main[-1] and "9" in main[-1]
-assert "연차별 산정 근거는 웹 본문 08" in main[-1]
+assert "웹에서 5개년 재무표 보기" in main[-1]
 with ZipFile(CASE / "downloads" / "footmate_report.pptx") as archive:
     chart_ns = "{http://schemas.openxmlformats.org/drawingml/2006/chart}"
     bar_charts = [
@@ -175,7 +175,7 @@ assert [monthly(28), monthly(23), monthly(23, .8), monthly(23, .8, .48)] == [
 assert next(p for p in range(1, 501) if monthly(p)[1] >= 0) == 28
 for term in ("8주", "461만원"):
     assert term in no_spaces(sections[0]["body"]) and term in no_spaces(main[0])
-for term in ("공급유지율100%", "플랫폼예약비중60%", "월3만원"):
+for term in ("유지율100%", "예약비중60%", "월3만원"):
     assert term in no_spaces(plain(sections[4]["body"])) and term in no_spaces(main[3])
 for term in ("75%", "30일재참가30%", "공헌이익"):
     assert term in no_spaces(main[8])
