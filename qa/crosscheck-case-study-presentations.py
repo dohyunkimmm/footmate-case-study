@@ -95,7 +95,7 @@ for filename,count in (("footmate_report.pptx",9),("footmate_5year_strategy.pptx
 # Editorial parity: public brand, slide typography and readable terminology.
 assert all("FootMate · 사업성 분석·경영계획" in slide for slide in main), "Main slide footers use old branding"
 assert all("사업·IT 기획" not in slide for slide in main), "Former project label remained in main deck"
-assert "사업성 분석·경영계획" in main[0], "Main cover identity mismatch"
+assert "FootMate 사업성 검토" in main[0], "Main cover identity mismatch"
 assert "예약·취소·완료율 점검" in main[4], "The monthly variance typo has returned"
 assert "+400원" in main[4] and "400원" in main[4], "Monthly fee variance sign mismatch"
 assert "고객 지원·확보·IT 비용 점검" in main[4], "Expense analysis label differs from body"
@@ -118,20 +118,30 @@ assert "제안 일정 · 실제 성과 아님" not in body, "Redundant negative 
 assert "실제 결제·환불·운영자 정산은 아직 구축하지 않았다" not in body, "Unnecessary negative phrasing returned"
 
 print("DECKS", len(main), len(strategy), "font: Pretendard")
+assert "5개년 성장 전략" in strategy[0]
 assert "수익성" in main[0] and "운영자 제휴" in main[0]
 assert all(str(i) in no_spaces(main[2]) for i in ("626", "751,200"))
 assert all(term in no_spaces(main[3]) for term in ("340원", "940원", "2,766"))
 minus_normalized = no_spaces(main[4]).replace("−", "-").replace("–", "-").replace("—", "-")
 assert all(term in minus_normalized for term in ("-39,600", "-217,040")), minus_normalized
 assert "단계적 투자" in main[-1] and "9" in main[-1]
-final_copy = no_spaces(main[-1]).replace("−", "-").replace("–", "-").replace("—", "-")
-for key in ("제휴공급처", "수수료매출", "구축·확장투자비", "투자후현금수지", "기존수수료·결제조건유지시현금수지"):
-    for cell in matrix[key]:
-        expected = cell.replace("−", "-").replace("–", "-")
-        assert expected in final_copy, (key, expected)
-for index in range(5):
-    operating = int(matrix["거래변동비"][index].replace(",", "")) + int(matrix["현금운영비"][index].replace(",", ""))
-    assert f"{operating:,}" in final_copy, (index, operating)
+assert "연차별 산정 근거는 웹 본문 08" in main[-1]
+with ZipFile(CASE / "downloads" / "footmate_report.pptx") as archive:
+    chart_ns = "{http://schemas.openxmlformats.org/drawingml/2006/chart}"
+    bar_charts = [
+        chart for name in archive.namelist()
+        if re.search(r"/charts/chart[0-9]+\.xml$", name)
+        for chart in ET.fromstring(archive.read(name)).iter(chart_ns + "barChart")
+    ]
+    assert len(bar_charts) == 1
+    chart_values = [
+        [int(float(value.text)) for value in series.find(chart_ns + "val").iter(chart_ns + "v")]
+        for series in bar_charts[0].findall(chart_ns + "ser")
+    ]
+assert chart_values == [
+    [int(value.replace(",", "").replace("−", "-")) for value in matrix[key]]
+    for key in ("투자후현금수지", "기존수수료·결제조건유지시현금수지")
+]
 assert all(term in no_spaces(strategy[1]) for term in ("5곳", "12곳", "20곳", "28곳", "36곳"))
 assert all(term in no_spaces(strategy[2]) for term in ("340원", "700원", "940원", "28곳"))
 expected_economics = ["−238.7만원", "−139.8만원", "−69.6만원", "+0.6만원", "+70.7만원"]
