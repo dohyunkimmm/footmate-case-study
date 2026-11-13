@@ -42,7 +42,7 @@
 ## 2026-11-11 산출물·문서 동기화
 
 - [PR #11](https://github.com/dohyunkimmm/footmate-case-study/pull/11)의 15장 띄어쓰기·여백 검토에 이어 [PR #12](https://github.com/dohyunkimmm/footmate-case-study/pull/12)에서 사업성 8·9장과 전략 4장을 개선했다. 발표자료 원본은 9+6장, 미리보기는 본편 9개(웹 JS 내장)와 전략 JPG 6개로 유지한다.
-- 현행 파일·폴더 수량, 브랜치 및 삭제 보존 기준은 [README의 2026-11-13 메인 점검](../README.md)을 참조한다(파일 95개·디렉터리 15개, 열린 PR·이슈 0건, 기본 브랜치만 유지). 본편·전략 발표자료의 `decision-*.jpg` 미리보기는 실제 뷰어에서 사용되므로 기존 `report-previews.js`·`slide-*.jpg`와 함께 보존한다. 기존 설계 토큰·사업 가정·수치·계산식은 이번 문서 동기화에서 변경하지 않았다.
+- 현행 파일·폴더 수량, 브랜치 및 삭제 보존 기준은 [README의 2026-11-14 메인 점검](../README.md)을 참조한다(파일 95개·디렉터리 15개, 점검 당시 열린 PR 0건, `main` 브랜치만 유지). 최신 QA의 20개 실패는 [이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)에서 별도 관리한다. 본편·전략 발표자료의 `decision-*.jpg` 미리보기는 실제 뷰어에서 사용되므로 기존 `report-previews.js`·`slide-*.jpg`와 함께 보존한다. 기존 설계 토큰·사업 가정·수치·계산식은 이번 문서 동기화에서 변경하지 않았다.
 - 수동 디자인 재생성 작업은 `main`에서만 실행하며 생성 산출물 변경 시 `automation/design-sync-*` 검토용 PR을 게시한다. 사용자 확인·보고서 QA 통과 후 병합한다. 자동 `main` 푸시나 자동 병합은 하지 않는다.
 
 ## 검증 명령
