@@ -85,7 +85,7 @@ for filename,count in (("footmate_report.pptx",9),("footmate_5year_strategy.pptx
                         r"\d[\d,]*(?:\.\d+)?\s+(?:개년|개월|곳|건|회|명|석|주|원|%)",
                         line), (filename, number, "number/unit whitespace", line)
                     assert not re.search(
-                        r"\d[\d,]*(?:\.\d+)?\s+만\s*원",
+                        r"(?:\d\s+만원|만\s+원)",
                         line), (filename, number, "currency unit whitespace", line)
                     assert not re.search(
                         r"(?<=[가-힣0-9)])\s+,",
@@ -100,7 +100,7 @@ assert "예약·취소·완료율 점검" in main[4], "The monthly variance typo
 assert "+400원" in main[4] and "400원" in main[4], "Monthly fee variance sign mismatch"
 assert "고객 지원·확보·IT 비용 점검" in main[4], "Expense analysis label differs from body"
 assert "경유·취소·완료율" not in main[4], "Old typo returned"
-assert "36개월 운영·초기 구축비 2,460만 원" in main[6], "36-month cost scope unclear"
+assert "36개월 운영·초기 구축비 2,460만원" in main[6], "36-month cost scope unclear"
 assert all("5개년 경영계획" in slide for slide in strategy[1:5]), "5-year deck headers are inconsistent"
 assert "월별 계획 차이·현금수지" in strategy[-1], "Scenario comparison must remain distinct from actual sales"
 assert "재무 수치는 계획 시나리오" in strategy[-1], "Financial scenario statement is ambiguous"
@@ -112,7 +112,7 @@ assert "월 경제적 손익 · 기회비용 포함" in strategy[3]
 assert "연간 투자 후 현금수지 · 기회비용 별도" in strategy[3]
 assert "월 공급·거래 시나리오" in body and "월 공급·거래 시나리오 · 플랫폼 예약·취소 반영 산정 기준" not in body, "Table caption still verbose"
 assert "추적 완료자만 분모" in body, "30-day cohort denominator disclosure missing"
-assert "인력 기회비용 월 200만 원 별도" in body, "Financial scenario assumptions missing"
+assert "인력 기회비용 월 200만원 별도" in body, "Financial scenario assumptions missing"
 
 assert "제안 일정 · 실제 성과 아님" not in body, "Redundant negative label returned"
 assert "실제 결제·환불·운영자 정산은 아직 구축하지 않았다" not in body, "Unnecessary negative phrasing returned"
