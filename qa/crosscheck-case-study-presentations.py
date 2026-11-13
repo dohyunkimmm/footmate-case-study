@@ -104,10 +104,10 @@ assert "36개월 운영·초기 구축비 2,460만원" in main[6], "36-month cos
 assert all("5개년 경영계획" in slide for slide in strategy[1:5]), "5-year deck headers are inconsistent"
 assert "월별 계획 차이와 현금수지" in strategy[-1], "Scenario comparison must remain distinct from actual sales"
 assert "재무 수치는 계획 시나리오" in strategy[-1], "Financial scenario statement is ambiguous"
-assert "복합안 손익분기" in main[3], "Fourth-slide concise decision label missing"
+assert "월 손익분기 예약" in main[3], "Fourth-slide concise decision label missing"
 assert "현금수지 = 매출" in main[8], "Ninth-slide cash-flow calculation missing"
 assert "월 예약 건수가 12개월간 같다고 가정" in main[7], "Identical monthly booking premise must be explicit in ROI"
-assert "관리 지표 · 공급 유지" in strategy[1], "Five-year deck metric caption did not sync"
+assert "공급 유지율·월 완료 예약·30일 재참가율" in strategy[4]
 assert "월 손익은 기회비용 포함" in strategy[3]
 assert "연간 현금수지는 기회비용 별도" in strategy[3]
 assert "월 공급·거래 시나리오" in body and "월 공급·거래 시나리오 · 플랫폼 예약·취소 반영 산정 기준" not in body, "Table caption still verbose"
