@@ -102,7 +102,7 @@ assert "고객 지원·확보·IT 비용 점검" in main[4], "Expense analysis l
 assert "경유·취소·완료율" not in main[4], "Old typo returned"
 assert "36개월 운영·초기 구축비 2,460만원" in main[6], "36-month cost scope unclear"
 assert all("5개년 경영계획" in slide for slide in strategy[1:5]), "5-year deck headers are inconsistent"
-assert "월별 계획 차이·현금수지" in strategy[-1], "Scenario comparison must remain distinct from actual sales"
+assert "월별 계획 차이와 현금수지" in strategy[-1], "Scenario comparison must remain distinct from actual sales"
 assert "재무 수치는 계획 시나리오" in strategy[-1], "Financial scenario statement is ambiguous"
 assert "복합안 손익분기" in main[3], "Fourth-slide concise decision label missing"
 assert "현금수지 = 매출" in main[8], "Ninth-slide cash-flow calculation missing"
