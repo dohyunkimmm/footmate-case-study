@@ -1074,3 +1074,8 @@ body{-webkit-font-smoothing:antialiased}
   #roi-analysis .roi-coverage-label { min-width:0; overflow-wrap:anywhere; }
   #roi-analysis .roi-coverage-value { font-size:12px; }
 }
+
+/* Narrow ROI table values without breaking their number/unit grouping. */
+@media(max-width:600px){
+  #roi-analysis .case-number-unit{font-size:.94em}
+}
