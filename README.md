@@ -4,6 +4,13 @@
 
 **주요 링크:** [보고서 보기](https://footmate-case-study.fmate.workers.dev/) · [FootMate 서비스 데모](https://footmate.fmate.workers.dev/demo) · [서비스 소스 저장소](https://github.com/dohyunkimmm/footmate)
 
+## 현재 완료 상태 · 2026-11-14
+
+- 최신 `main` [`458ff3e`](https://github.com/dohyunkimmm/footmate-case-study/commit/458ff3e97d1d2daebc5272de099bbd2a1c5939c7)의 [보고서 QA #43459898355](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43459898355)는 **전체 46건 통과·실패 0건**입니다.
+- [PR #43](https://github.com/dohyunkimmm/footmate-case-study/pull/43)에서 오래된 화면·발표자료 검사 19건을 현재 UI·손익 모델 기준으로 동기화하고, 390px의 ROI 긴 숫자 레이블 넘침을 CSS로 고쳤습니다. **보고서 본문 사업 수치, PPTX/XLSX, 이미지는 변경하지 않았습니다.**
+- [기존 QA 이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)은 최신 `main` 통과 확인 후 완료 처리했습니다. 다만 [Cloudflare Workers 미리보기 빌드 이슈 #44](https://github.com/dohyunkimmm/footmate-case-study/issues/44)는 별도입니다. 외부 빌드의 `npx wrangler preview` 설정에 `previews` 블록이 없어 실패했고, 임의로 운영 배포 구성을 바꾸지는 않았습니다.
+- 동일 Git blob SHA 중복 파일이 없고 파일 **95개·디렉터리 15개**를 보존했습니다. 공개 자료 링크와 생성·검증 스크립트를 불필요하게 삭제하지 않습니다.
+
 ## 저장소 구성
 
 | 위치 | 역할 |
@@ -33,7 +40,7 @@
 
 - [PR #19~#25](https://github.com/dohyunkimmm/footmate-case-study/pulls?q=is%3Apr+is%3Amerged+sort%3Aupdated-desc)의 본문·투자 판단·계산기·발표자료 및 문구·타이포그래피 개선이 `main`에 반영됐습니다. 해당 [FootMate Case Study QA #43238202984](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43238202984)는 **SUCCESS**입니다. 이 결과는 운영 배포·실제 사업 가정 검증을 뜻하지 않습니다.
 - 점검 당시 열린 PR **0건**, 원격 브랜치 **`main` 1개**였습니다. 최신 QA 원인 추적 [이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)은 2026-11-14에 새로 등록했으므로 현재 이슈는 1건입니다. Git blob SHA가 같은 중복 파일 **0건**, 명백한 임시 확장자 파일 **0건**으로 확인됐으며 **안전하게 삭제 확정된 경로는 없습니다**. 보존 태그·과거 PR 브랜치 정리 기록은 유지합니다.
-- 최신 [`main` 보고서 QA #43365812313](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43365812313)는 **26개 통과·20개 실패**입니다. 과거 성공 기록이 최신 성공을 뜻하지 않습니다. 화면/테스트 선택자·문구 불일치와 2px 테이블 폭 문제 등이 포함되어 [이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)에서 재검증합니다. 문제 해결 전까지 최신 `main` 품질 검사 성공으로 표시하지 않습니다.
+- 당시 [`main` 보고서 QA #43365812313](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43365812313)는 **2026-11-13 당시 26개 통과·20개 실패(이후 #43에서 복구)**입니다. 과거 성공 기록이 최신 성공을 뜻하지 않습니다. 화면/테스트 선택자·문구 불일치와 2px 테이블 폭 문제 등이 포함되어 [이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)에서 재검증합니다. 이후 복구 상태는 이 문서 상단의 최신 완료 기록을 우선합니다.
 - 본편 9장·전략 6장 편집 가능한 PPTX, 모델 XLSX, 보고서 9개 섹션을 유지합니다. `src/case-study/previews/report/decision-*.jpg` 9개와 `previews/strategy/decision-*.jpg` 6개는 현행 뷰어에서 참조되며, 기존 `report-previews.js` 및 전략 `slide-*.jpg`도 남아 있습니다. 외형상 유사하다는 이유만으로 자산을 삭제하지 않습니다.
 - 메인 목록·관련 디자인 문서만 수정합니다. 보고서 본문·사업 수치·원본 PPTX/XLSX·이미지·QA·배포 경로는 변경하지 않습니다. 문서 PR 자체의 QA는 별도로 확인합니다.
 
