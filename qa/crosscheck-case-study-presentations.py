@@ -58,11 +58,11 @@ def deck(path: Path) -> tuple[list[str],list[list[list[str]]]]:
             target = by_id[elem.get(R + "id")].lstrip("/")
             full = target if target.startswith("ppt/") else "ppt/" + target
             root = ET.fromstring(archive.read(full))
-            slides.append(" ".join(t.text or "" for t in root.iter(A + "t")))
+            slides.append(" ".join((t.text or "").replace("\u200d", "") for t in root.iter(A + "t")))
             slide_tables = []
             for table in root.iter(A + "tbl"):
                 for row in table.findall(A + "tr"):
-                    slide_tables.append(["".join(t.text or "" for t in cell.iter(A + "t"))
+                    slide_tables.append(["".join((t.text or "").replace("\u200d", "") for t in cell.iter(A + "t"))
                                          for cell in row.findall(A + "tc")])
             tables.append(slide_tables)
     return slides, tables
@@ -78,7 +78,7 @@ for filename,count in (("footmate_report.pptx",9),("footmate_5year_strategy.pptx
             slide_xml=font_deck.read(part)
             slide_tree=ET.fromstring(slide_xml)
             for chunk in slide_tree.iter(A + "t"):
-                for line in (chunk.text or "").splitlines():
+                for line in ((chunk.text or "").replace("\u200d", "")).splitlines():
                     assert len(line) <= 50, (filename, number, "description too long", line)
                     # Check actual editable text, not OCR or a scaled JPEG preview.
                     assert not re.search(
