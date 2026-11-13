@@ -1059,3 +1059,18 @@ body{-webkit-font-smoothing:antialiased}
  #section-01 .section-head{padding-bottom:12px;margin-bottom:18px}
  #section-01 .case-documents{margin-top:24px}
 }
+
+
+/* At 320px, keep ROI labels and chart tracks inside the report column.
+   This adjusts the actual grid rather than masking clipped content. */
+@media (max-width:350px) {
+  #roi-analysis { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+  #roi-analysis .roi-coverage { max-width:100%; padding-inline:10px; }
+  #roi-analysis .roi-coverage-row {
+    grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,46px);
+    gap:6px;
+    min-width:0;
+  }
+  #roi-analysis .roi-coverage-label { min-width:0; overflow-wrap:anywhere; }
+  #roi-analysis .roi-coverage-value { font-size:12px; }
+}
