@@ -684,7 +684,7 @@ test('ROI analysis in section 05 stays clear, accessible and numerically consist
   await page.goto('/src/case-study/materials.html?preview=1&slide=7');
   await expect(page.locator('#page')).toHaveText('08 / 09');
   await expect(page.locator('#slideTitle')).toHaveText('12개월 비용 대비 예상 손익률');
-  await expect(page.locator('#slideSummary')).toContainText('비용 회수율 비교');
+  await expect(page.locator('#slide-keypoint')).toContainText('12개월 현금비용 대비 손익률은 기준 −47.5%');
 });
 
 
