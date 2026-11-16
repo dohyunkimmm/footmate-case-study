@@ -41,5 +41,6 @@ jobs:
           path: |
             test-results/
             playwright-report/
+            src/case-study/downloads/footmate_strategy_p0_p2.pptx
           if-no-files-found: warn
           retention-days: 14
