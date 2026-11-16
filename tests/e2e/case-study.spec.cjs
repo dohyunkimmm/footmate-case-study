@@ -897,8 +897,8 @@ test('report density and evidence hierarchy stay readable and source-backed',asy
   await expect(page.locator('#section-08 .case-period-note')).toContainText('계획 가정');
   await expect(page.locator('#section-05 #case-profit-model')).toHaveCount(1);
   await expect(page.locator('#section-08 .case-cash-chart')).toHaveCount(1);
-  await expect(page.locator('#section-05 details.case-extra:not([open])')).toHaveCount(3);
-  await expect(page.locator('#section-08 details.case-extra:not([open])')).toHaveCount(5);
+  await expect(page.locator('#section-05 details.case-extra:not([open])')).toHaveCount(2);
+  await expect(page.locator('#section-08 details.case-extra:not([open])')).toHaveCount(4);
   const market=page.locator('#section-02 .case-research-link a');
   const partner=page.locator('#section-03 .case-research-link a');
   await expect(market).toHaveAttribute('href',/\/docs\/P0-EVIDENCE-REGISTER-20261116\.md$/);
