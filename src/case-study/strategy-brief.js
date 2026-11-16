@@ -50,11 +50,11 @@
     // Addendum cards load after the original nine-section reader; restore deep links
     // after their new height is measured, including browser reload/history restores.
     const restoreSectionHash = () => {
-      if (!/^#section-\\d{2}$/.test(location.hash)) return;
+      if (!/^#section-\d{2}$/.test(location.hash)) return;
       const target = document.getElementById(location.hash.slice(1));
       if (target) target.scrollIntoView({behavior: 'instant', block: 'start'});
     };
-    if (/^#section-\\d{2}$/.test(location.hash)) {
+    if (/^#section-\d{2}$/.test(location.hash)) {
       requestAnimationFrame(() => requestAnimationFrame(restoreSectionHash));
       window.addEventListener('pageshow', () => requestAnimationFrame(restoreSectionHash));
     }
