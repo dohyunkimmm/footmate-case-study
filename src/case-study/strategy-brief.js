@@ -57,7 +57,7 @@
       view.textContent = '사업 전략 발표 보기 (6장)';
       const download = document.createElement('a');
       download.href = pptxUrl;
-      download.download = 'footmate_strategy_p0_p2.pptx';
+      download.download = 'footmate_business_strategy.pptx';
       download.textContent = 'PPTX 다운로드';
       links.append(view, download);
       block.appendChild(links);
