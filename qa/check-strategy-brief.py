@@ -71,7 +71,8 @@ for path_text in (viewer, enhancement):
         assert forbidden not in path_text, ("Public UI text not cleaned", forbidden)
 assert 'download="footmate_business_strategy.pptx"' in viewer
 assert 'download="footmate_business_strategy.pptx"' in materials
-assert "download.download = 'footmate_business_strategy.pptx'" in enhancement
+assert "download.download = 'footmate_business_strategy.pptx'" not in enhancement
+# The opening report gallery owns the third deck's download entry instead.
 # Markdown filenames remain stable so existing citations and URLs do not break.
 docs = [ROOT / "docs" / name for name in (
     "P0-GTM-ENTRY-STRATEGY-20261116.md",
