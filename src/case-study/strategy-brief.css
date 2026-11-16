@@ -58,3 +58,17 @@
 .fm-deck-picker select{flex:1 1 0;min-width:0;width:0;text-overflow:ellipsis}
 .fm-deck-downloads a{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
 .fm-deck-picker label{flex:0 0 auto;white-space:nowrap}
+
+/* Historical readability rules: short decisions, consistent hierarchy, no duplicated decoration. */
+.fm-strategy-cards article h4{margin:0 0 8px;color:#142c39;font-size:19px;line-height:1.5;letter-spacing:-.3px}
+.fm-strategy-cards .fm-strategy-takeaway{font-size:16px;font-weight:700;line-height:1.65;color:#087b60;margin:0 0 12px}
+.fm-strategy-cards ul{padding-left:1.35em;margin:0;display:grid;gap:8px;color:#52636d}
+.fm-strategy-cards li{font-size:15px;line-height:1.65;word-break:keep-all}
+.fm-strategy-cards li::marker{color:#087b60}
+.fm-strategy-more{border:1px solid #dbe5e3;border-radius:8px;padding:0 16px;background:#f9fbfa}
+.fm-strategy-more>summary{cursor:pointer;min-height:44px;padding:14px 0;color:#142c39;font-weight:700;line-height:1.5}
+.fm-strategy-more[open]>.fm-strategy-cards{margin-top:0}
+.fm-strategy-addendum .fm-strategy-evidence{margin-top:14px!important;font-size:12px}
+.fm-strategy-cards .fm-strategy-evidence{color:#52636d}
+.fm-deck-points{gap:18px}
+@media(max-width:800px){.fm-strategy-cards article h4{font-size:18px}.fm-strategy-more{padding:0 13px}.fm-deck-points{gap:15px}}
