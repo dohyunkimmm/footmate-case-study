@@ -69,11 +69,11 @@
     attachBrief('#section-03', ['corpdev'], 'Corporate Development · P0 보완');
     attachBrief('#section-08', ['portfolio', 'kpi', 'equity'], '전략과제·성과관리·투자 커뮤니케이션 · P1/P2', true);
     const restoreSectionHash = () => {
-      if (!/^#section-\\d{2}$/.test(location.hash)) return;
+      if (!/^#section-\d{2}$/.test(location.hash)) return;
       const target = document.getElementById(location.hash.slice(1));
       if (target) target.scrollIntoView({behavior:'instant',block:'start'});
     };
-    if (/^#section-\\d{2}$/.test(location.hash)) {
+    if (/^#section-\d{2}$/.test(location.hash)) {
       requestAnimationFrame(() => requestAnimationFrame(restoreSectionHash));
       window.addEventListener('pageshow', () => requestAnimationFrame(restoreSectionHash));
     }
