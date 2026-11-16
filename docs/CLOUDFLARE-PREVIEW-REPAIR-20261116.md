@@ -10,6 +10,7 @@
 ## 최소 변경
 1. `wrangler.preview.jsonc`를 추가해 정적 자산 `./`와 필수 `previews: {}`를 선언한다. 자동으로 읽히는 기본 파일명이 아닌 **미리보기 전용** 파일명을 사용한다.
 2. Cloudflare Workers Builds의 **Preview Base Deploy Command만** `npx wrangler preview --config wrangler.preview.jsonc`로 조정한다. API의 계정 설정 변경이므로 Git 저장소에는 상태 설명만 남긴다.
+   - 이미 생성된 브랜치 Preview는 별도 설정 복사본을 갖는다. API 업데이트 시 `patch_existing_previews=true`를 지정해 Preview Base와 **기존 Preview의 실행 명령 모두** 수정한다.
 3. `.assetsignore`에 해당 미리보기 설정 파일을 추가해 정적 자산 배포에서 제외한다.
 4. **Production Deploy Command·Git 연결 대상·main 배포 경로를 변경하지 않는다.** API로 명령의 변경 전/후 값을 확인하고, PR 미리보기 빌드 및 운영 배포를 각각 확인한다.
 
