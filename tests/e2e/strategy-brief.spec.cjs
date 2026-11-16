@@ -12,6 +12,15 @@ test('P0–P2 additions preserve the existing nine-section and 31-table report',
   await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('Short-list 0건');
   await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('Equity Story');
   await expect(page.locator('#section-08 .fm-strategy-links a')).toHaveCount(2);
+  // Both the body and presentation text are rendered from one six-slide source.
+  await expect(page.locator('#section-02 .fm-strategy-cards li')).toHaveCount(3);
+  await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('적격 의향 2곳');
+  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('공개자료 조사 대상 8건');
+  await page.locator('#section-08 .fm-strategy-more summary').click();
+  await expect(page.locator('#section-08 .fm-strategy-cards article')).toHaveCount(3);
+  await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('5→12→20→28→36곳');
+  await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('4년 차 월 +0.6만원');
+
   await expect(page.locator('h1')).toHaveCount(1);
   expect(errors).toEqual([]);
 });
@@ -26,6 +35,10 @@ for(const width of [320,390,1440]){
     await expect(page.locator('.fm-deck-title')).toHaveText('검증 후 투자한다.');
     await expect(page.locator('#strategy-number')).toHaveText('01 / 06');
     await expect(page.locator('#strategy-picker option')).toHaveCount(6);
+    await expect(page.locator('.fm-deck-points li')).toHaveCount(3);
+    await expect(page.locator('.fm-deck-points')).toContainText('약 −38.7만원');
+    await expect(page.locator('.fm-deck-points')).toContainText('변동비 별도 승인');
+
     await page.locator('#strategy-next').click();
     await expect(page.locator('.fm-deck-title')).toHaveText('수원·용인 중 한 생활권부터.');
     await page.locator('#strategy-picker').selectOption('5');
