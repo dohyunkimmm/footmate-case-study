@@ -899,10 +899,11 @@ test('report density and evidence hierarchy stay readable and source-backed',asy
   await expect(page.locator('#section-08 .case-cash-chart')).toHaveCount(1);
   await expect(page.locator('#section-05 details.case-extra:not([open])')).toHaveCount(2);
   await expect(page.locator('#section-08 details.case-extra:not([open])')).toHaveCount(4);
-  const market=page.locator('#section-02 .case-research-link a');
+  const market=page.locator('#section-02 .source-note a[href*="mcst.go.kr"]');
   const partner=page.locator('#section-03 .case-research-link a');
-  await expect(market).toHaveAttribute('href',/\/docs\/P0-EVIDENCE-REGISTER-20261116\.md$/);
-  await expect(partner).toHaveAttribute('href',/\/docs\/P0-CORPDEV-CANDIDATE-SCREENING-20261116\.md$/);
+  await expect(market).toHaveCount(1);
+  await expect(partner).toHaveAttribute('href','https://www.plabfootball.com/partners/venue');
+  await expect(page.locator('a[href*="github.com"]')).toHaveCount(0);
   const readable=await page.evaluate(()=>{
    const doc=document.documentElement;
    const cards=[...document.querySelectorAll('#section-09 .story-card p')];
