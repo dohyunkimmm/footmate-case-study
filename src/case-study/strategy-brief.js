@@ -106,7 +106,7 @@
     article.querySelector('.fm-deck-title').textContent = slide.title;
     article.querySelector('.fm-deck-subtitle').textContent = slide.subtitle;
     article.querySelector('.fm-deck-decision strong').textContent = slide.takeaway;
-    article.querySelector('.fm-deck-source').textContent = slide.source + ' · 개인 전략 분석 / 미검증과 가정 구분';
+    article.querySelector('.fm-deck-source').textContent = slide.source;
     const items = article.querySelector('ul');
     slide.bullets.forEach(line => {const li = document.createElement('li'); li.textContent = line; items.appendChild(li);});
     stage.appendChild(article);
