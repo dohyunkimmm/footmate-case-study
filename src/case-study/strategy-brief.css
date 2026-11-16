@@ -52,3 +52,8 @@
 @media(max-width:360px){.fm-deck-shell{padding:12px}.fm-presentation-slide{padding:30px 20px 20px}.fm-deck-title{font-size:25px}.fm-deck-points{font-size:14px}.fm-deck-toolbar{gap:16px}.fm-deck-buttons button{padding:8px 12px}}
 @media(prefers-reduced-motion:reduce){.fm-deck-page *{scroll-behavior:auto!important}}
 @media print{.fm-deck-top,.fm-deck-toolbar,.fm-deck-downloads,.fm-deck-caption{display:none}.fm-deck-shell{width:100%;padding:0}.fm-deck-stage{border:0}.fm-presentation-slide{aspect-ratio:16/9;min-height:0;page-break-after:always}}
+
+/* 320px: the native select must be allowed to shrink beside its label. */
+.fm-deck-picker,.fm-deck-toolbar,.fm-deck-downloads{min-width:0;max-width:100%}
+.fm-deck-picker select{flex:1 1 0;min-width:0;width:0;text-overflow:ellipsis}
+.fm-deck-downloads a{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
