@@ -47,6 +47,17 @@
         <a href="${pptxUrl}" download="footmate_strategy_p0_p2.pptx">P0–P2 편집용 PPTX 받기</a>
       </div>
     `);
+    // Addendum cards load after the original nine-section reader; restore deep links
+    // after their new height is measured, including browser reload/history restores.
+    const restoreSectionHash = () => {
+      if (!/^#section-\\d{2}$/.test(location.hash)) return;
+      const target = document.getElementById(location.hash.slice(1));
+      if (target) target.scrollIntoView({behavior: 'instant', block: 'start'});
+    };
+    if (/^#section-\\d{2}$/.test(location.hash)) {
+      requestAnimationFrame(() => requestAnimationFrame(restoreSectionHash));
+      window.addEventListener('pageshow', () => requestAnimationFrame(restoreSectionHash));
+    }
     return;
   }
 
