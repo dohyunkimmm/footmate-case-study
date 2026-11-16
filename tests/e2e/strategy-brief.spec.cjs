@@ -11,7 +11,12 @@ test('Strategy summaries preserve the existing nine-section and 31-table report'
   await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('시장 진입 전략');
   await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('확정된 제휴·투자 대상은 없다.');
   await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('성장·투자 논리');
-  await expect(page.locator('#section-08 .fm-strategy-links a')).toHaveCount(2);
+  await expect(page.locator('#section-08 .fm-strategy-links')).toHaveCount(0);
+  const resources=page.locator('#section-01 #attachments');
+  await expect(resources.locator('.case-deck-card')).toHaveCount(3);
+  await expect(resources.locator('a[download]')).toHaveCount(3);
+  await expect(resources.locator('.case-deck-card').nth(2)).toContainText('사업 전략');
+  await expect(resources.getByRole('link',{name:'사업 전략 발표 보기'})).toHaveAttribute('href','/src/case-study/strategy-brief.html');
   const publicAddendumText = await page.locator('.fm-strategy-addendum').allTextContents();
   for (const text of publicAddendumText) expect(text).not.toMatch(/P0|P1|P2|보완|Short-list|데스크 리서치/);
 
@@ -35,6 +40,7 @@ for(const width of [320,390,1440]){
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto('/src/case-study/strategy-brief.html');
     await expect(page.locator('.fm-presentation-slide')).toHaveCount(1);
+    await expect(page.locator('.fm-deck-back')).toHaveAttribute('href','/#section-01');
     await expect(page.locator('.fm-deck-title')).toHaveText('검증 후 투자');
     await expect(page.locator('#strategy-number')).toHaveText('01 / 06');
     await expect(page.locator('#strategy-picker option')).toHaveCount(6);
