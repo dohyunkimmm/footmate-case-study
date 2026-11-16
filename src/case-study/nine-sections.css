@@ -1079,3 +1079,8 @@ body{-webkit-font-smoothing:antialiased}
 @media(max-width:600px){
   #roi-analysis .case-number-unit{font-size:.94em}
 }
+
+/* Group all three published decks in the opening materials area at desktop widths. */
+@media (min-width:1200px){
+  #section-01 .case-deck-stack{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
