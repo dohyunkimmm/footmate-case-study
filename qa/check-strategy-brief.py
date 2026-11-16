@@ -98,7 +98,7 @@ assert "461만원" not in enhancement
 assert "−387,160" not in enhancement
 assert "−38.7만원" in slides[0]["bullets"][1]
 assert "461만원" in slides[0]["bullets"][2] and "별도 승인" in slides[0]["bullets"][2]
-assert "8건" in slides[2]["bullets"][0] and "0건" in slides[2]["takeaway"]
+assert "8건" in slides[2]["bullets"][0] and "확정된 제휴·투자 대상은 없다" in slides[2]["takeaway"]
 assert "30일 재참가" in slides[4]["bullets"][1]
 assert "기회비용 포함" in slides[5]["bullets"][1]
 assert "5→12→20→28→36곳" in slides[3]["bullets"][2]
