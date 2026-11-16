@@ -30,7 +30,7 @@ for forbidden in ("P0", "P1", "P2", "전략 보완", "개인 분석", "Short-lis
     assert forbidden not in public_slide_text, ("Unedited public slide language", forbidden)
 
 assert all(all(s.get(key) for key in ("phase","title","subtitle","takeaway","source")) for s in slides)
-assert all(any(word in " ".join([slide["takeaway"],slide["source"],*slide["bullets"]])
+assert all(any(word in " ".join([slide["title"],slide["subtitle"],slide["takeaway"],slide["source"],*slide["bullets"]])
                    for word in ("가정","보류","검증","미확인","미검증","실측","확인","제안"))
            for slide in slides), "Each slide must preserve a verification/assumption boundary"
 
