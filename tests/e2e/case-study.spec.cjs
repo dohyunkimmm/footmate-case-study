@@ -128,11 +128,11 @@ test('05 and 08 keep one representative table visible and preserve expandable ev
     const finance=page.locator('#section-05'),plan=page.locator('#section-08');
     await expect(finance.locator('table')).toHaveCount(7);
     await expect(plan.locator('table')).toHaveCount(12);
-    const sensitivity=finance.locator('details').filter({has:page.getByText('월 손익 민감도·직접 운영 기준',{exact:true})});
+    const sensitivity=finance.locator('details').filter({has:page.getByText('손익 민감도·직접 운영',{exact:true})});
     await expect(sensitivity.locator('table').first()).toBeHidden();
     await sensitivity.locator('summary').click();
     await expect(sensitivity.locator('table').first()).toBeVisible();
-    const report=plan.locator('details').filter({has:page.getByText('월간 경영보고 예시 · KPI·손익 비교',{exact:true})});
+    const report=plan.locator('details').filter({has:page.getByText('월간 성과 보고 예시',{exact:true})});
     await expect(report.locator('table')).toHaveCount(2);
     await report.locator('summary').click();
     await expect(report.locator('table').first()).toBeVisible();
@@ -169,7 +169,7 @@ test('reader summary, detailed numbers and optional tables remain consistent',as
   await expect(page.locator('#section-08 .reader-summary')).toContainText('461만원');
   await expect(page.locator('#section-08 .reader-summary')).toContainText('831만원');
   await expect(page.locator('.track table')).toHaveCount(31);
-  const detail=page.locator('#section-05 details').filter({has:page.getByText('제휴 손익과 협상 근거',{exact:true})});
+  const detail=page.locator('#section-05 details').filter({has:page.getByText('수수료 협상·비용 근거',{exact:true})});
   await expect(detail.locator('table').first()).toBeHidden();
   await detail.locator('summary').click();
   await expect(detail.locator('table').first()).toBeVisible();
@@ -265,10 +265,10 @@ test('investment evidence exposes budget scope and separates missing data from u
   const investment=page.locator('#section-08');
   await expect(investment).toContainText('기본 현금 예산 461만원');
   await expect(investment).toContainText('기회비용 포함 831만원');
-  const budget=investment.locator('details').filter({has:page.getByText('8주 예산과 투자 심사 지표',{exact:true})});
+  const budget=investment.locator('details').filter({has:page.getByText('8주 예산·심사 기준',{exact:true})});
   await budget.locator('summary').click();
   await expect(budget).toContainText('8,310,000원');
-  const metric=investment.locator('details').filter({has:page.getByText('측정 방법과 현장 검증 판단',{exact:true})});
+  const metric=investment.locator('details').filter({has:page.getByText('측정·진행 판단',{exact:true})});
   await metric.locator('summary').click();
   await expect(metric).toContainText('30일');
   for (const width of [390,1440]) {
@@ -334,7 +334,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
 test('decision story, economic comparison and roadmap have consistent visual evidence',async({page})=>{
   for (const width of [320,390,1440]) {
     await page.setViewportSize({width,height:900}); await page.goto('/');
-    const item=page.locator('#section-05 details').filter({has:page.getByText('협상안 산정 조건과 건당 공헌이익',{exact:true})});
+    const item=page.locator('#section-05 details').filter({has:page.getByText('협상안의 단위 손익',{exact:true})});
     await item.locator('summary').click();
     const chart=item.locator('.case-economics-chart');
     await expect(chart).toBeVisible();
@@ -880,5 +880,38 @@ test('standalone presentation fits without scrolling on desktop',async({page})=>
    return image.bottom<=innerHeight+1&&note.bottom<=innerHeight+1&&document.documentElement.scrollHeight<=innerHeight+1;
   });
   expect(fit).toBe(true);
+ }
+});
+
+
+test('report density and evidence hierarchy stay readable and source-backed',async({page})=>{
+ for(const width of [320,390,1440]){
+  await page.setViewportSize({width,height:900});
+  await page.goto('/');
+  await expect(page.locator('.slide')).toHaveCount(9);
+  await expect(page.locator('.track table')).toHaveCount(31);
+  await expect(page.locator('#section-09 .story-card')).toHaveCount(3);
+  await expect(page.locator('#section-09 .case-close-lead')).toContainText('확대·투자는');
+  await expect(page.locator('#section-09')).toContainText('적격 의향 2곳');
+  await expect(page.locator('#section-09')).toContainText('중대 오류·예산 초과 시 중단');
+  await expect(page.locator('#section-08 .case-period-note')).toContainText('계획 가정');
+  await expect(page.locator('#section-05 #case-profit-model')).toHaveCount(1);
+  await expect(page.locator('#section-08 .case-cash-chart')).toHaveCount(1);
+  await expect(page.locator('#section-05 details.case-extra:not([open])')).toHaveCount(2);
+  await expect(page.locator('#section-08 details.case-extra:not([open])')).toHaveCount(4);
+  const market=page.locator('#section-02 .source-note a[href*="mcst.go.kr"]');
+  const partner=page.locator('#section-03 .case-research-link a');
+  await expect(market).toHaveCount(1);
+  await expect(partner).toHaveAttribute('href','https://www.plabfootball.com/partners/venue');
+  await expect(page.locator('a[href*="github.com"]')).toHaveCount(0);
+  const readable=await page.evaluate(()=>{
+   const doc=document.documentElement;
+   const cards=[...document.querySelectorAll('#section-09 .story-card p')];
+   const blocks=[...document.querySelectorAll('#section-05,#section-08,#section-09')];
+   return {pageFits:doc.scrollWidth<=innerWidth+1,
+    blocksFit:blocks.every(el=>el.scrollWidth<=el.clientWidth+1),
+    shortDecisions:cards.length===3&&cards.every(el=>[...el.textContent.trim()].length<=40)};
+  });
+  expect(readable,{width}).toEqual({pageFits:true,blocksFit:true,shortDecisions:true});
  }
 });

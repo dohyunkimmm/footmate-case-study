@@ -1084,3 +1084,40 @@ body{-webkit-font-smoothing:antialiased}
 @media (min-width:1200px){
   #section-01 .case-deck-stack{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+
+/* Keep the long-range model distinct from the 8-week operating test. */
+#section-08 .case-period-note{
+  margin:22px 0 12px;
+  padding-top:14px;
+  border-top:1px solid var(--fm-stroke);
+  color:#52636D;
+  font-size:14px;
+  line-height:1.65;
+  word-break:keep-all;
+}
+/* Close the report with a clear decision, not another crowded data panel. */
+#section-09 .case-close-lead{
+  margin:0 0 22px;
+  max-width:820px;
+  color:var(--fm-navy);
+  font-size:clamp(17px,1.55vw,20px);
+  font-weight:730;
+  line-height:1.65;
+  word-break:keep-all;
+}
+#section-09 .story-card h2{margin:0}
+#section-09 .story-card p{margin:0;line-height:1.75;word-break:keep-all}
+#section-09 .case-close-status{
+  margin:14px 0 0;
+  color:#52636D;
+  font-size:13px;
+  line-height:1.6;
+}
+
+@media (min-width:801px){
+  #section-09 .case-close-lead{margin-bottom:14px;line-height:1.5}
+  #section-09 .card-grid{gap:12px}
+  #section-09 .story-card{padding-top:12px;gap:16px}
+  #section-09 .story-card p{line-height:1.6}
+  #section-09 .case-close-status{margin-top:8px}
+}
