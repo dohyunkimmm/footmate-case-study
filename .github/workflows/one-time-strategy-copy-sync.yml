@@ -1,0 +1,35 @@
+name: One-time strategy deck copy sync
+on:
+  push:
+    branches: [fix/strategy-copy-audit-20261116]
+permissions:
+  contents: write
+concurrency:
+  group: strategy-copy-sync-20261116
+  cancel-in-progress: false
+jobs:
+  sync:
+    if: "!contains(github.event.head_commit.message, '[skip strategy sync]')"
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install editable PowerPoint tools
+        run: python -m pip install --disable-pip-version-check python-pptx==1.0.2
+      - name: Regenerate public deck text
+        run: python qa/sync-strategy-brief-pptx.py
+      - name: Check public copy and PPTX text parity
+        run: python qa/check-strategy-brief.py
+      - name: Commit updated PPTX to review branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/case-study/downloads/footmate_strategy_p0_p2.pptx
+          if ! git diff --cached --quiet; then
+            git commit -m "build: sync concise public strategy deck [skip strategy sync]"
+            git push origin HEAD:fix/strategy-copy-audit-20261116
+          fi
