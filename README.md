@@ -8,11 +8,11 @@
 **발표자료:** [웹 발표 6장](src/case-study/strategy-brief.html) · [PPTX 다운로드](src/case-study/downloads/footmate_strategy_p0_p2.pptx) · [본문 보고서](index.html). 사업 가정은 실제 성과와 구분합니다.
 
 
-## 현재 완료 상태 · 2026-11-14
+## 검증 및 변경 이력
 
-- 최신 `main` [`458ff3e`](https://github.com/dohyunkimmm/footmate-case-study/commit/458ff3e97d1d2daebc5272de099bbd2a1c5939c7)의 [보고서 QA #43459898355](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43459898355)는 **전체 46건 통과·실패 0건**입니다.
+- 최신 QA 및 배포 결과는 [FootMate Case Study QA](https://github.com/dohyunkimmm/footmate-case-study/actions/workflows/report-qa.yml)와 [Cloudflare Workers 운영 사이트](https://footmate-case-study.fmate.workers.dev/)를 기준으로 확인합니다. 본문 01의 발표자료는 사업성 검토(9장), 5개년 성장 전략(6장), 사업 전략(6장)입니다.
 - [PR #43](https://github.com/dohyunkimmm/footmate-case-study/pull/43)에서 오래된 화면·발표자료 검사 19건을 현재 UI·손익 모델 기준으로 동기화하고, 390px의 ROI 긴 숫자 레이블 넘침을 CSS로 고쳤습니다. **보고서 본문 사업 수치, PPTX/XLSX, 이미지는 변경하지 않았습니다.**
-- [기존 QA 이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)은 최신 `main` 통과 확인 후 완료 처리했습니다. 다만 [Cloudflare Workers 미리보기 빌드 이슈 #44](https://github.com/dohyunkimmm/footmate-case-study/issues/44)는 별도입니다. 외부 빌드의 `npx wrangler preview` 설정에 `previews` 블록이 없어 실패했고, 임의로 운영 배포 구성을 바꾸지는 않았습니다.
+- [기존 QA 이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)은 최신 `main` 통과 확인 후 완료 처리했습니다. Cloudflare Workers PR 미리보기 오류는 [PR #48](https://github.com/dohyunkimmm/footmate-case-study/pull/48)에서 미리보기 전용 설정을 분리해 복구했습니다. 운영 배포 명령은 유지했습니다.
 - 동일 Git blob SHA 중복 파일이 없고 파일 **95개·디렉터리 15개**를 보존했습니다. 공개 자료 링크와 생성·검증 스크립트를 불필요하게 삭제하지 않습니다.
 
 ## 저장소 구성

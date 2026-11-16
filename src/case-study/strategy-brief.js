@@ -1,9 +1,6 @@
 /* FootMate strategy summaries. Keep the original nine body sections and tables intact. */
 (() => {
   'use strict';
-  const base = '/src/case-study/';
-  const deckUrl = base + 'strategy-brief.html';
-  const pptxUrl = base + 'downloads/footmate_strategy_p0_p2.pptx';
   const slides = Array.isArray(window.FOOTMATE_STRATEGY_SLIDES) ? window.FOOTMATE_STRATEGY_SLIDES : [];
   // The website and editable deck use the same authored data. Do not duplicate
   // market, financial or target figures in independently maintained HTML prose.
@@ -48,20 +45,6 @@
     }
     wrapper.appendChild(cards);
     block.appendChild(wrapper);
-    if (sectionId === '#section-08') {
-      const links = document.createElement('div');
-      links.className = 'fm-strategy-links';
-      links.setAttribute('aria-label', '사업 전략 발표자료');
-      const view = document.createElement('a');
-      view.href = deckUrl;
-      view.textContent = '사업 전략 발표 보기 (6장)';
-      const download = document.createElement('a');
-      download.href = pptxUrl;
-      download.download = 'footmate_business_strategy.pptx';
-      download.textContent = 'PPTX 다운로드';
-      links.append(view, download);
-      block.appendChild(links);
-    }
     target.appendChild(block);
   }
   if (!document.getElementById('strategy-deck')) {

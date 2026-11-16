@@ -71,7 +71,8 @@ for path_text in (viewer, enhancement):
         assert forbidden not in path_text, ("Public UI text not cleaned", forbidden)
 assert 'download="footmate_business_strategy.pptx"' in viewer
 assert 'download="footmate_business_strategy.pptx"' in materials
-assert "download.download = 'footmate_business_strategy.pptx'" in enhancement
+assert "download.download = 'footmate_business_strategy.pptx'" not in enhancement
+# The opening report gallery owns the third deck's download entry instead.
 # Markdown filenames remain stable so existing citations and URLs do not break.
 docs = [ROOT / "docs" / name for name in (
     "P0-GTM-ENTRY-STRATEGY-20261116.md",
@@ -107,6 +108,14 @@ assert all(term in original for term in ("626", "340", "461만원", "30일 재�
 assert "−387,160원" in original, "Base cash loss changed"
 assert "200만원" in original, "Labor opportunity cost qualification missing"
 assert len(re.findall(r'"name": "', original)) >= 9
+first_section = re.search(r'    "body": (".*")\n  },', original)
+assert first_section is not None, "Opening report section missing"
+opening_body = json.loads(first_section.group(1))
+assert opening_body.count('class="case-deck-card"') == 3, "Presentation gallery must contain three cards"
+assert opening_body.count('href="/src/case-study/strategy-brief.html"') == 1
+assert opening_body.count('download="footmate_business_strategy.pptx"') == 1
+assert all(title in opening_body for title in ("사업성 검토", "5개년 성장 전략", "사업 전략"))
+
 for required in ("strategy-brief-data.js", "strategy-brief.js", "strategy-brief.css",
                  "footmate_strategy_p0_p2.pptx"):
     assert required in viewer
@@ -116,4 +125,9 @@ for section in ("#section-02", "#section-03", "#section-08"):
     assert section in enhancement
 assert "<h1" not in enhancement and "<table" not in enhancement
 assert "new slides" not in enhancement  # No invented slide count in existing decks.
+assert "fm-strategy-links" not in enhancement, "Duplicate presentation links remain in the strategy body"
+assert 'href="/#section-01"' in viewer, "Slide reader must return to the consolidated resources"
+styles = (CASE / "nine-sections.css").read_text(encoding="utf-8")
+assert "#section-01 .case-deck-stack{grid-template-columns:repeat(3,minmax(0,1fr))}" in styles
+
 print("PASS: public copy audit, website/PPTX parity, report assumptions and editable 6-slide deck")
