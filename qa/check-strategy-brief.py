@@ -22,7 +22,7 @@ assert len(slides) == 6
 assert [slide["id"] for slide in slides] == [
     "decision", "gtm", "corpdev", "portfolio", "kpi", "equity",
 ]
-assert all(len(s["bullets"]) == 4 for s in slides)
+assert all(len(s["bullets"]) == 3 for s in slides)
 assert all(all(s.get(key) for key in ("phase","title","subtitle","takeaway","source")) for s in slides)
 assert all("실적" in s["bullets"][0] or "가정" in s["bullets"][0]
            or "실적" in " ".join(s["bullets"]) or "실측" in " ".join(s["bullets"])
@@ -58,8 +58,29 @@ index = (ROOT / "index.html").read_text(encoding="utf-8")
 viewer = (CASE / "strategy-brief.html").read_text(encoding="utf-8")
 materials = (CASE / "materials.html").read_text(encoding="utf-8")
 enhancement = (CASE / "strategy-brief.js").read_text(encoding="utf-8")
-for required in ("strategy-brief.js", "strategy-brief.css"):
+for required in ("strategy-brief-data.js", "strategy-brief.js", "strategy-brief.css"):
     assert required in index
+assert index.index('strategy-brief-data.js') < index.index('strategy-brief.js')
+assert "window.FOOTMATE_STRATEGY_SLIDES" in enhancement
+assert "slide.bullets.forEach" in enhancement
+assert "attachBrief('#section-02', ['gtm']" in enhancement
+assert "attachBrief('#section-03', ['corpdev']" in enhancement
+assert "attachBrief('#section-08', ['portfolio', 'kpi', 'equity']" in enhancement
+# Prevent the webpage summary from drifting away from the canonical slide data.
+assert "Long-list · 조사 대상 8건" not in enhancement
+assert "461만원" not in enhancement
+assert "−387,160" not in enhancement
+assert "−38.7만원" in slides[0]["bullets"][1]
+assert "461만원" in slides[0]["bullets"][2] and "별도 승인" in slides[0]["bullets"][2]
+assert "8건" in slides[2]["bullets"][0] and "0건" in slides[2]["takeaway"]
+assert "30일 재참가" in slides[4]["bullets"][1]
+assert "기회비용 포함" in slides[5]["bullets"][1]
+assert "5→12→20→28→36곳" in slides[3]["bullets"][2]
+original = (CASE / "nine-sections.js").read_text(encoding="utf-8")
+assert all(term in original for term in ("626", "340", "461만원", "30일 재참가", "28곳"))
+assert "−387,160원" in original, "Base cash loss changed"
+assert "200만원" in original, "Labor opportunity cost qualification missing"
+assert len(re.findall(r'"name": "', original)) >= 9
 for required in ("strategy-brief-data.js", "strategy-brief.js", "strategy-brief.css",
                  "footmate_strategy_p0_p2.pptx"):
     assert required in viewer
@@ -69,4 +90,4 @@ for section in ("#section-02", "#section-03", "#section-08"):
     assert section in enhancement
 assert "<h1" not in enhancement and "<table" not in enhancement
 assert "new slides" not in enhancement  # No invented slide count in existing decks.
-print("PASS: P0–P2 6-slide PPTX ZIP, editable shapes, text parity, viewer and 9-section integration")
+print("PASS: P0–P2 body/slide single-source parity, 9-section financial assumptions, editable 6-slide PPTX and links")
