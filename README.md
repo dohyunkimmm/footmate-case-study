@@ -4,8 +4,8 @@
 
 **주요 링크:** [보고서 보기](https://footmate-case-study.fmate.workers.dev/) · [FootMate 서비스 데모](https://footmate.fmate.workers.dev/demo) · [서비스 소스 저장소](https://github.com/dohyunkimmm/footmate)
 
-**전략기획·신사업·CorpDev 보완 자료 (2026-11-16):** [P0 GTM·시장진입 전략](docs/P0-GTM-ENTRY-STRATEGY-20261116.md) · [P0 Corporate Development 후보·실사 평가](docs/P0-CORPDEV-CANDIDATE-SCREENING-20261116.md) · [P0 외부 근거 등록부](docs/P0-EVIDENCE-REGISTER-20261116.md) · [P1 사업 포트폴리오·자원배분](docs/P1-PORTFOLIO-CAPITAL-ALLOCATION-20261116.md) · [P1 전략 KPI·경영보고](docs/P1-STRATEGY-KPI-GOVERNANCE-20261116.md) · [P2 Equity Story·경영진 의사결정](docs/P2-EQUITY-STORY-EXECUTIVE-MEMO-20261116.md). 공개 근거·시나리오·미검증 가설을 구분한 전략 분석입니다. 기존 사업 가정·수치·원본 PPTX/XLSX·9개 섹션·QA 원칙은 보존하며, **본문의 보완 영역과 별도 6장 전략 보완 발표자료**를 추가했습니다.
-**배포 전 검토(이번 변경):** [본문 9개 섹션 내 P0–P2 보완](index.html) · [웹 보완 발표 6장](src/case-study/strategy-brief.html) · [편집 가능한 보완 PPTX](src/case-study/downloads/footmate_strategy_p0_p2.pptx) · [배포 전 점검 절차](docs/PREDEPLOY-STRATEGY-ADDENDUM-20261116.md). 원본 사업성 9장·성장 전략 6장 발표자료는 변경하지 않으며, 기존 15장 미리보기의 배포 경로도 유지합니다. **PR QA와 미리보기·운영 배포 동일성 확인 전에는 운영 배포 완료로 표시하지 않습니다.**
+**사업 전략 자료:** [시장 진입](docs/P0-GTM-ENTRY-STRATEGY-20261116.md) · [제휴·인수 후보](docs/P0-CORPDEV-CANDIDATE-SCREENING-20261116.md) · [외부 근거](docs/P0-EVIDENCE-REGISTER-20261116.md) · [사업 포트폴리오](docs/P1-PORTFOLIO-CAPITAL-ALLOCATION-20261116.md) · [성과지표·경영보고](docs/P1-STRATEGY-KPI-GOVERNANCE-20261116.md) · [성장·투자 판단](docs/P2-EQUITY-STORY-EXECUTIVE-MEMO-20261116.md).
+**발표자료:** [웹 발표 6장](src/case-study/strategy-brief.html) · [PPTX 다운로드](src/case-study/downloads/footmate_strategy_p0_p2.pptx) · [본문 보고서](index.html). 사업 가정은 실제 성과와 구분합니다.
 
 
 ## 현재 완료 상태 · 2026-11-14

@@ -1,4 +1,4 @@
-/* FootMate P0-P2 strategy addendum. Keep the original nine body sections and tables intact. */
+/* FootMate strategy summaries. Keep the original nine body sections and tables intact. */
 (() => {
   'use strict';
   const base = '/src/case-study/';
@@ -12,7 +12,7 @@
     if (!target || target.querySelector('.fm-strategy-addendum')) return;
     const block = document.createElement('section');
     block.className = 'fm-strategy-addendum';
-    block.setAttribute('aria-label', '전략 고도화 보완 검토');
+    block.setAttribute('aria-label', '사업 전략');
     const h3 = document.createElement('h3');
     h3.textContent = heading;
     block.appendChild(h3);
@@ -20,7 +20,7 @@
     if (collapsed) {
       wrapper.className = 'fm-strategy-more';
       const summary = document.createElement('summary');
-      summary.textContent = 'P1·P2 핵심 판단과 검증 조건 펼치기';
+      summary.textContent = '세부 내용 보기';
       wrapper.appendChild(summary);
     }
     const cards = document.createElement('div');
@@ -30,7 +30,7 @@
       if (!slide) throw new Error('Missing strategy brief: ' + id);
       const article = document.createElement('article');
       const title = document.createElement('h4');
-      title.textContent = slide.phase + ' · ' + slide.title;
+      title.textContent = ids.length === 1 ? slide.title : slide.phase + ' · ' + slide.title;
       const decision = document.createElement('p');
       decision.className = 'fm-strategy-takeaway';
       decision.textContent = slide.takeaway;
@@ -42,7 +42,7 @@
       });
       const source = document.createElement('p');
       source.className = 'fm-strategy-evidence';
-      source.textContent = slide.source + ' · 계획 가정/공개자료와 실측 성과 구분';
+      source.textContent = slide.source;
       article.append(title, decision, list, source);
       cards.appendChild(article);
     }
@@ -51,23 +51,23 @@
     if (sectionId === '#section-08') {
       const links = document.createElement('div');
       links.className = 'fm-strategy-links';
-      links.setAttribute('aria-label', 'P0부터 P2까지 전략 발표자료');
+      links.setAttribute('aria-label', '사업 전략 발표자료');
       const view = document.createElement('a');
       view.href = deckUrl;
-      view.textContent = 'P0–P2 보완 발표 보기 (6장)';
+      view.textContent = '사업 전략 발표 보기 (6장)';
       const download = document.createElement('a');
       download.href = pptxUrl;
-      download.download = 'footmate_strategy_p0_p2.pptx';
-      download.textContent = 'P0–P2 편집용 PPTX 받기';
+      download.download = 'footmate_business_strategy.pptx';
+      download.textContent = 'PPTX 다운로드';
       links.append(view, download);
       block.appendChild(links);
     }
     target.appendChild(block);
   }
   if (!document.getElementById('strategy-deck')) {
-    attachBrief('#section-02', ['gtm'], '시장 진입 전략 · P0 보완');
-    attachBrief('#section-03', ['corpdev'], 'Corporate Development · P0 보완');
-    attachBrief('#section-08', ['portfolio', 'kpi', 'equity'], '전략과제·성과관리·투자 커뮤니케이션 · P1/P2', true);
+    attachBrief('#section-02', ['gtm'], '시장 진입');
+    attachBrief('#section-03', ['corpdev'], '제휴·인수 검토');
+    attachBrief('#section-08', ['portfolio', 'kpi', 'equity'], '사업 포트폴리오·성과 관리·투자 판단', true);
     const restoreSectionHash = () => {
       if (!/^#section-\d{2}$/.test(location.hash)) return;
       const target = document.getElementById(location.hash.slice(1));
@@ -101,7 +101,7 @@
     const article = document.createElement('article');
     article.className = 'fm-presentation-slide';
     article.setAttribute('aria-label', (active + 1) + '번째 슬라이드');
-    article.innerHTML = '<p class="fm-deck-phase"></p><h2 tabindex="-1" class="fm-deck-title"></h2><p class="fm-deck-subtitle"></p><div class="fm-deck-decision"><span>핵심 판단</span><strong></strong></div><ul class="fm-deck-points"></ul><p class="fm-deck-source"></p>';
+    article.innerHTML = '<p class="fm-deck-phase"></p><h2 tabindex="-1" class="fm-deck-title"></h2><p class="fm-deck-subtitle"></p><div class="fm-deck-decision"><strong></strong></div><ul class="fm-deck-points"></ul><p class="fm-deck-source"></p>';
     article.querySelector('.fm-deck-phase').textContent = slide.phase;
     article.querySelector('.fm-deck-title').textContent = slide.title;
     article.querySelector('.fm-deck-subtitle').textContent = slide.subtitle;

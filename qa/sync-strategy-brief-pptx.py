@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-time reproducible P0–P2 editable PPTX sync.
+"""Rebuild editable business strategy slides from the public website copy.
 
 Read the same six source slides as the website. Keep all original FootMate 9+6
 decks unchanged, preserve 16:9 editable shapes and historical design tokens.
@@ -57,7 +57,7 @@ for index, (slide, data) in enumerate(zip(deck.slides, slides), 1):
     content(sh["Editable Text 4"], data["phase"], 12, GREEN, True)
     content(sh["Editable Text 5"], data["title"], 34, INK, True)
     content(sh["Editable Text 6"], data["subtitle"], 17, MUTED)
-    content(sh["Editable Text 9"], "핵심 판단", 11, GREEN, True)
+    content(sh["Editable Text 9"], "", 11, GREEN, True)
     content(sh["Editable Text 10"], data["takeaway"], 21, INK, True)
     for j, (text_shape, marker_name, item) in enumerate(zip(
         ("Editable Text 12","Editable Text 14","Editable Text 16"),
