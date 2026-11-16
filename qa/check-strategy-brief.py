@@ -24,10 +24,9 @@ assert [slide["id"] for slide in slides] == [
 ]
 assert all(len(s["bullets"]) == 3 for s in slides)
 assert all(all(s.get(key) for key in ("phase","title","subtitle","takeaway","source")) for s in slides)
-assert all("실적" in s["bullets"][0] or "가정" in s["bullets"][0]
-           or "실적" in " ".join(s["bullets"]) or "실측" in " ".join(s["bullets"])
-           or "미확인" in " ".join(s["bullets"]) or "미검증" in " ".join(s["bullets"])
-           or s["id"] in ("gtm", "corpdev", "portfolio") for s in slides)
+assert all(any(word in " ".join([slide["takeaway"],slide["source"],*slide["bullets"]])
+                   for word in ("가정","보류","검증","미확인","미검증","실측","확인","제안"))
+           for slide in slides), "Each slide must preserve a verification/assumption boundary"
 
 pptx = CASE / "downloads" / "footmate_strategy_p0_p2.pptx"
 assert pptx.is_file() and pptx.stat().st_size > 15_000
