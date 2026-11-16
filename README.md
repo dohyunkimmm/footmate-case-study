@@ -4,6 +4,8 @@
 
 **주요 링크:** [보고서 보기](https://footmate-case-study.fmate.workers.dev/) · [FootMate 서비스 데모](https://footmate.fmate.workers.dev/demo) · [서비스 소스 저장소](https://github.com/dohyunkimmm/footmate)
 
+**전략기획·신사업·CorpDev 보완 자료 (2026-11-16):** [P0 GTM·시장진입 전략](docs/P0-GTM-ENTRY-STRATEGY-20261116.md) · [P0 Corporate Development 후보·실사 평가](docs/P0-CORPDEV-CANDIDATE-SCREENING-20261116.md) · [P0 외부 근거 등록부](docs/P0-EVIDENCE-REGISTER-20261116.md) · [P1 사업 포트폴리오·자원배분](docs/P1-PORTFOLIO-CAPITAL-ALLOCATION-20261116.md) · [P1 전략 KPI·경영보고](docs/P1-STRATEGY-KPI-GOVERNANCE-20261116.md) · [P2 Equity Story·경영진 의사결정](docs/P2-EQUITY-STORY-EXECUTIVE-MEMO-20261116.md). 공개 근거·시나리오·미검증 가설을 구분한 **전략 분석 보완 문서**이며, 실제 계약·투자·고객 실적이 아닙니다. 기존 9개 장 보고서와 PPTX·XLSX, 계산식·QA·배포 경로는 그대로 유지합니다.
+
 ## 현재 완료 상태 · 2026-11-14
 
 - 최신 `main` [`458ff3e`](https://github.com/dohyunkimmm/footmate-case-study/commit/458ff3e97d1d2daebc5272de099bbd2a1c5939c7)의 [보고서 QA #43459898355](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43459898355)는 **전체 46건 통과·실패 0건**입니다.
