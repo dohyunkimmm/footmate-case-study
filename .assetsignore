@@ -11,3 +11,4 @@ playwright-report/
 README.md
 package.json
 playwright.config.cjs
+wrangler.preview.jsonc
