@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify FootMate P0–P2 report integration and separate editable presentation.
+"""Verify FootMate business strategy report integration and separate editable presentation.
 
 Uses Python stdlib; existing 9+6 PPTX and financial inputs are checked by the
 separate long-standing crosscheck script. This script does not render or mutate files.
@@ -23,6 +23,12 @@ assert [slide["id"] for slide in slides] == [
     "decision", "gtm", "corpdev", "portfolio", "kpi", "equity",
 ]
 assert all(len(s["bullets"]) == 3 for s in slides)
+public_slide_text = " ".join(str(value) for slide in slides for value in
+                             (slide["phase"], slide["title"], slide["subtitle"],
+                              slide["takeaway"], *slide["bullets"], slide["source"]))
+for forbidden in ("P0", "P1", "P2", "전략 보완", "개인 분석", "Short-list", "핵심 판단"):
+    assert forbidden not in public_slide_text, ("Unedited public slide language", forbidden)
+
 assert all(all(s.get(key) for key in ("phase","title","subtitle","takeaway","source")) for s in slides)
 assert all(any(word in " ".join([slide["takeaway"],slide["source"],*slide["bullets"]])
                    for word in ("가정","보류","검증","미확인","미검증","실측","확인","제안"))
@@ -50,6 +56,7 @@ with ZipFile(pptx) as archive:
                       slide["takeaway"], *slide["bullets"], slide["source"]):
             assert value in displayed, (i, "web/PPTX text mismatch", value)
         assert "Pretendard" in archive.read(f"ppt/slides/slide{i}.xml").decode("utf-8")
+        assert "핵심 판단" not in displayed, "Redundant banner label remains in PPTX"
         # This is a stand-alone deck; original 15 slides are never overwritten.
     assert len([name for name in names if re.fullmatch(r"ppt/slides/slide\d+\.xml", name)]) == 6
 
@@ -57,6 +64,26 @@ index = (ROOT / "index.html").read_text(encoding="utf-8")
 viewer = (CASE / "strategy-brief.html").read_text(encoding="utf-8")
 materials = (CASE / "materials.html").read_text(encoding="utf-8")
 enhancement = (CASE / "strategy-brief.js").read_text(encoding="utf-8")
+# Editorial regression: internal workstream labels must never appear in UI text.
+for path_text in (viewer, enhancement):
+    for forbidden in ("P0–P2", "P0 ", "P1 ", "P2 ", "P0 보완", "P1/P2",
+                      "전략 보완", "개인 분석", "기존 발표자료 15장"):
+        assert forbidden not in path_text, ("Public UI text not cleaned", forbidden)
+assert 'download="footmate_business_strategy.pptx"' in viewer
+assert 'download="footmate_business_strategy.pptx"' in materials
+assert "download.download = 'footmate_business_strategy.pptx'" in enhancement
+# Markdown filenames remain stable so existing citations and URLs do not break.
+docs = [ROOT / "docs" / name for name in (
+    "P0-GTM-ENTRY-STRATEGY-20261116.md",
+    "P0-CORPDEV-CANDIDATE-SCREENING-20261116.md",
+    "P0-EVIDENCE-REGISTER-20261116.md",
+    "P1-PORTFOLIO-CAPITAL-ALLOCATION-20261116.md",
+    "P1-STRATEGY-KPI-GOVERNANCE-20261116.md",
+    "P2-EQUITY-STORY-EXECUTIVE-MEMO-20261116.md")]
+for file in docs:
+    rendered_words = re.sub(r"\]\([^)]*\)", "]()", file.read_text(encoding="utf-8"))
+    assert not re.search(r"\bP[012]\b", rendered_words), ("Stage code in document", file.name)
+
 for required in ("strategy-brief-data.js", "strategy-brief.js", "strategy-brief.css"):
     assert required in index
 assert index.index('strategy-brief-data.js') < index.index('strategy-brief.js')
@@ -89,4 +116,4 @@ for section in ("#section-02", "#section-03", "#section-08"):
     assert section in enhancement
 assert "<h1" not in enhancement and "<table" not in enhancement
 assert "new slides" not in enhancement  # No invented slide count in existing decks.
-print("PASS: P0–P2 body/slide single-source parity, 9-section financial assumptions, editable 6-slide PPTX and links")
+print("PASS: public copy audit, website/PPTX parity, report assumptions and editable 6-slide deck")
