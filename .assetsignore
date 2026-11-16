@@ -2,6 +2,7 @@
 **/node_modules
 **/.git
 **/.github
+**/.wrangler
 **/.DS_Store
 tests/
 qa/
@@ -11,3 +12,4 @@ playwright-report/
 README.md
 package.json
 playwright.config.cjs
+wrangler.preview.jsonc

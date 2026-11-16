@@ -1,0 +1,10 @@
+{
+  // PR previews only. Production continues to use the existing Workers Builds
+  // deploy command: wrangler deploy --assets ./ --name footmate-case-study.
+  "name": "footmate-case-study",
+  "compatibility_date": "2026-11-11",
+  "assets": {
+    "directory": "./"
+  },
+  "previews": {}
+}
