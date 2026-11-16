@@ -56,7 +56,7 @@ const sections = [
     "name": "종합 판단·근거",
     "title": "검토 결론·후속 과제",
     "lead": "확인한 근거와 추가로 검증할 사항.",
-    "body": "<p class=\"case-close-lead\">한 생활권의 운영자 제휴 실증을 우선 검토한다. 확대·투자는 실측 수요와 손익 확인 전 보류한다.</p><div class=\"card-grid\"><article class=\"story-card\"><h2>실증 착수</h2><p>운영권·안전·취소·정산 책임을 확인하고 적격 제휴 의향 2곳을 확보한 뒤 시범 운영을 검토한다.</p></article><article class=\"story-card\"><h2>검증 지표</h2><p>건당 공헌이익·플랫폼 예약 비중·재참가 확인. 전체 채널 충원율 75%, 30일 관찰 완료자 재참가율 30%는 검증 목표다.</p></article><article class=\"story-card\"><h2>보류·재심사</h2><p>취소·고객지원비 반영 손익·비용 대비 예상 손익률 재산정. 책임 미확정·중대 오류·예산 초과 시 집행 중단.</p></article></div><p class=\"decision\">8주 결과 보고·30일 관찰 완료 후 재심사. 공급 계약·수익성 기준 충족 후 단계적 투자 확대.</p><p class=\"case-close-status\">제휴·투자 승인 및 사업 실적은 확인되지 않았다.</p>"
+    "body": "<p class=\"case-close-lead\">한 생활권의 운영자 제휴 실증을 우선 검토한다. 확대·투자는 실측 수요와 손익 확인 전 보류한다.</p><div class=\"card-grid\"><article class=\"story-card\"><h2>실증 착수</h2><p>운영권·안전·정산 확인, 적격 의향 2곳 후 실증.</p></article><article class=\"story-card\"><h2>검증 지표</h2><p>건당 공헌이익·플랫폼 예약 비중·재참가 확인.</p></article><article class=\"story-card\"><h2>보류·재심사</h2><p>취소·고객지원비 반영 손익 재산정. 중대 오류·예산 초과 시 중단.</p></article></div><p class=\"decision\">8주 결과 보고·30일 관찰 완료 후 재심사. 공급 계약·수익성 기준 충족 후 단계적 투자 확대.</p><p class=\"case-close-status\">제휴·투자 승인 및 사업 실적은 확인되지 않았다.</p>"
   }
 ];
   // 기존 9개 장·31개 표를 유지하면서 장기 전략을 선택형 상세 보기로 제공.
