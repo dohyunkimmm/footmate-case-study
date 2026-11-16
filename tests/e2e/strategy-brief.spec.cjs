@@ -1,0 +1,47 @@
+const {test,expect}=require('@playwright/test');
+const AxeBuilder=require('@axe-core/playwright').default;
+
+test('P0–P2 additions preserve the existing nine-section and 31-table report',async({page})=>{
+  const errors=[];
+  page.on('pageerror',error=>errors.push(error.message));
+  await page.goto('/');
+  await expect(page.locator('.slide')).toHaveCount(9);
+  await expect(page.locator('.toc-item')).toHaveCount(9);
+  await expect(page.locator('.track table')).toHaveCount(31);
+  await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('시장 진입 전략');
+  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('Short-list 0건');
+  await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('Equity Story');
+  await expect(page.locator('#section-08 .fm-strategy-links a')).toHaveCount(2);
+  await expect(page.locator('h1')).toHaveCount(1);
+  expect(errors).toEqual([]);
+});
+
+for(const width of [320,390,1440]){
+  test('separate editable strategy deck loads and navigates at '+width+'px',async({page})=>{
+    await page.setViewportSize({width,height:900});
+    const errors=[];
+    page.on('pageerror',e=>errors.push(e.message));
+    await page.goto('/src/case-study/strategy-brief.html');
+    await expect(page.locator('.fm-presentation-slide')).toHaveCount(1);
+    await expect(page.locator('.fm-deck-title')).toHaveText('검증 후 투자한다.');
+    await expect(page.locator('#strategy-number')).toHaveText('01 / 06');
+    await expect(page.locator('#strategy-picker option')).toHaveCount(6);
+    await page.locator('#strategy-next').click();
+    await expect(page.locator('.fm-deck-title')).toHaveText('수원·용인 중 한 생활권부터.');
+    await page.locator('#strategy-picker').selectOption('5');
+    await expect(page.locator('.fm-deck-title')).toHaveText('입증 가능한 성장 서사만 제시한다.');
+    await expect(page.locator('#strategy-next')).toBeDisabled();
+    await expect(page.locator('#strategy-prev')).toBeEnabled();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+    if(width===390){
+      const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+      expect(result.violations).toEqual([]);
+    }
+    const download=await page.request.get('/src/case-study/downloads/footmate_strategy_p0_p2.pptx');
+    expect(download.ok()).toBe(true);
+    const bytes=await download.body();
+    expect(bytes.subarray(0,4).toString('hex')).toBe('504b0304');
+    expect(bytes.length).toBeGreaterThan(15000);
+    expect(errors).toEqual([]);
+  });
+}
