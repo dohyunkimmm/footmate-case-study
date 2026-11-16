@@ -9,7 +9,7 @@ test('P0–P2 additions preserve the existing nine-section and 31-table report',
   await expect(page.locator('.toc-item')).toHaveCount(9);
   await expect(page.locator('.track table')).toHaveCount(31);
   await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('시장 진입 전략');
-  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('Short-list 0건');
+  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('Short-list는 0건');
   await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('Equity Story');
   await expect(page.locator('#section-08 .fm-strategy-links a')).toHaveCount(2);
   // Both the body and presentation text are rendered from one six-slide source.
