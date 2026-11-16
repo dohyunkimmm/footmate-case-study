@@ -308,10 +308,15 @@ test('single resource section, inline financial model and PPT viewer',async({pag
     await page.setViewportSize({width,height:900}); await page.goto('/');
     const materials=page.locator('#attachments');
     await expect(materials.getByRole('heading',{name:'발표자료'})).toBeVisible();
-    await expect(materials.locator('.case-deck-card')).toHaveCount(2);
-    await expect(materials.locator('a[download$=".pptx"]')).toHaveCount(2);
+    await expect(materials.locator('.case-deck-card')).toHaveCount(3);
+    await expect(materials.locator('a[download$=".pptx"]')).toHaveCount(3);
     await expect(materials.getByRole('link',{name:'사업성 검토 발표 보기'})).toHaveAttribute('href',/materials\.html\?preview=1&mode=slides/);
     await expect(materials.getByRole('link',{name:'5개년 성장 전략 발표 보기'})).toHaveAttribute('href',/deck=strategy/);
+    await expect(materials.getByRole('link',{name:'사업 전략 발표 보기'})).toHaveAttribute('href','/src/case-study/strategy-brief.html');
+    const newDeck=materials.locator('.case-deck-card').nth(2);
+    await expect(newDeck).toContainText('사업 전략');
+    await expect(newDeck).toContainText('6장');
+    await expect(newDeck.locator('a[download]')).toHaveAttribute('download','footmate_business_strategy.pptx');
     const model=page.locator('#case-profit-model');
     await expect(model.locator('#case-profit-economic')).toHaveText('+5,640원');
     await expect(model.locator('#case-profit-bep')).toHaveText('28곳');
@@ -406,7 +411,7 @@ test('PPT preview closes explicitly and the contents control section navigation'
   for(const width of [320,390,800,1440]){
     await page.setViewportSize({width,height:900});await page.goto('/');
     const materials=page.locator('#attachments');
-    await expect(materials.locator('.case-deck-card')).toHaveCount(2);
+    await expect(materials.locator('.case-deck-card')).toHaveCount(3);
     await expect(materials.locator('.case-ppt-frame,.case-report-preview')).toHaveCount(0);
     const report=materials.getByRole('link',{name:'사업성 검토 발표 보기'});
     const strategy=materials.getByRole('link',{name:'5개년 성장 전략 발표 보기'});
@@ -442,7 +447,7 @@ test('cross-engine case study navigation and preview controls',async({page})=>{
           await expect(current.locator('.slide')).toHaveCount(9);
           await current.locator('.toc-item').nth(2).click();
           await expect(current).toHaveURL(/#section-03$/);
-          await expect(current.locator('#attachments .case-deck-card')).toHaveCount(2);
+          await expect(current.locator('#attachments .case-deck-card')).toHaveCount(3);
           await expect(current.locator('#case-profit-economic')).toHaveText('+5,640원');
           expect(await current.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),name+' '+width).toBe(true);
         }
@@ -484,13 +489,16 @@ for file,count in [('src/case-study/downloads/footmate_report.pptx',9),('src/cas
  expect(audit.status,audit.stderr).toBe(0);
 });
 
-test('six-slide strategy PPT has its own lazy-loaded preview',async({page})=>{
+test('original six-slide growth strategy presentation remains available',async({page})=>{
   await page.goto('/');
   const links=page.locator('#attachments .case-deck-card');
-  await expect(links).toHaveCount(2);
+  await expect(links).toHaveCount(3);
   await expect(links.nth(1)).toContainText('5개년 성장 전략');
   await expect(links.nth(1).getByRole('link',{name:'5개년 성장 전략 발표 보기'})).toHaveAttribute('href',/deck=strategy/);
   await expect(links.nth(1).locator('a[download]')).toHaveAttribute('download','footmate_5year_strategy.pptx');
+  await expect(links.nth(2)).toContainText('사업 전략');
+  await expect(links.nth(2).getByRole('link',{name:'사업 전략 발표 보기'})).toHaveAttribute('target','_blank');
+  await expect(links.nth(2).locator('a[download]')).toHaveAttribute('download','footmate_business_strategy.pptx');
   await page.goto('/src/case-study/materials.html?preview=1&mode=slides&deck=strategy');
   await expect(page.locator('#page')).toHaveText('01 / 06');
   await expect(page.locator('#slideProgressTrack')).toHaveAttribute('aria-valuemax','6');
@@ -707,7 +715,7 @@ test('decision-led portfolio keeps assumptions, mobile layout and slide navigati
     await expect(page.locator('.case-kpi .is-negative')).toContainText('−38.7');
     await expect(page.locator('.case-profit-summary')).toContainText('공급 유지율 100% 가정');
     await expect(page.locator('#case-profit-economic')).toHaveText('+5,640원');
-    await expect(page.locator('#attachments .case-deck-card')).toHaveCount(2);
+    await expect(page.locator('#attachments .case-deck-card')).toHaveCount(3);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   }
   await page.goto('/src/case-study/materials.html?preview=1&mode=slides');
