@@ -1,7 +1,7 @@
 const {test,expect}=require('@playwright/test');
 const AxeBuilder=require('@axe-core/playwright').default;
 
-test('P0–P2 additions preserve the existing nine-section and 31-table report',async({page})=>{
+test('Strategy summaries preserve the existing nine-section and 31-table report',async({page})=>{
   const errors=[];
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto('/');
@@ -9,9 +9,12 @@ test('P0–P2 additions preserve the existing nine-section and 31-table report',
   await expect(page.locator('.toc-item')).toHaveCount(9);
   await expect(page.locator('.track table')).toHaveCount(31);
   await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('시장 진입 전략');
-  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('Short-list는 0건');
-  await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('Equity Story');
+  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('확정된 제휴·투자 대상은 없다.');
+  await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('성장·투자 논리');
   await expect(page.locator('#section-08 .fm-strategy-links a')).toHaveCount(2);
+  const publicAddendumText = await page.locator('.fm-strategy-addendum').allTextContents();
+  for (const text of publicAddendumText) expect(text).not.toMatch(/P0|P1|P2|보완|Short-list|데스크 리서치/);
+
   // Both the body and presentation text are rendered from one six-slide source.
   await expect(page.locator('#section-02 .fm-strategy-cards li')).toHaveCount(3);
   await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('적격 의향 2곳');
@@ -32,17 +35,19 @@ for(const width of [320,390,1440]){
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto('/src/case-study/strategy-brief.html');
     await expect(page.locator('.fm-presentation-slide')).toHaveCount(1);
-    await expect(page.locator('.fm-deck-title')).toHaveText('검증 후 투자한다.');
+    await expect(page.locator('.fm-deck-title')).toHaveText('검증 후 투자');
     await expect(page.locator('#strategy-number')).toHaveText('01 / 06');
     await expect(page.locator('#strategy-picker option')).toHaveCount(6);
+    expect(await page.locator('body').innerText()).not.toMatch(/P0|P1|P2|보완|핵심 판단|개인 분석/);
+
     await expect(page.locator('.fm-deck-points li')).toHaveCount(3);
     await expect(page.locator('.fm-deck-points')).toContainText('약 −38.7만원');
     await expect(page.locator('.fm-deck-points')).toContainText('변동비 별도 승인');
 
     await page.locator('#strategy-next').click();
-    await expect(page.locator('.fm-deck-title')).toHaveText('수원·용인 중 한 생활권부터.');
+    await expect(page.locator('.fm-deck-title')).toHaveText('한 생활권에서 시작');
     await page.locator('#strategy-picker').selectOption('5');
-    await expect(page.locator('.fm-deck-title')).toHaveText('입증 가능한 성장 서사만 제시한다.');
+    await expect(page.locator('.fm-deck-title')).toHaveText('성장보다 수익성 검증');
     await expect(page.locator('#strategy-next')).toBeDisabled();
     await expect(page.locator('#strategy-prev')).toBeEnabled();
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
