@@ -70,6 +70,52 @@ def deck(path: Path) -> tuple[list[str],list[list[list[str]]]]:
 main, main_tables = deck(CASE / "downloads" / "footmate_report.pptx")
 strategy, strategy_tables = deck(CASE / "downloads" / "footmate_5year_strategy.pptx")
 assert len(main) == 9 and len(strategy) == 6, (len(main), len(strategy))
+
+assert sum(len(TABLES.findall(section["body"])) for section in sections) == 31
+
+# Verify the exact slide-picker headings against all legacy PPTX visible titles.
+# The website displays selected-slide names beneath the slide image, so these
+# must not be stale summaries that differ from the source PowerPoint.
+report_preview_source = (CASE / "report-previews.js").read_text(encoding="utf-8").strip()
+assert report_preview_source.startswith("window.REPORT_SLIDES=")
+report_viewer = json.loads(report_preview_source[len("window.REPORT_SLIDES="):].rstrip(";"))
+materials_html = (CASE / "materials.html").read_text(encoding="utf-8")
+strategy_viewer_match = re.search(
+    r"const slides=strategyDeck\?(\[.*?\]):window\.REPORT_SLIDES", materials_html, re.S
+)
+assert strategy_viewer_match, "Could not find the 5-year viewer's slide metadata"
+strategy_viewer = json.loads(strategy_viewer_match.group(1))
+assert [len(report_viewer), len(strategy_viewer)] == [9, 6]
+assert [item["title"] for item in report_viewer] == [
+    "FootMate 사업성 검토", "운영 모델과 책임", "기준 가정의 월 완료 예약은 626건",
+    "복합 협상 시 공헌이익은 건당 940원", "손익 차이를 물량·단가·비용으로 설명",
+    "운영 데이터와 통제", "투자비·운영비·인력 자원 계획",
+    "확장안도 초기 비용 포함 시 손익률 −11.4%", "최종 판단 · 단계적 투자"
+]
+assert [item["title"] for item in strategy_viewer] == [
+    "5개년 성장 전략", "5개년 성장 전략과 투자 우선순위",
+    "수수료·결제 조건에 따른 공헌이익 개선", "5개년 손익 전망",
+    "경영 성과 관리와 전략적 자원 배분", "성장 규모보다 수익성 있는 확대를 우선"
+]
+for label, viewer, pptx_slides in (
+    ("report", report_viewer, main), ("five-year", strategy_viewer, strategy)
+):
+    for i, item in enumerate(viewer):
+        assert no_spaces(item["title"]) in no_spaces(pptx_slides[i]), (
+            label, i + 1, "Picker heading does not appear in actual PPTX", item["title"]
+        )
+
+forecast_html = (CASE / "forecast.html").read_text(encoding="utf-8")
+assert "경유 비중" not in forecast_html and "경유 비중" not in materials_html
+assert "사업별 의사결정 메모 보기" not in forecast_html
+assert '<strong id="slideTitle">FootMate 사업성 검토</strong>' in materials_html
+assert "플랫폼 운영과 수익성 개선" not in materials_html
+assert "공개 자료" not in sections[1]["body"]
+assert "30일 관찰 완료" not in sections[8]["body"]
+assert "적격 의향 2곳" not in sections[8]["body"]
+assert "PPTX 받기" not in sections[0]["body"]
+assert "5개년 현금수지는 2년 차부터 협상안을 적용한 계획입니다." in sections[7]["body"]
+
 # Keep visible slide text in Pretendard; decorative icons on the web use Tossface.
 for filename,count in (("footmate_report.pptx",9),("footmate_5year_strategy.pptx",6)):
     with ZipFile(CASE / "downloads" / filename) as font_deck:

@@ -622,7 +622,7 @@ test('all supporting prose stays concise outside page titles and descriptions',a
   for(const item of data){
     expect([...item.text].length,item.tag+': '+item.text).toBeLessThanOrEqual(item.tag==='p'?85:70);
   }
-  await expect(page.locator('#section-02')).toContainText('시장·경쟁은 공개 자료로 분석하고');
+  await expect(page.locator('#section-02')).toContainText('시장·경쟁은 공개자료로 분석하고');
   await expect(page.locator('#section-03')).toContainText('운영자 제휴형으로 시작하고');
   await expect(page.locator('#section-05')).toContainText('현금 1,765건 / 기회비용 포함 7,648건');
   await expect(page.locator('#section-08')).toContainText('2027년 상반기 가상 데이터');
@@ -632,7 +632,7 @@ test('case-study body copy stays concise and terminology stays consistent',async
   const paragraphs=await page.locator('.track p:not(.lead)').evaluateAll(nodes=>nodes.map(n=>n.textContent.trim()).filter(Boolean));
   expect(paragraphs.filter(text=>[...text].length>85)).toEqual([]);
   for(const phrase of [
-    '시장·경쟁은 공개 자료로 분석하고, 지불 의향은 면담·가격 실험으로 검증합니다.',
+    '시장·경쟁은 공개자료로 분석하고, 지불 의향은 면담·가격 실험으로 검증합니다.',
     '수수료 매출 차이 − 취소·노쇼 비용 − 완료 건 비용 − 고정비 차이',
     '기본 현금 예산 461만원',
     '기회비용 포함 831만원'
@@ -691,7 +691,7 @@ test('ROI analysis in section 05 stays clear, accessible and numerically consist
   expect(scan.violations).toEqual([]);
   await page.goto('/src/case-study/materials.html?preview=1&slide=7');
   await expect(page.locator('#page')).toHaveText('08 / 09');
-  await expect(page.locator('#slideTitle')).toHaveText('12개월 비용 대비 예상 손익률');
+  await expect(page.locator('#slideTitle')).toHaveText('확장안도 초기 비용 포함 시 손익률 −11.4%');
   await expect(page.locator('#slide-keypoint')).toContainText('12개월 현금비용 대비 손익률은 기준 −47.5%');
 });
 
@@ -892,9 +892,9 @@ test('report density and evidence hierarchy stay readable and source-backed',asy
   await expect(page.locator('.track table')).toHaveCount(31);
   await expect(page.locator('#section-09 .story-card')).toHaveCount(3);
   await expect(page.locator('#section-09 .case-close-lead')).toContainText('확대·투자는');
-  await expect(page.locator('#section-09')).toContainText('적격 의향 2곳');
+  await expect(page.locator('#section-09')).toContainText('적격 제휴 의향 2곳');
   await expect(page.locator('#section-09')).toContainText('중대 오류·예산 초과 시 중단');
-  await expect(page.locator('#section-08 .case-period-note')).toContainText('계획 가정');
+  await expect(page.locator('#section-08 .case-period-note')).toContainText('2년 차부터 협상안을 적용');
   await expect(page.locator('#section-05 #case-profit-model')).toHaveCount(1);
   await expect(page.locator('#section-08 .case-cash-chart')).toHaveCount(1);
   await expect(page.locator('#section-05 details.case-extra:not([open])')).toHaveCount(2);
@@ -913,5 +913,44 @@ test('report density and evidence hierarchy stay readable and source-backed',asy
     shortDecisions:cards.length===3&&cards.every(el=>[...el.textContent.trim()].length<=40)};
   });
   expect(readable,{width}).toEqual({pageFits:true,blocksFit:true,shortDecisions:true});
+ }
+});
+
+
+test('all 15 legacy slide picker labels match PPTX titles and financial terminology',async({page})=>{
+ const decks=[
+  {query:'',titles:[
+   'FootMate 사업성 검토','운영 모델과 책임','기준 가정의 월 완료 예약은 626건',
+   '복합 협상 시 공헌이익은 건당 940원','손익 차이를 물량·단가·비용으로 설명',
+   '운영 데이터와 통제','투자비·운영비·인력 자원 계획',
+   '확장안도 초기 비용 포함 시 손익률 −11.4%','최종 판단 · 단계적 투자']},
+  {query:'&deck=strategy',titles:[
+   '5개년 성장 전략','5개년 성장 전략과 투자 우선순위',
+   '수수료·결제 조건에 따른 공헌이익 개선','5개년 손익 전망',
+   '경영 성과 관리와 전략적 자원 배분','성장 규모보다 수익성 있는 확대를 우선']}
+ ];
+ for(const width of [320,390,1440]){
+  await page.setViewportSize({width,height:900});
+  await page.goto('/');
+  const links=page.locator('#attachments .case-deck-card a[download]');
+  await expect(links).toHaveCount(3);
+  await expect(page.locator('#attachments .case-deck-card').first().locator('.case-preview-description')).toHaveText('수익구조 · 손익분기 · 투자 판단');
+  for(const link of await links.all())await expect(link).toHaveText('PPTX 다운로드');
+  await expect(page.locator('#section-02')).toContainText('공개자료로 분석하고');
+  await expect(page.locator('#section-09')).toContainText('적격 제휴 의향 2곳 확보 후 실증');
+  await expect(page.locator('#section-09')).toContainText('30일 추적 완료 후 재심사');
+  for(const {query,titles} of decks){
+   await page.goto('/src/case-study/materials.html?preview=1&mode=slides'+query);
+   await expect(page.locator('#slide-picker option')).toHaveCount(titles.length);
+   for(const [i,title] of titles.entries()){
+    await page.locator('#slide-picker').selectOption(String(i));
+    await expect(page.locator('#slideTitle')).toHaveText(title);
+    await expect(page.locator('#slide-picker option').nth(i)).toContainText(title);
+   }
+  }
+  await page.goto('/src/case-study/forecast.html');
+  await expect(page.locator('label').filter({has:page.locator('#expansion-share')})).toContainText('플랫폼 예약 비중 %');
+  await expect(page.locator('main')).toContainText('의사결정 메모 보기');
+  await expect(page.locator('main')).not.toContainText('경유 비중');
  }
 });
