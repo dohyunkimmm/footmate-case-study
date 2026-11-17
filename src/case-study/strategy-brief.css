@@ -47,11 +47,10 @@
 .fm-deck-source{font-size:clamp(11px,.97vw,13px);color:#52636d;margin:auto 0 0;padding-top:12px;border-top:1px solid #dbe5e3}
 .fm-deck-downloads{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
 .fm-deck-downloads a{display:inline-flex;min-height:44px;align-items:center;border:1px solid #8daea1;border-radius:7px;padding:8px 15px;background:white;text-decoration:none;font-weight:700;font-size:14px}
-.fm-deck-caption{font-size:13px;color:#52636d;line-height:1.7}
 @media(max-width:800px){.fm-deck-shell{padding:16px 16px 36px}.fm-deck-toolbar{align-items:stretch}.fm-deck-picker{width:100%}.fm-deck-picker select{flex:1;max-width:100%}.fm-presentation-slide{aspect-ratio:auto;min-height:560px;padding:38px 28px 26px}.fm-deck-title{font-size:28px;margin:10px 0}.fm-deck-subtitle{font-size:16px;margin:0 0 16px}.fm-deck-decision{padding:14px 15px;margin-bottom:16px}.fm-deck-decision strong{font-size:19px}.fm-deck-points{font-size:15px;gap:12px}.fm-deck-source{font-size:12px}}
 @media(max-width:360px){.fm-deck-shell{padding:12px}.fm-presentation-slide{padding:30px 20px 20px}.fm-deck-title{font-size:25px}.fm-deck-points{font-size:14px}.fm-deck-toolbar{gap:16px}.fm-deck-buttons button{padding:8px 12px}}
 @media(prefers-reduced-motion:reduce){.fm-deck-page *{scroll-behavior:auto!important}}
-@media print{.fm-deck-top,.fm-deck-toolbar,.fm-deck-downloads,.fm-deck-caption{display:none}.fm-deck-shell{width:100%;padding:0}.fm-deck-stage{border:0}.fm-presentation-slide{aspect-ratio:16/9;min-height:0;page-break-after:always}}
+@media print{.fm-deck-top,.fm-deck-toolbar,.fm-deck-downloads{display:none}.fm-deck-shell{width:100%;padding:0}.fm-deck-stage{border:0}.fm-presentation-slide{aspect-ratio:16/9;min-height:0;page-break-after:always}}
 
 /* 320px: the native select must be allowed to shrink beside its label. */
 .fm-deck-picker,.fm-deck-toolbar,.fm-deck-downloads{min-width:0;max-width:100%}
