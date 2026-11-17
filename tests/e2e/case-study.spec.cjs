@@ -934,6 +934,7 @@ test('all 15 legacy slide picker labels match PPTX titles and financial terminol
   await page.goto('/');
   const links=page.locator('#attachments .case-deck-card a[download]');
   await expect(links).toHaveCount(3);
+  await expect(page.locator('#attachments .case-deck-card').first().locator('.case-preview-description')).toHaveText('수익구조 · 손익분기 · 투자 판단');
   for(const link of await links.all())await expect(link).toHaveText('PPTX 다운로드');
   await expect(page.locator('#section-02')).toContainText('공개자료로 분석하고');
   await expect(page.locator('#section-09')).toContainText('적격 제휴 의향 2곳 확보 후 실증');
