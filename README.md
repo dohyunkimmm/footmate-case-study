@@ -13,7 +13,7 @@
 - 최신 QA 및 배포 결과는 [FootMate Case Study QA](https://github.com/dohyunkimmm/footmate-case-study/actions/workflows/report-qa.yml)와 [Cloudflare Workers 운영 사이트](https://footmate-case-study.fmate.workers.dev/)를 기준으로 확인합니다. 본문 01의 발표자료는 사업성 검토(9장), 5개년 성장 전략(6장), 사업 전략(6장)입니다.
 - [PR #43](https://github.com/dohyunkimmm/footmate-case-study/pull/43)에서 오래된 화면·발표자료 검사 19건을 현재 UI·손익 모델 기준으로 동기화하고, 390px의 ROI 긴 숫자 레이블 넘침을 CSS로 고쳤습니다. **보고서 본문 사업 수치, PPTX/XLSX, 이미지는 변경하지 않았습니다.**
 - [기존 QA 이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)은 최신 `main` 통과 확인 후 완료 처리했습니다. Cloudflare Workers PR 미리보기 오류는 [PR #48](https://github.com/dohyunkimmm/footmate-case-study/pull/48)에서 미리보기 전용 설정을 분리해 복구했습니다. 운영 배포 명령은 유지했습니다.
-- 동일 Git blob SHA 중복 파일이 없고 파일 **95개·디렉터리 15개**를 보존했습니다. 공개 자료 링크와 생성·검증 스크립트를 불필요하게 삭제하지 않습니다.
+- 최신 `main` 재귀 트리에서 파일 **114개·디렉터리 15개**를 확인했습니다. 동일 Git blob SHA 중복 파일은 없으며 사용 중인 자산을 보존했습니다. 공개 자료 링크와 생성·검증 스크립트를 불필요하게 삭제하지 않습니다.
 
 ## 저장소 구성
 
@@ -22,13 +22,30 @@
 | [`index.html`](index.html) · [`favicon.svg`](favicon.svg) | 보고서 진입점과 파비콘 |
 | [`src/case-study/`](src/case-study/) | 9개 보고서 섹션, 보조 페이지, 근거 화면, 발표자료·재무 모델 및 미리보기 |
 | [`src/shared/`](src/shared/) | 공용 디자인·글꼴 스타일 |
-| [`docs/`](docs/) | [분석 근거](docs/IT-STRATEGY-CASE-STUDY.md), [디자인 기준](docs/DESIGN-SYSTEM.md), [발표자료 15장 검토 기록](docs/PRESENTATION-SPACING-REVIEW-20261111.md) |
+| [`docs/`](docs/) | [사업성 분석](docs/IT-STRATEGY-CASE-STUDY.md)·[디자인 기준](docs/DESIGN-SYSTEM.md)·[발표자료 검토](docs/PRESENTATION-SPACING-REVIEW-20261111.md)와 2026-11-16 이후 시장 진입·투자 판단 등 전략 근거 |
 | [`qa/`](qa/) | 원본 산출물 재생성·수치 대조·발표자료 가독성 검사 도구 |
 | [`tests/e2e/`](tests/e2e/) | 보고서 UI·반응형·접근성 회귀 검사 |
 | [`.github/workflows/`](.github/workflows/) · [`.github/scripts/`](.github/scripts/) | 보고서 QA·수동 디자인 동기화·병합 브랜치 보존 및 생성 파일 PR 게시 스크립트 |
 | [`.assetsignore`](.assetsignore) | 내부 검증·문서 파일을 정적 사이트 배포에서 제외 |
 
-### 2026-11-14 `main` 폴더 점검 · 문서 동기화
+### 2026-11-17 `main` 폴더 재점검 · 문서 동기화
+
+- 기준: [`main` `7df5503`](https://github.com/dohyunkimmm/footmate-case-study/commit/7df5503e9028e4f20075b591f30e12c5b553b977) 재귀 트리(`truncated=false`)에서 **파일 114개·디렉터리 15개**(루트 파일 **7개**·최상위 폴더 **5개**)를 확인했습니다. 2026-11-14의 **95개 파일**은 아래 당시 스냅샷입니다.
+
+| 최상위 경로 | 현재 파일 수 | 관리 범위 |
+| --- | ---: | --- |
+| `.github/` | 4 | 보고서 QA·디자인 동기화·브랜치 보존 |
+| `docs/` | 11 | 사업성·디자인 및 2026-11-16 전략 검토 기록 |
+| `qa/` | 16 | 보고서·재무 모델·발표자료 생성·검증 |
+| `src/` | 73 | 본문, 공용 스타일, 증거 화면, PPTX·XLSX·미리보기 |
+| `tests/` | 3 | 보고서 브라우저 회귀·보조 검사 |
+| 루트 파일 | 7 | 진입점·설정·자산 |
+| **합계** | **114** | **디렉터리 15개** |
+
+- 별도 전략 자료는 [시장 진입](docs/P0-GTM-ENTRY-STRATEGY-20261116.md)·[근거 등록부](docs/P0-EVIDENCE-REGISTER-20261116.md)·[성과지표](docs/P1-STRATEGY-KPI-GOVERNANCE-20261116.md)·[성장·투자 판단](docs/P2-EQUITY-STORY-EXECUTIVE-MEMO-20261116.md) 등으로 유지하며, 원본 사업 가정·수치와 실증 결과를 혼동하지 않습니다.
+- 기준 HEAD의 [FootMate Case Study QA #44011846580](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/44011846580)는 **SUCCESS**입니다. 이 문서 변경의 신규 CI·배포 확인을 대신하지 않습니다. 동일 blob SHA 중복 **0건**, 임시 자산으로 확정돼 안전하게 삭제할 파일 **0건**입니다. 외부 링크·보고서 원본·PPTX·XLSX·캡처·QA를 임의 삭제하지 않습니다.
+
+### 2026-11-14 `main` 폴더 점검 · 문서 동기화 (당시 스냅샷)
 
 - GitHub [`main` `3fd1085`](https://github.com/dohyunkimmm/footmate-case-study/commit/3fd1085e598232540ecea6a890f719e9c1f4b38f)의 잘리지 않은 재귀 트리에서 **파일 95개·디렉터리 15개**(루트 파일 6개·최상위 폴더 5개)를 확인했습니다. 아래의 11월 11일 **78개/80개 파일**은 해당 시점의 초기·정리 후 예상 스냅샷이며 현재 합계가 아닙니다.
 
