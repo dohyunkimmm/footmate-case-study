@@ -108,6 +108,8 @@ for label, viewer, pptx_slides in (
 forecast_html = (CASE / "forecast.html").read_text(encoding="utf-8")
 assert "경유 비중" not in forecast_html and "경유 비중" not in materials_html
 assert "사업별 의사결정 메모 보기" not in forecast_html
+assert '<strong id="slideTitle">FootMate 사업성 검토</strong>' in materials_html
+assert "플랫폼 운영과 수익성 개선" not in materials_html
 assert "공개 자료" not in sections[1]["body"]
 assert "30일 관찰 완료" not in sections[8]["body"]
 assert "적격 의향 2곳" not in sections[8]["body"]
