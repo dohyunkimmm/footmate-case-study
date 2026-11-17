@@ -1011,7 +1011,7 @@ test('all 21 presentation pages fit their slide boundaries at 320, 390 and 1440p
           overlaps,
           headingFits:heading.scrollHeight<=heading.clientHeight+1,
           docFits:document.documentElement.scrollWidth<=innerWidth+1,
-          titleMatches:picker.selectedOptions[0].textContent.trim().endsWith(heading.textContent.trim())
+          titleMatches:document.getElementById('strategy-picker').selectedOptions[0].textContent.trim().endsWith(heading.textContent.trim())
         };
       });
       expect(audit,{width,page:i+1}).toEqual({
