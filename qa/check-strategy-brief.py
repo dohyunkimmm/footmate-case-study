@@ -75,7 +75,7 @@ assert 'getElementById(\'strategy-current\')' not in enhancement, "Orphan repeat
 assert 'fm-deck-caption' not in viewer, "Obsolete footer caption remains"
 assert '재무 수치와 성장 전망은 사업 가정이며, 실제 운영 실적이 아닙니다.' not in viewer
 assert '<p>FootMate · 사업 전략</p>' not in viewer
-assert 'download="footmate_business_strategy.pptx"' in materials
+assert 'download="footmate_business_strategy.pptx"' not in materials, "Duplicate download in supporting materials"
 assert "download.download = 'footmate_business_strategy.pptx'" not in enhancement
 # The opening report gallery owns the third deck's download entry instead.
 # Markdown filenames remain stable so existing citations and URLs do not break.
@@ -135,8 +135,8 @@ assert all(title in opening_body for title in ("사업성 검토", "5개년 성�
 for required in ("strategy-brief-data.js", "strategy-brief.js", "strategy-brief.css",
                  "footmate_strategy_p0_p2.pptx"):
     assert required in viewer
-for required in ("strategy-brief.html", "footmate_strategy_p0_p2.pptx"):
-    assert required in materials
+for duplicate in ("strategy-brief.html", "footmate_strategy_p0_p2.pptx"):
+    assert duplicate not in materials, ("Duplicate presentation link", duplicate)
 for section in ("#section-02", "#section-03", "#section-08"):
     assert section in enhancement
 assert "<h1" not in enhancement and "<table" not in enhancement
