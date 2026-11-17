@@ -31,7 +31,7 @@ for forbidden in ("P0", "P1", "P2", "전략 보완", "개인 분석", "Short-lis
 
 assert all(all(s.get(key) for key in ("phase","title","subtitle","takeaway","source")) for s in slides)
 assert all(any(word in " ".join([slide["title"],slide["subtitle"],slide["takeaway"],slide["source"],*slide["bullets"]])
-                   for word in ("가정","보류","검증","미확인","미검증","실측","확인","제안"))
+                   for word in ("가정","보류","검증","미확인","미검증","실측","확인","제안","추적 완료자"))
            for slide in slides), "Each slide must preserve a verification/assumption boundary"
 
 pptx = CASE / "downloads" / "footmate_strategy_p0_p2.pptx"
@@ -99,10 +99,19 @@ assert "461만원" not in enhancement
 assert "−387,160" not in enhancement
 assert "−38.7만원" in slides[0]["bullets"][1]
 assert "461만원" in slides[0]["bullets"][2] and "별도 승인" in slides[0]["bullets"][2]
-assert "8건" in slides[2]["bullets"][0] and "확정된 제휴·투자 대상은 없다" in slides[2]["takeaway"]
+assert "8건" in slides[2]["bullets"][0] and "계약 후보 미확정" in slides[2]["bullets"][0]
+assert "실사 미진행" in slides[2]["bullets"][2]
+assert "운영 주체와 사용권" in slides[2]["takeaway"]
 assert "30일 재참가" in slides[4]["bullets"][1]
+assert "30일 추적 완료자" in slides[4]["bullets"][1]
 assert "기회비용 포함" in slides[5]["bullets"][1]
+assert "인력 기회비용 포함 약 −238.7만원" in slides[0]["bullets"][1]
+assert "인력 기회비용 포함 손익 가정" in slides[5]["bullets"][1]
+assert "플랫폼 경유 예약" in slides[4]["bullets"][0]
+assert "월 마감 3일 내" in slides[4]["bullets"][2]
 assert "5→12→20→28→36곳" in slides[3]["bullets"][2]
+assert slides[5]["title"] == "확대 조건과 자원배분"
+assert not any(term in public_slide_text for term in ("노동 기회비용", "관측 기간을 마친 고객", "경유→", "미진행 미진행", "P0–P2"))
 original = (CASE / "nine-sections.js").read_text(encoding="utf-8")
 assert all(term in original for term in ("626", "340", "461만원", "30일 재참가", "28곳"))
 assert "−387,160원" in original, "Base cash loss changed"
