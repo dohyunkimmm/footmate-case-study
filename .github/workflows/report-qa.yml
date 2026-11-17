@@ -33,6 +33,12 @@ jobs:
         run: python3 qa/check-strategy-brief.py
       - name: Check report, responsive layout, accessibility, PPTX and XLSX
         run: npm run test:report
+      - name: Install PowerPoint raster comparison tools
+        run: |
+          apt-get update -qq
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libreoffice-impress poppler-utils python3-pil fonts-noto-cjk
+      - name: Compare all 21 rendered PPTX slides against website pixels
+        run: /usr/bin/python3 qa/pixel-compare-presentations.py
       - name: Store browser test evidence
         if: always()
         uses: actions/upload-artifact@v4
