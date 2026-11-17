@@ -114,7 +114,7 @@ assert "공개 자료" not in sections[1]["body"]
 assert "30일 관찰 완료" not in sections[8]["body"]
 assert "적격 의향 2곳" not in sections[8]["body"]
 assert "PPTX 받기" not in sections[0]["body"]
-assert "5개년 현금수지는 2년 차부터 협상안을 적용한 계획입니다." in sections[7]["body"]
+assert "5개년 계획은 2년 차부터 협상안을 적용한다." in sections[7]["body"]
 
 # Keep visible slide text in Pretendard; decorative icons on the web use Tossface.
 for filename,count in (("footmate_report.pptx",9),("footmate_5year_strategy.pptx",6)):
