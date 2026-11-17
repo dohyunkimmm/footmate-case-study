@@ -52,7 +52,7 @@ for(const width of [320,390,1440]){
     await expect(page.locator('.fm-deck-points')).toContainText('인력 기회비용 포함 약 −238.7만원');
     await page.locator('#strategy-picker').selectOption('2');
     await expect(page.locator('.fm-deck-title')).toHaveText('제휴 가능성 검토');
-    await expect(page.locator('.fm-deck-points')).toContainText('계약 후보 미확정');
+    await expect(page.locator('.fm-deck-points')).toContainText('공개자료 비교 대상');
     await expect(page.locator('.fm-deck-points')).toContainText('실사 미진행');
     await page.locator('#strategy-picker').selectOption('4');
     await expect(page.locator('.fm-deck-points')).toContainText('플랫폼 경유 예약');
