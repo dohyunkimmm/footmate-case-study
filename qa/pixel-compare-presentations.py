@@ -20,8 +20,8 @@ OUT = ROOT / "test-results" / "visual-qa"
 SIZE = (960, 540)
 # Different rendering engines have unavoidable font antialiasing differences.
 # These limits detect large visual regressions, not a zero-difference promise.
-MAX_MAE = 60.0
-MAX_STRONG_DIFFERENCE = 0.45
+MAX_MAE = 25.0
+MAX_STRONG_DIFFERENCE = 0.15
 
 DECKS = [
     ("report", "footmate_report.pptx", 9, "report"),
@@ -126,6 +126,10 @@ def main() -> None:
         "max_mae": MAX_MAE,
         "max_strong_difference": MAX_STRONG_DIFFERENCE,
         "number_of_slides": len(results),
+        "manual_renderer_notes": [
+            {"deck": "report", "slide": 9,
+             "note": "LibreOffice moves some title/footer text relative to the website; Microsoft PowerPoint Web was visually aligned with the website reference. Do not claim pixel identity across rendering engines."}
+        ],
         "results": results,
     }, ensure_ascii=False, indent=2), encoding="utf-8")
     lines = [
@@ -142,7 +146,11 @@ def main() -> None:
     for row in results:
         lines.append(f"| {row['deck']} | {row['slide']} | {row['mae']:.2f} | "
                      f"{100 * row['strong_difference_fraction']:.1f}% | {row['result']} |")
-    lines.extend(["", "Each row has a three-panel comparison PNG in comparisons/."])
+    lines.extend(["", "Each row has a three-panel comparison PNG in comparisons/.",
+                  "", "## Renderer-specific visual note",
+                  "Report slide 9: LibreOffice shifts selected text shapes compared with the website JPG.",
+                  "An independent Microsoft PowerPoint Web visual check showed website-aligned title placement.",
+                  "This does not establish exact Microsoft PowerPoint Desktop pixel identity."])
     (OUT / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     assert len(results) == 21, f"Expected 21 slide comparisons, got {len(results)}"
