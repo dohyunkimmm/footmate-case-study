@@ -22,7 +22,7 @@ test('Strategy summaries preserve the existing nine-section and 31-table report'
 
   // Both the body and presentation text are rendered from one six-slide source.
   await expect(page.locator('#section-02 .fm-strategy-cards li')).toHaveCount(3);
-  await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('적격 의향 2곳');
+  await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('적격 제휴 의향 2곳');
   await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('공개자료 검토 8건');
   await page.locator('#section-08 .fm-strategy-more summary').click();
   await expect(page.locator('#section-08 .fm-strategy-cards article')).toHaveCount(3);
