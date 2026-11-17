@@ -99,7 +99,8 @@ assert "461만원" not in enhancement
 assert "−387,160" not in enhancement
 assert "−38.7만원" in slides[0]["bullets"][1]
 assert "461만원" in slides[0]["bullets"][2] and "별도 승인" in slides[0]["bullets"][2]
-assert "8건" in slides[2]["bullets"][0] and "계약 후보 미확정" in slides[2]["bullets"][0]
+assert "8건" in slides[2]["bullets"][0] and "공개자료 비교 대상" in slides[2]["bullets"][0]
+assert "실사 미진행" in slides[2]["bullets"][2]  # Only one status qualification
 assert "실사 미진행" in slides[2]["bullets"][2]
 assert "운영 주체와 사용권" in slides[2]["takeaway"]
 assert "30일 재참가" in slides[4]["bullets"][1]
