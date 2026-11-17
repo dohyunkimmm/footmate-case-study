@@ -622,7 +622,7 @@ test('all supporting prose stays concise outside page titles and descriptions',a
   for(const item of data){
     expect([...item.text].length,item.tag+': '+item.text).toBeLessThanOrEqual(item.tag==='p'?85:70);
   }
-  await expect(page.locator('#section-02')).toContainText('시장·경쟁은 공개자료로 분석하고');
+  await expect(page.locator('#section-02')).toContainText('시장·경쟁은 공개자료로 비교한다');
   await expect(page.locator('#section-03')).toContainText('운영자 제휴형으로 시작하고');
   await expect(page.locator('#section-05')).toContainText('현금 1,765건 / 기회비용 포함 7,648건');
   await expect(page.locator('#section-08')).toContainText('2027년 상반기 가상 데이터');
@@ -632,7 +632,7 @@ test('case-study body copy stays concise and terminology stays consistent',async
   const paragraphs=await page.locator('.track p:not(.lead)').evaluateAll(nodes=>nodes.map(n=>n.textContent.trim()).filter(Boolean));
   expect(paragraphs.filter(text=>[...text].length>85)).toEqual([]);
   for(const phrase of [
-    '시장·경쟁은 공개자료로 분석하고, 지불 의향은 면담·가격 실험으로 검증합니다.',
+    '시장·경쟁은 공개자료로 비교한다. 지불 의향은 면담과 가격 실험으로 확인한다.',
     '수수료 매출 차이 − 취소·노쇼 비용 − 완료 건 비용 − 고정비 차이',
     '기본 현금 예산 461만원',
     '기회비용 포함 831만원'
@@ -936,7 +936,7 @@ test('all 15 legacy slide picker labels match PPTX titles and financial terminol
   await expect(links).toHaveCount(3);
   await expect(page.locator('#attachments .case-deck-card').first().locator('.case-preview-description')).toHaveText('수익구조 · 손익분기 · 투자 판단');
   for(const link of await links.all())await expect(link).toHaveText('PPTX 다운로드');
-  await expect(page.locator('#section-02')).toContainText('공개자료로 분석하고');
+  await expect(page.locator('#section-02')).toContainText('공개자료로 비교한다');
   await expect(page.locator('#section-09')).toContainText('적격 제휴 의향 2곳 확보 후 실증');
   await expect(page.locator('#section-09')).toContainText('30일 추적 완료 후 재심사');
   for(const {query,titles} of decks){
