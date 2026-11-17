@@ -42,6 +42,8 @@ async function main() {
     if (await picker.locator('option').count() !== 6) throw new Error('Expected six web slides');
     for (let i = 0; i < 6; i++) {
       await picker.selectOption(String(i));
+      // Selection moves keyboard focus to the heading; blur only for visual baseline.
+      await page.evaluate(() => document.activeElement?.blur());
       const slide = page.locator('.fm-presentation-slide');
       await slide.waitFor({ state: 'visible' });
       const heading = (await slide.locator('.fm-deck-title').textContent()).trim();
