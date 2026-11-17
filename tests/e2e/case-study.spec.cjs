@@ -651,7 +651,7 @@ test('ROI analysis in section 05 stays clear, accessible and numerically consist
   await expect(page.locator('#section-05 .roi-jump')).toHaveCount(0);
   await expect(roi).toBeVisible();
   await expect(roi.locator('.roi-section-label')).toHaveText('본문 05 · 손익 검토');
-  await expect(roi.locator('#roi-projection-heading')).toHaveText('확장안도 초기 비용 포함 시 손익률 −11.4%');
+  await expect(roi.locator('#roi-projection-heading')).toHaveText('12개월 비용 대비 예상 손익률');
   await expect(roi.locator('.roi-highlights dd')).toHaveText(['12개월','−47.5%','−11.4%']);
   await expect(roi.locator('.roi-coverage-row')).toHaveCount(4);
   await expect(roi.locator('.roi-coverage-value')).toHaveText(['10.3%','52.5%','88.6%','85.4%']);
