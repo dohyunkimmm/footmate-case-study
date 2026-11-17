@@ -9,7 +9,7 @@ test('Strategy summaries preserve the existing nine-section and 31-table report'
   await expect(page.locator('.toc-item')).toHaveCount(9);
   await expect(page.locator('.track table')).toHaveCount(31);
   await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('시장 진입 전략');
-  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('제휴 가능성은 운영 주체와 사용권 확인부터 검토한다.');
+  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('운영 주체와 시설 사용권을 먼저 확인한다.');
   await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('성장·투자 논리');
   await expect(page.locator('#section-08 .fm-strategy-links')).toHaveCount(0);
   const resources=page.locator('#section-01 #attachments');
@@ -23,7 +23,7 @@ test('Strategy summaries preserve the existing nine-section and 31-table report'
   // Both the body and presentation text are rendered from one six-slide source.
   await expect(page.locator('#section-02 .fm-strategy-cards li')).toHaveCount(3);
   await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('적격 제휴 의향 2곳');
-  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('공개자료 검토 8건');
+  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('시설·서비스 8건');
   await page.locator('#section-08 .fm-strategy-more summary').click();
   await expect(page.locator('#section-08 .fm-strategy-cards article')).toHaveCount(3);
   await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('5→12→20→28→36곳');
@@ -52,7 +52,7 @@ for(const width of [320,390,1440]){
     await expect(page.locator('.fm-deck-points')).toContainText('인력 기회비용 포함 약 −238.7만원');
     await page.locator('#strategy-picker').selectOption('2');
     await expect(page.locator('.fm-deck-title')).toHaveText('제휴 가능성 검토');
-    await expect(page.locator('.fm-deck-points')).toContainText('계약 후보 미확정');
+    await expect(page.locator('.fm-deck-points')).toContainText('공개자료 비교 대상');
     await expect(page.locator('.fm-deck-points')).toContainText('실사 미진행');
     await page.locator('#strategy-picker').selectOption('4');
     await expect(page.locator('.fm-deck-points')).toContainText('플랫폼 경유 예약');
@@ -65,6 +65,23 @@ for(const width of [320,390,1440]){
     await expect(page.locator('.fm-deck-title')).toHaveText('확대 조건과 자원배분');
     await expect(page.locator('#strategy-next')).toBeDisabled();
     await expect(page.locator('#strategy-prev')).toBeEnabled();
+    // A slide title must appear in the slide, not again above the download buttons.
+    await expect(page.locator('#strategy-current, .fm-deck-main > .fm-deck-caption')).toHaveCount(0);
+    await expect(page.locator('#strategy-deck + .fm-deck-downloads')).toHaveCount(1);
+    await expect(page.locator('.fm-deck-top')).not.toContainText('사업 전략');
+    await expect(page.locator('.fm-deck-main')).not.toContainText('재무 수치와 성장 전망은 사업 가정');
+    const slideTitles=['검증 후 투자','한 생활권에서 시작','제휴 가능성 검토','제휴형을 먼저 검증','예약 수와 수익성을 함께 관리','확대 조건과 자원배분'];
+    for(const [i,heading] of slideTitles.entries()){
+      await page.locator('#strategy-picker').selectOption(String(i));
+      await expect(page.locator('#strategy-deck h2')).toHaveText(heading);
+      const repeated=await page.evaluate(()=>{
+        let node=document.getElementById('strategy-deck').nextElementSibling;
+        let following='';
+        while(node){following+=node.textContent+' ';node=node.nextElementSibling;}
+        return following;
+      });
+      expect(repeated).not.toContain(heading);
+    }
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
     if(width===390){
       const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();

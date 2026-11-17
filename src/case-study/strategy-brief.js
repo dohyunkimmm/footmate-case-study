@@ -65,7 +65,6 @@
 
   const stage = document.getElementById('strategy-deck');
   const number = document.getElementById('strategy-number');
-  const title = document.getElementById('strategy-current');
   const prev = document.getElementById('strategy-prev');
   const next = document.getElementById('strategy-next');
   const picker = document.getElementById('strategy-picker');
@@ -94,7 +93,6 @@
     slide.bullets.forEach(line => {const li = document.createElement('li'); li.textContent = line; items.appendChild(li);});
     stage.appendChild(article);
     number.textContent = String(active + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
-    title.textContent = slide.title;
     picker.value = String(active);
     prev.disabled = active === 0;
     next.disabled = active === slides.length - 1;
