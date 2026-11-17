@@ -57,6 +57,7 @@ for(const width of [320,390,1440]){
     await page.locator('#strategy-picker').selectOption('4');
     await expect(page.locator('.fm-deck-points')).toContainText('플랫폼 경유 예약');
     await expect(page.locator('.fm-deck-points')).toContainText('30일 추적 완료자');
+    await page.locator('#strategy-picker').selectOption('0');
 
     await page.locator('#strategy-next').click();
     await expect(page.locator('.fm-deck-title')).toHaveText('한 생활권에서 시작');
