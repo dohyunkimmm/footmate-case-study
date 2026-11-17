@@ -954,3 +954,69 @@ test('all 15 legacy slide picker labels match PPTX titles and financial terminol
   await expect(page.locator('main')).not.toContainText('경유 비중');
  }
 });
+
+
+test('all 21 presentation pages fit their slide boundaries at 320, 390 and 1440px',async({page})=>{
+  for(const width of [320,390,1440]){
+    await page.setViewportSize({width,height:900});
+    for(const {query,count} of [{query:'',count:9},{query:'&deck=strategy',count:6}]){
+      await page.goto('/src/case-study/materials.html?preview=1&mode=slides'+query);
+      const picker=page.locator('#slide-picker');
+      await expect(picker.locator('option')).toHaveCount(count);
+      for(let i=0;i<count;i++){
+        await picker.selectOption(String(i));
+        const number=String(i+1).padStart(2,'0')+' / '+String(count).padStart(2,'0');
+        await expect(page.locator('#page')).toHaveText(number);
+        await expect.poll(()=>page.locator('#slide').evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
+        const audit=await page.evaluate(()=>{
+          const title=document.getElementById('slideTitle').textContent.trim();
+          const picker=document.getElementById('slide-picker');
+          const img=document.getElementById('slide');
+          const slide=img.getBoundingClientRect();
+          const viewer=document.querySelector('.viewer').getBoundingClientRect();
+          return {
+            labelMatches:picker.selectedOptions[0].textContent.trim().endsWith(title)&&img.alt===title,
+            imageFits:slide.left>=viewer.left-2&&slide.right<=viewer.right+2,
+            docFits:document.documentElement.scrollWidth<=innerWidth+1
+          };
+        });
+        expect(audit,{width,query,page:i+1}).toEqual({labelMatches:true,imageFits:true,docFits:true});
+      }
+    }
+    await page.goto('/src/case-study/strategy-brief.html');
+    await page.evaluate(()=>document.fonts.ready);
+    const picker=page.locator('#strategy-picker');
+    await expect(picker.locator('option')).toHaveCount(6);
+    for(let i=0;i<6;i++){
+      await picker.selectOption(String(i));
+      await expect(page.locator('#strategy-number')).toHaveText(String(i+1).padStart(2,'0')+' / 06');
+      const audit=await page.evaluate(()=>{
+        const card=document.querySelector('.fm-presentation-slide');
+        const frame=card.getBoundingClientRect();
+        const heading=card.querySelector('.fm-deck-title');
+        const elements=[...card.querySelectorAll(
+          '.fm-deck-phase,.fm-deck-title,.fm-deck-subtitle,.fm-deck-decision,.fm-deck-points li,.fm-deck-source'
+        )];
+        const rects=elements.map(el=>el.getBoundingClientRect());
+        const fits=rects.every((r,i)=>r.left>=frame.left-2&&r.right<=frame.right+2&&
+          r.top>=frame.top-2&&r.bottom<=frame.bottom+2&&
+          elements[i].scrollWidth<=elements[i].clientWidth+2&&
+          (elements[i]===heading||elements[i].scrollHeight<=elements[i].clientHeight+2));
+        const overlaps=rects.some((a,i)=>rects.slice(i+1).some(b=>
+          Math.min(a.right,b.right)-Math.max(a.left,b.left)>3&&
+          Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>3
+        ));
+        return {
+          fits,
+          overlaps,
+          headingFits:heading.scrollHeight<=heading.clientHeight+1,
+          docFits:document.documentElement.scrollWidth<=innerWidth+1,
+          titleMatches:document.getElementById('strategy-picker').selectedOptions[0].textContent.trim().endsWith(heading.textContent.trim())
+        };
+      });
+      expect(audit,{width,page:i+1}).toEqual({
+        fits:true,overlaps:false,headingFits:true,docFits:true,titleMatches:true
+      });
+    }
+  }
+});
