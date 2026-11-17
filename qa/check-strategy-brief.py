@@ -141,6 +141,9 @@ assert "<h1" not in enhancement and "<table" not in enhancement
 assert "new slides" not in enhancement  # No invented slide count in existing decks.
 assert "fm-strategy-links" not in enhancement, "Duplicate presentation links remain in the strategy body"
 assert 'href="/#section-01"' in viewer, "Slide reader must return to the consolidated resources"
+assert '← 본문으로</a>' in viewer
+assert '다른 발표자료 보기</a>' in viewer
+assert not any(token in viewer for token in ('본문 발표자료로', '사업성·중장기 전략 발표 보기', '&#x20;', '&nbsp;'))
 styles = (CASE / "nine-sections.css").read_text(encoding="utf-8")
 assert "#section-01 .case-deck-stack{grid-template-columns:repeat(3,minmax(0,1fr))}" in styles
 

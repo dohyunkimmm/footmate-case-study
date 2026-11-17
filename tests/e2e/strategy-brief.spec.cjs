@@ -41,6 +41,9 @@ for(const width of [320,390,1440]){
     await page.goto('/src/case-study/strategy-brief.html');
     await expect(page.locator('.fm-presentation-slide')).toHaveCount(1);
     await expect(page.locator('.fm-deck-back')).toHaveAttribute('href','/#section-01');
+    await expect(page.locator('.fm-deck-back')).toHaveText('← 본문으로');
+    await expect(page.locator('.fm-deck-downloads a').nth(1)).toHaveText('다른 발표자료 보기');
+    expect(await page.locator('body').innerText()).not.toMatch(/본문 발표자료로|&#x20;|사업성·중장기 전략 발표 보기/);
     await expect(page.locator('.fm-deck-title')).toHaveText('검증 후 투자');
     await expect(page.locator('#strategy-number')).toHaveText('01 / 06');
     await expect(page.locator('#strategy-picker option')).toHaveCount(6);
@@ -92,6 +95,9 @@ for(const width of [320,390,1440]){
     const bytes=await download.body();
     expect(bytes.subarray(0,4).toString('hex')).toBe('504b0304');
     expect(bytes.length).toBeGreaterThan(15000);
+    await page.locator('.fm-deck-back').click();
+    await expect(page).toHaveURL(/\/#section-01$/);
+    await expect(page.locator('#section-01 #attachments .case-deck-card')).toHaveCount(3);
     expect(errors).toEqual([]);
   });
 }
