@@ -70,6 +70,11 @@ for path_text in (viewer, enhancement):
                       "전략 보완", "개인 분석", "기존 발표자료 15장"):
         assert forbidden not in path_text, ("Public UI text not cleaned", forbidden)
 assert 'download="footmate_business_strategy.pptx"' in viewer
+assert 'id="strategy-current"' not in viewer, "Repeated slide title under presentation"
+assert 'getElementById(\'strategy-current\')' not in enhancement, "Orphan repeated slide title renderer"
+assert 'fm-deck-caption' not in viewer, "Obsolete footer caption remains"
+assert '재무 수치와 성장 전망은 사업 가정이며, 실제 운영 실적이 아닙니다.' not in viewer
+assert '<p>FootMate · 사업 전략</p>' not in viewer
 assert 'download="footmate_business_strategy.pptx"' in materials
 assert "download.download = 'footmate_business_strategy.pptx'" not in enhancement
 # The opening report gallery owns the third deck's download entry instead.
@@ -100,9 +105,8 @@ assert "−387,160" not in enhancement
 assert "−38.7만원" in slides[0]["bullets"][1]
 assert "461만원" in slides[0]["bullets"][2] and "별도 승인" in slides[0]["bullets"][2]
 assert "8건" in slides[2]["bullets"][0] and "공개자료 비교 대상" in slides[2]["bullets"][0]
-assert "실사 미진행" in slides[2]["bullets"][2]  # Only one status qualification
-assert "실사 미진행" in slides[2]["bullets"][2]
-assert "운영 주체와 사용권" in slides[2]["takeaway"]
+assert "실사 미진행" in slides[2]["bullets"][2]  # One factual status qualification
+assert slides[2]["takeaway"] == "운영 주체와 시설 사용권을 먼저 확인한다."
 assert "30일 재참가" in slides[4]["bullets"][1]
 assert "30일 추적 완료자" in slides[4]["bullets"][1]
 assert "기회비용 포함" in slides[5]["bullets"][1]
