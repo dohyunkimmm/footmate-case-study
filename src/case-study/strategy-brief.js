@@ -19,6 +19,9 @@
       const summary = document.createElement('summary');
       summary.textContent = '세부 내용 보기';
       wrapper.appendChild(summary);
+      wrapper.addEventListener('toggle', () => {
+        summary.textContent = wrapper.open ? '세부 내용 접기' : '세부 내용 보기';
+      });
     }
     const cards = document.createElement('div');
     cards.className = 'fm-strategy-cards';
