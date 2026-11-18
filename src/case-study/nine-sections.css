@@ -688,6 +688,7 @@ a:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline-color:var
  font-weight:800;max-width:930px;
 }
 #section-01 .section-title{max-width:870px}
+#section-01 .section-title.case-verdict{color:#fff}
 .lead{max-width:865px;color:var(--fm-sub);line-height:1.72;font-size:18px}
 .case-verdict{
  position:relative;isolation:isolate;overflow:hidden;
