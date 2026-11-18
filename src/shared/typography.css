@@ -19,3 +19,15 @@ i.fm-next-icon.fm-icon,i.fm-decision-icon.fm-icon{display:inline-flex;align-item
 .fm-icon[data-icon]::before{content:attr(data-icon)}
 
 .fm-ai-kicker,.fm-ai-mode,.fm-ai-core-label,.fm-release-team-head small,.fm-ai-input-row input{font-family:var(--fm-font-text)}
+
+/* Keep Korean headings readable and numeric columns easy to compare. */
+:lang(ko) :where(h1, h2, h3, caption, summary) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+:lang(ko) :where(h1, h2, h3) {
+  text-wrap: balance;
+}
+:lang(ko) :where(td, dd, input[type="number"], #page, #strategy-number) {
+  font-variant-numeric: tabular-nums;
+}
