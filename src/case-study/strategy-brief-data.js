@@ -29,7 +29,7 @@ window.FOOTMATE_STRATEGY_SLIDES = [
     "id": "corpdev",
     "phase": "제휴·인수 검토",
     "title": "운영권과 시설 사용권부터 확인한다",
-    "subtitle": "수원·용인 시설 2곳의 운영 주체와 계약 조건을 확인한다.",
+    "subtitle": "수원·용인 후보 시설 2곳의 운영 주체와 계약 조건",
     "takeaway": "운영권·안전·정산 조건을 충족한 후보부터 협의한다.",
     "bullets": [
       "시설·서비스 8건은 공개자료 비교 대상",

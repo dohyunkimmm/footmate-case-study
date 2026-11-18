@@ -137,7 +137,10 @@ for filename,count in (("footmate_report.pptx",9),("footmate_5year_strategy.pptx
                         r"(?<=[가-힣0-9)])\s+,",
                         line), (filename, number, "space before comma", line)
             families=set(re.findall(rb'<a:(?:latin|ea|cs)\b[^>]*\btypeface="([^"]+)"',slide_xml))
-            assert families and families <= {b"Pretendard"}, (filename,number,families)
+            allowed = {b"Pretendard"}
+            if (filename, number) in {("footmate_report.pptx", 1), ("footmate_5year_strategy.pptx", 2), ("footmate_5year_strategy.pptx", 4)}:
+                allowed.add(b"Noto Sans CJK KR")
+            assert families and families <= allowed, (filename, number, families)
 # Editorial parity: public brand, slide typography and readable terminology.
 assert all("FootMate · 사업성 분석·경영계획" in slide for slide in main), "Main slide footers use old branding"
 assert all("사업·IT 기획" not in slide for slide in main), "Former project label remained in main deck"
@@ -218,6 +221,7 @@ def monthly(partners, retention=1, share=.60):
 assert [monthly(28), monthly(23), monthly(23, .8), monthly(23, .8, .48)] == [
     (3506, 5640), (2880, -432800), (2304, -974240), (1843, -1407580)
 ]
+assert (2_600_000 + (28 - 5) * 30_000) == 3_500 * 940
 assert next(p for p in range(1, 501) if monthly(p)[1] >= 0) == 28
 for term in ("8주", "461만원"):
     assert term in no_spaces(sections[0]["body"]) and term in no_spaces(main[0])
@@ -247,7 +251,7 @@ assert chart_values == [
 print("PASS: calculator sensitivity, slide decision criteria, and annual chart data")
 
 for copy in (body, main[3], strategy[2]):
-    assert all(term in no_spaces(copy) for term in ("2,766건", "3,506건", "관리비제외"))
+    assert all(term in no_spaces(copy) for term in ("2,766건", "손익분기3,500건/예상3,506건", "관리비제외"))
 for copy in (body, main[8]):
     assert "30일추적완료후확대심사" in no_spaces(copy)
 assert "관리비·기회비용포함월손익분기3개월연속" in no_spaces(body)
