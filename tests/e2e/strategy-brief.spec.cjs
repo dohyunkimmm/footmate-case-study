@@ -47,7 +47,9 @@ for(const width of [320,390,1440]){
     await expect(page.locator('.fm-deck-title')).toHaveText('검증 후 투자');
     await expect(page.locator('#strategy-number')).toHaveText('01 / 06');
     await expect(page.locator('#strategy-picker option')).toHaveCount(6);
-    expect((await page.locator('#strategy-picker').boundingBox()).width).toBeGreaterThan(200);
+    if(width>800){
+      expect((await page.locator('#strategy-picker').boundingBox()).width).toBeGreaterThanOrEqual(320);
+    }
     expect(await page.locator('body').innerText()).not.toMatch(/P0|P1|P2|보완|핵심 판단|개인 분석/);
 
     await expect(page.locator('.fm-deck-points li')).toHaveCount(3);

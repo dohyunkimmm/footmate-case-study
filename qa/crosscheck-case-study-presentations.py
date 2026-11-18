@@ -116,7 +116,7 @@ assert "적격 의향 2곳" not in sections[8]["body"]
 assert "PPTX 받기" not in sections[0]["body"]
 assert "5개년 계획은 2년 차부터 협상안을 적용한다." in sections[7]["body"]
 
-# Keep visible slide text in Pretendard; decorative icons on the web use Tossface.
+# Check the deck typefaces and the Korean numeral styles on the affected slides.
 for filename,count in (("footmate_report.pptx",9),("footmate_5year_strategy.pptx",6)):
     with ZipFile(CASE / "downloads" / filename) as font_deck:
         for number in range(1,count+1):
@@ -166,7 +166,7 @@ assert "인력 기회비용 월 200만원 별도" in body, "Financial scenario a
 assert "제안 일정 · 실제 성과 아님" not in body, "Redundant negative label returned"
 assert "실제 결제·환불·운영자 정산은 아직 구축하지 않았다" not in body, "Unnecessary negative phrasing returned"
 
-print("DECKS", len(main), len(strategy), "font: Pretendard")
+print("DECKS", len(main), len(strategy), "slide fonts checked")
 assert "5개년 성장 전략" in strategy[0]
 assert "수익성" in main[0] and "운영자 제휴" in main[0]
 assert all(str(i) in no_spaces(main[2]) for i in ("626", "751,200"))
