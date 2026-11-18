@@ -62,7 +62,7 @@ details{border-block:1px solid var(--line);margin:32px 0}summary{padding:18px 4p
 .case-kpi{min-width:0;padding:20px;border:1px solid var(--line);border-radius:8px;background:#fafbf9}
 .case-kpi dt{font-size:14px;font-weight:600;line-height:1.5;color:var(--muted)}
 .case-kpi dd{font-size:30px;line-height:1.45;font-weight:800;letter-spacing:-.6px;color:var(--green);margin:10px 0 0;font-variant-numeric:tabular-nums}
-.case-kpi dd small{font-size:15px;letter-spacing:0;font-weight:600;margin-left:3px}
+.case-kpi dd small{font-size:15px;letter-spacing:0;font-weight:600;margin-left:0}
 .mobile-reader-nav{display:none}
 @media(max-width:800px){
  .mobile-reader-nav{display:flex;position:sticky;top:0;z-index:6;align-items:center;gap:10px;min-height:56px;padding:6px 24px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 3px 10px rgba(12,49,32,.045)}
