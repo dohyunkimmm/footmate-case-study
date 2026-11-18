@@ -96,6 +96,11 @@ const sections = [
   const toc=document.querySelector('.toc'),track=document.querySelector('.track');
   toc.innerHTML=sections.map((s,i)=>`<a class="toc-item" href="#section-${String(i+1).padStart(2,'0')}" data-index="${i}"><span class="toc-n">${String(i+1).padStart(2,'0')}</span><span class="toc-t">${s.name}</span></a>`).join('');
   track.innerHTML=sections.map((s,i)=>`<section class="slide" id="section-${String(i+1).padStart(2,'0')}" aria-labelledby="heading-${i}"><header class="section-head">${i===0?'<span class="case-identity">신사업 사업성 분석·경영계획</span>':''}<span class="eyebrow">${String(i+1).padStart(2,'0')} / ${s.name}</span><${i===0?'h1':'h2'} class="section-title${i===0?' case-verdict':''}" id="heading-${i}" tabindex="-1">${s.title.replaceAll("·","&#8288;·&#8288;")}</${i===0?'h1':'h2'}>${s.lead?`<p class="lead">${s.lead}</p>`:''}</header>${s.body}</section>`).join('');
+  const strategyDetails = track.querySelector('#section-09 .strategy-more');
+  strategyDetails.addEventListener('toggle', () => {
+    strategyDetails.querySelector('summary').textContent =
+      '5개년 성장전략·투자계획 ' + (strategyDetails.open ? '접기' : '펼치기');
+  });
   const numberUnits = /(?<![\d.,])(?:[+−-]?\d[\d,]*(?:\.\d+)?(?:만원|원|개년|개월|곳|건|명|석|회|일|주|%)|\d+년 차)(?!\d)/gu;
   const numberWalker = document.createTreeWalker(track, NodeFilter.SHOW_TEXT);
   const numberNodes = [];
