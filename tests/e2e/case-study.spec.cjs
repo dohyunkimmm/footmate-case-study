@@ -334,7 +334,7 @@ test('single resource section, inline financial model and PPT viewer',async({pag
 test('decision story, economic comparison and roadmap have consistent visual evidence',async({page})=>{
   for (const width of [320,390,1440]) {
     await page.setViewportSize({width,height:900}); await page.goto('/');
-    const item=page.locator('#section-05 details').filter({has:page.getByText('협상안의 단위 손익',{exact:true})});
+    const item=page.locator('#section-05 details').filter({has:page.getByText('우선 협상안 예시 · 공급처 28곳 기준',{exact:true})});
     await item.locator('summary').click();
     const chart=item.locator('.case-economics-chart');
     await expect(chart).toBeVisible();
@@ -357,6 +357,12 @@ test('scenario hierarchy, input guidance and responsive readability evidence',as
     await expect(page.locator('#section-08 .case-decision-points')).toContainText('30일');
     const model=page.locator('#case-profit-model');
     await expect(model.locator('#case-profit-economic')).toHaveText('+5,640원');
+    await model.locator('#case-profit-rate').fill('0');
+    await expect(model.locator('#case-profit-bep')).toHaveText('건당 공헌이익이 0원 이하라 손익분기 불가');
+    await model.locator('#case-profit-rate').fill('12');
+    await model.locator('#case-profit-rate').fill('5');
+    await model.locator('#case-profit-pg').fill('0');
+    await expect(model.locator('#case-profit-bep')).toHaveText('500곳 이내 미달');
     await model.locator('#case-profit-rate').fill('101');
     await expect(model.locator('#case-profit-error')).toBeVisible();
     await expect(model.locator('#case-profit-rate')).toHaveAttribute('aria-invalid','true');
