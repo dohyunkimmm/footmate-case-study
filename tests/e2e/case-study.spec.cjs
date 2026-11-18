@@ -717,7 +717,7 @@ test('final Case Study decision and presentation conclusion stay aligned',async(
 test('decision-led portfolio keeps assumptions, mobile layout and slide navigation usable',async({page})=>{
   for(const width of [320,390,800,1440]){
     await page.setViewportSize({width,height:900});await page.goto('/');
-    await expect(page.locator('.case-verdict')).toContainText('유료 예약의 수익성을 확인한 뒤 확대한다.');
+    await expect(page.locator('.case-verdict')).toContainText('예약 한 건이 이익을 내야, 제휴를 늘린다.');
     await expect(page.locator('.case-kpi .is-negative')).toContainText('−38.7');
     await expect(page.locator('.case-profit-summary')).toContainText('공급 유지율 100% 가정');
     await expect(page.locator('#case-profit-economic')).toHaveText('+5,640원');
