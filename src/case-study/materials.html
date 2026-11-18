@@ -275,7 +275,7 @@ revisedSlides.forEach(number=>{slides[number-1].src='/src/case-study/previews/'+
 for (const number of (strategyDeck ? [2, 4] : [9])) slides[number-1].src += '&copy=20261118-titles';
 if (!strategyDeck) slides[0].src = '/src/case-study/previews/report/decision-1.jpg?v=20261118-color';
 const keypoints=strategyDeck?[
- '공급처 5곳에서 36곳까지 확대하는 경영계획 시나리오.',
+ '제휴 공급처를 5곳에서 36곳으로 늘리는 계획.',
  '5·12·20·28·36곳. 계약 조건, 운영 안정성, 지역 손익을 확인한 뒤 확대.',
  '복합안 건당 940원. 손익분기 23곳은 추가 관리비 제외, 28곳·월 3,506건은 포함 기준. 공급 유지율 100% 가정 시 월 +5,640원.',
  '월 손익분기는 4년 차, 협상안 연간 현금수지 흑자는 2년 차. 5년 차 연간 투자 후 현금수지는 협상안 +2,998만원, 기존 조건 −247만원.',
@@ -335,7 +335,13 @@ let index=0;const page=document.getElementById('page');const currentTitle=docume
   });
   gallery.appendChild(more);
  }
-}progressTrack.setAttribute('aria-valuemax',String(slides.length));function show(i){index=Math.max(0,Math.min(slides.length-1,i));const img=document.getElementById('slide');img.src=slides[index].src;img.alt=slides[index].title;page.textContent=String(index+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');currentTitle.textContent=slides[index].title;picker.value=String(index);keypoint.textContent=keypoints[index];financialDetails.hidden=galleryMode||strategyDeck||index!==slides.length-1;progressFill.style.width=((index+1)/slides.length*100)+'%';progressTrack.setAttribute('aria-valuenow',String(index+1));document.getElementById('prev').disabled=index===0;document.getElementById('next').disabled=index===slides.length-1;resize()}const expand=document.getElementById('expand');const slideEnlarge=document.getElementById('slide-enlarge');
+}progressTrack.setAttribute('aria-valuemax',String(slides.length));function show(i){index=Math.max(0,Math.min(slides.length-1,i));const img=document.getElementById('slide');if(img.getAttribute('src')!==slides[index].src){
+ const nextImage=img.cloneNode(false);
+ nextImage.alt=slides[index].title;
+ nextImage.src=slides[index].src;
+ img.replaceWith(nextImage);
+}else{img.alt=slides[index].title;}
+page.textContent=String(index+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');currentTitle.textContent=slides[index].title;picker.value=String(index);keypoint.textContent=keypoints[index];financialDetails.hidden=galleryMode||strategyDeck||index!==slides.length-1;progressFill.style.width=((index+1)/slides.length*100)+'%';progressTrack.setAttribute('aria-valuenow',String(index+1));document.getElementById('prev').disabled=index===0;document.getElementById('next').disabled=index===slides.length-1;resize()}const expand=document.getElementById('expand');const slideEnlarge=document.getElementById('slide-enlarge');
 const stage=viewer.querySelector('.viewer-stage');
 let inlineZoom=false;
 function syncZoom(){
