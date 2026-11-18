@@ -93,8 +93,8 @@ assert [item["title"] for item in report_viewer] == [
     "확장안도 초기 비용 포함 시 손익률 −11.4%", "최종 판단 · 단계적 투자"
 ]
 assert [item["title"] for item in strategy_viewer] == [
-    "5개년 성장 전략", "5개년 성장 전략과 투자 우선순위",
-    "수수료·결제 조건에 따른 공헌이익 개선", "5개년 손익 전망",
+    "5개년 성장 전략", "공급 확대와 투자 우선순위",
+    "수수료·결제 조건에 따른 공헌이익 개선", "연차별 손익 전망",
     "경영 성과 관리와 전략적 자원 배분", "성장 규모보다 수익성 있는 확대를 우선"
 ]
 for label, viewer, pptx_slides in (

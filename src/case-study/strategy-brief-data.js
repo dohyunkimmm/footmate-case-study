@@ -29,7 +29,7 @@ window.FOOTMATE_STRATEGY_SLIDES = [
     "id": "corpdev",
     "phase": "제휴·인수 검토",
     "title": "제휴 가능성 검토",
-    "subtitle": "공개자료 비교 → 후보 분류 → 계약 조건 검토",
+    "subtitle": "공개자료로 후보를 분류하고 계약 조건을 확인",
     "takeaway": "운영 주체와 시설 사용권을 먼저 확인한다.",
     "bullets": [
       "시설·서비스 8건은 공개자료 비교 대상",
@@ -68,7 +68,7 @@ window.FOOTMATE_STRATEGY_SLIDES = [
     "id": "equity",
     "phase": "성장·투자 논리",
     "title": "확대 조건과 자원배분",
-    "subtitle": "공급·이용·단위손익 → 조건별 확대 심사",
+    "subtitle": "공급 유지율·재참가율·건당 공헌이익",
     "takeaway": "공급·재참가·손익을 실측해 투자 우선순위를 정한다.",
     "bullets": [
       "차별화·재참가 효과는 실제 고객 데이터로 확인",
