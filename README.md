@@ -8,6 +8,12 @@
 **발표자료:** [웹 발표 6장](src/case-study/strategy-brief.html) · [PPTX 다운로드](src/case-study/downloads/footmate_strategy_p0_p2.pptx) · [본문 보고서](index.html). 사업 가정은 실제 성과와 구분합니다.
 
 
+## 2026-11-20 후속 확인 · 운영 배포 일치
+
+- [문서 동기화 PR #60](https://github.com/dohyunkimmm/footmate-case-study/pull/60)은 보고서·문서 QA 통과 후 `main`에 [`f95fc2e`](https://github.com/dohyunkimmm/footmate-case-study/commit/f95fc2ee6b4f8381ee4cba8964ba999b25791544)로 병합됐습니다. 해당 커밋의 [FootMate Case Study QA](https://github.com/dohyunkimmm/footmate-case-study/actions)도 성공했습니다.
+- Cloudflare Workers Builds 최신 실행 `dc05eb74-03a9-4282-9abc-180b6b25d380`은 **성공**했고, 연결된 `main` 커밋이 `f95fc2e`로 정확히 일치합니다. Workers 배포 `4ed8a696-6f4b-4c90-afb9-9ba38f5907b8`에서 해당 버전 `375ea6ff-905b-4f6c-89e8-fd1a80510cc0`이 **100% 배포**됐습니다.
+- 아래 파일 수·브랜치 점검은 해당 시점의 스냅샷입니다. 배포 기록은 최신 [저장소 점검 문서](docs/REPOSITORY-STATUS-20261120.md)에 별도 기록하며, 후속 문서 PR 병합 시 새 커밋 배포 여부는 다시 검증합니다.
+
 ## 현재 `main` · 2026-11-20 목록·문서 동기화
 
 - 최신 점검 기준 [`acfc7c0a`](https://github.com/dohyunkimmm/footmate-case-study/commit/acfc7c0a1ee8a060ede1c6e59b4a2deb2545d613)에서 **파일 116개·디렉터리 15개**, 이번 현황 문서 1개 추가 반영 후 **117개·15개**입니다. `.github/` 4 · `docs/` 12 · `qa/` 16 · `src/` 75 · `tests/` 3 · 루트 7개입니다.
