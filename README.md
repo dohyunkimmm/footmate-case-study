@@ -8,12 +8,19 @@
 **발표자료:** [웹 발표 6장](src/case-study/strategy-brief.html) · [PPTX 다운로드](src/case-study/downloads/footmate_strategy_p0_p2.pptx) · [본문 보고서](index.html). 사업 가정은 실제 성과와 구분합니다.
 
 
+## 현재 `main` · 2026-11-20 목록·문서 동기화
+
+- 최신 점검 기준 [`acfc7c0a`](https://github.com/dohyunkimmm/footmate-case-study/commit/acfc7c0a1ee8a060ede1c6e59b4a2deb2545d613)에서 **파일 116개·디렉터리 15개**, 이번 현황 문서 1개 추가 반영 후 **117개·15개**입니다. `.github/` 4 · `docs/` 12 · `qa/` 16 · `src/` 75 · `tests/` 3 · 루트 7개입니다.
+- 열린 PR은 점검 당시 **0건**, 브랜치는 **`main` 하나**였습니다. 동일 Git blob SHA 중복 **0쌍**이며, 참조 확인 없이 삭제할 파일은 없습니다.
+- 11월 18~19일에는 본문 09의 실증·중단·투자 재심사 기준, 손익분기 대비 예상 예약의 구분, 발표·표 가독성 개선이 반영됐습니다. [최신 `main` QA #44494670082](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/44494670082)는 성공했으나 문서 PR의 신규 검사·운영 배포 일치 여부는 별도 검증 대상입니다.
+- 경로별 목록·미반영 여부·보존 기준은 [2026-11-20 저장소 점검 기록](docs/REPOSITORY-STATUS-20261120.md)을 우선합니다. 아래 11월 11~17일 파일 수와 QA 정보는 **각 날짜의 과거 기록**입니다.
+
 ## 검증 및 변경 이력
 
 - 최신 QA 및 배포 결과는 [FootMate Case Study QA](https://github.com/dohyunkimmm/footmate-case-study/actions/workflows/report-qa.yml)와 [Cloudflare Workers 운영 사이트](https://footmate-case-study.fmate.workers.dev/)를 기준으로 확인합니다. 본문 01의 발표자료는 사업성 검토(9장), 5개년 성장 전략(6장), 사업 전략(6장)입니다.
 - [PR #43](https://github.com/dohyunkimmm/footmate-case-study/pull/43)에서 오래된 화면·발표자료 검사 19건을 현재 UI·손익 모델 기준으로 동기화하고, 390px의 ROI 긴 숫자 레이블 넘침을 CSS로 고쳤습니다. **보고서 본문 사업 수치, PPTX/XLSX, 이미지는 변경하지 않았습니다.**
 - [기존 QA 이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)은 최신 `main` 통과 확인 후 완료 처리했습니다. Cloudflare Workers PR 미리보기 오류는 [PR #48](https://github.com/dohyunkimmm/footmate-case-study/pull/48)에서 미리보기 전용 설정을 분리해 복구했습니다. 운영 배포 명령은 유지했습니다.
-- 최신 `main` 재귀 트리에서 파일 **114개·디렉터리 15개**를 확인했습니다. 동일 Git blob SHA 중복 파일은 없으며 사용 중인 자산을 보존했습니다. 공개 자료 링크와 생성·검증 스크립트를 불필요하게 삭제하지 않습니다.
+- 2026-11-20 점검 원본에서는 파일 **116개·디렉터리 15개**였으며, 현황 문서 추가 후 **117개·디렉터리 15개**입니다. 동일 Git blob SHA 중복 파일은 없으며 사용 중인 자산을 보존했습니다. 공개 자료 링크와 생성·검증 스크립트를 불필요하게 삭제하지 않습니다.
 
 ## 저장소 구성
 
@@ -22,17 +29,17 @@
 | [`index.html`](index.html) · [`favicon.svg`](favicon.svg) | 보고서 진입점과 파비콘 |
 | [`src/case-study/`](src/case-study/) | 9개 보고서 섹션, 보조 페이지, 근거 화면, 발표자료·재무 모델 및 미리보기 |
 | [`src/shared/`](src/shared/) | 공용 디자인·글꼴 스타일 |
-| [`docs/`](docs/) | [사업성 분석](docs/IT-STRATEGY-CASE-STUDY.md)·[디자인 기준](docs/DESIGN-SYSTEM.md)·[발표자료 검토](docs/PRESENTATION-SPACING-REVIEW-20261111.md)와 2026-11-16 이후 시장 진입·투자 판단 등 전략 근거 |
+| [`docs/`](docs/) | [최신 저장소 정합성 점검](docs/REPOSITORY-STATUS-20261120.md)·[사업성 분석](docs/IT-STRATEGY-CASE-STUDY.md)·[디자인 기준](docs/DESIGN-SYSTEM.md)·2026-11-16 전략 근거·발표자료 검토 기록 |
 | [`qa/`](qa/) | 원본 산출물 재생성·수치 대조·발표자료 가독성 검사 도구 |
 | [`tests/e2e/`](tests/e2e/) | 보고서 UI·반응형·접근성 회귀 검사 |
 | [`.github/workflows/`](.github/workflows/) · [`.github/scripts/`](.github/scripts/) | 보고서 QA·수동 디자인 동기화·병합 브랜치 보존 및 생성 파일 PR 게시 스크립트 |
 | [`.assetsignore`](.assetsignore) | 내부 검증·문서 파일을 정적 사이트 배포에서 제외 |
 
-### 2026-11-17 `main` 폴더 재점검 · 문서 동기화
+### 2026-11-17 `main` 폴더 재점검 · 문서 동기화 (당시 스냅샷)
 
 - 기준: [`main` `7df5503`](https://github.com/dohyunkimmm/footmate-case-study/commit/7df5503e9028e4f20075b591f30e12c5b553b977) 재귀 트리(`truncated=false`)에서 **파일 114개·디렉터리 15개**(루트 파일 **7개**·최상위 폴더 **5개**)를 확인했습니다. 2026-11-14의 **95개 파일**은 아래 당시 스냅샷입니다.
 
-| 최상위 경로 | 현재 파일 수 | 관리 범위 |
+| 최상위 경로 | 당시 파일 수 | 관리 범위 |
 | --- | ---: | --- |
 | `.github/` | 4 | 보고서 QA·디자인 동기화·브랜치 보존 |
 | `docs/` | 11 | 사업성·디자인 및 2026-11-16 전략 검토 기록 |

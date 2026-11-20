@@ -42,7 +42,7 @@
 ## 2026-11-11 산출물·문서 동기화
 
 - [PR #11](https://github.com/dohyunkimmm/footmate-case-study/pull/11)의 15장 띄어쓰기·여백 검토에 이어 [PR #12](https://github.com/dohyunkimmm/footmate-case-study/pull/12)에서 사업성 8·9장과 전략 4장을 개선했다. 발표자료 원본은 9+6장, 미리보기는 본편 9개(웹 JS 내장)와 전략 JPG 6개로 유지한다.
-- 현행 파일·폴더 수량, 브랜치 및 삭제 보존 기준은 [README의 2026-11-14 메인 점검](../README.md)을 참조한다(파일 95개·디렉터리 15개, 점검 당시 열린 PR 0건, `main` 브랜치만 유지). 2026-11-13 당시 발생한 20개 QA 실패는 [PR #43](https://github.com/dohyunkimmm/footmate-case-study/pull/43)에서 처리했고, [최신 `main` QA #43459898355](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43459898355)에서 46개 전부 통과해 [이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)을 완료했다. 외부 Cloudflare 미리보기 빌드 설정은 별도 [이슈 #44](https://github.com/dohyunkimmm/footmate-case-study/issues/44)로 구분한다. 본편·전략 발표자료의 `decision-*.jpg` 미리보기는 실제 뷰어에서 사용되므로 기존 `report-previews.js`·`slide-*.jpg`와 함께 보존한다. 기존 설계 토큰·사업 가정·수치·계산식은 이번 문서 동기화에서 변경하지 않았다.
+- 2026-11-14 **당시** 파일·폴더 수량, 브랜치 및 삭제 보존 기준은 [README의 과거 메인 점검](../README.md)을 참조한다(당시 파일 95개·디렉터리 15개, 열린 PR 0건, `main` 브랜치만 유지). 2026-11-20 기준은 [최신 저장소 점검](REPOSITORY-STATUS-20261120.md)에서 별도로 확인한다. 2026-11-13 당시 발생한 20개 QA 실패는 [PR #43](https://github.com/dohyunkimmm/footmate-case-study/pull/43)에서 처리했고, [최신 `main` QA #43459898355](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/43459898355)에서 46개 전부 통과해 [이슈 #41](https://github.com/dohyunkimmm/footmate-case-study/issues/41)을 완료했다. 외부 Cloudflare 미리보기 빌드 설정은 별도 [이슈 #44](https://github.com/dohyunkimmm/footmate-case-study/issues/44)로 구분한다. 본편·전략 발표자료의 `decision-*.jpg` 미리보기는 실제 뷰어에서 사용되므로 기존 `report-previews.js`·`slide-*.jpg`와 함께 보존한다. 기존 설계 토큰·사업 가정·수치·계산식은 이번 문서 동기화에서 변경하지 않았다.
 - 수동 디자인 재생성 작업은 `main`에서만 실행하며 생성 산출물 변경 시 `automation/design-sync-*` 검토용 PR을 게시한다. 사용자 확인·보고서 QA 통과 후 병합한다. 자동 `main` 푸시나 자동 병합은 하지 않는다.
 
 ## 검증 명령
@@ -71,3 +71,9 @@
 - **09 결론:** 실증 착수·검증 지표·중단 조건을 세 카드에 배치하고 각 카드의 설명은 40자 이내로 유지한다. 실제 승인·집행이 없음을 구분하며 새 정량 목표를 발명하지 않는다.
 - **근거 링크:** 02는 기존 기관·경쟁 서비스의 공식 출처를 유지하고, 03에는 타사의 제휴 운영 공개 안내를 참고 링크로 둔다. `docs/`는 Workers 정적 자산에서 제외하므로 본문에 내부 GitHub 문서 링크를 추가하지 않는다. 상세 검토 문서는 README에서 제공한다.
 - **교차검증:** 9개 섹션·31개 표·PPTX 9+6+6장·XLSX·계산식과 기존 발표자료 이미지는 변경하지 않는다. 320/390/1440px·200% 확대·키보드·접근성 및 원문/표 수량 QA를 유지한다.
+
+## 2026-11-20 최신 UI·문서 동기화 기준
+
+- 본문 09는 8주 실증 착수·모집 조정·보류/재심사 기준을 카드로 요약하고, 공급·수익성 확인 전 투자 확대를 승인 사실처럼 표현하지 않는다. 최신 실제 문구·접힘 상태는 [본문 스크립트](../src/case-study/nine-sections.js)를 기준으로 한다.
+- 11월 18~19일에는 손익분기와 예상 예약의 개념 구분, 연도별 공급처·손익 단위, 본문과 발표자료의 가독성 및 선택형 상세 내용의 접근성을 조정했다. 기존 9개 섹션·사업성 9장·중장기 6장·별도 사업 전략 6장의 범위를 혼동하지 않는다.
+- [최신 원본 커밋 QA](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/44494670082)는 성공했으나, 현황 문서 PR의 새 QA·운영 배포는 별도 검증한다. 현재 파일/폴더 수와 보존 판단은 [2026-11-20 목록 점검](REPOSITORY-STATUS-20261120.md)을 따른다.
