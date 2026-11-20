@@ -1,5 +1,11 @@
 # FootMate `main` 목록·문서 정합성 점검 (2026-11-20)
 
+## 후속 운영 배포 확인 (2026-11-20)
+
+- 동기화 [PR #60](https://github.com/dohyunkimmm/footmate-case-study/pull/60)은 회귀 QA 성공 후 커밋 [`f95fc2e`](https://github.com/dohyunkimmm/footmate-case-study/commit/f95fc2ee6b4f8381ee4cba8964ba999b25791544)로 병합됐습니다. 병합된 `main`의 FootMate Case Study QA도 성공했습니다.
+- Cloudflare Workers Builds `dc05eb74-03a9-4282-9abc-180b6b25d380`: `build_outcome=success`, `build_trigger_metadata.branch=main`, `commit_hash=f95fc2ee6b4f8381ee4cba8964ba999b25791544`. Workers 최신 배포 `4ed8a696-6f4b-4c90-afb9-9ba38f5907b8`의 버전 `375ea6ff-905b-4f6c-89e8-fd1a80510cc0`이 100%로 적용됐습니다.
+- 이 기록은 **해당 커밋의 운영 배포 상태**를 입증합니다. 이 후속 문서 수정이 `main`에 반영된다면 새 커밋에 대해서는 배포 일치를 다시 확인해야 합니다.
+
 ## 점검 기준과 현재 목록
 
 - 점검 원본: [`main` `acfc7c0a`](https://github.com/dohyunkimmm/footmate-case-study/commit/acfc7c0a1ee8a060ede1c6e59b4a2deb2545d613). GitHub 재귀 트리는 `truncated=false`였습니다.
