@@ -1,0 +1,16 @@
+name: Verify production workbook
+on:
+  push:
+    branches: [verify/live-workbook-20261125]
+permissions: {}
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compare production workbook with main 5a7b3c1
+        run: |
+          curl --fail --silent --show-error --location --retry 3 'https://footmate-case-study.fmate.workers.dev/src/case-study/downloads/footmate_model.xlsx' -o live.xlsx
+          actual=$(git hash-object live.xlsx)
+          echo "Production blob $actual / expected b41d66e766bfb5711e2239685fcf5d17ae612537"
+          wc -c live.xlsx
+          test "$actual" = 'b41d66e766bfb5711e2239685fcf5d17ae612537'
