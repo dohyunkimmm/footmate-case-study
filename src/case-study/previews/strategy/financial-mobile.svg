@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 356 510" role="img" aria-labelledby="title"><title id="title">연차별 손익 전망</title>
 <rect width="100%" height="100%" fill="white"/>
 <g fill="#193b2d" font-family="system-ui, sans-serif">
-<text x="12" y="26" font-weight="700" font-size="16">연간 투자 후 현금수지 (만원)</text>
+<text x="12" y="26" font-weight="700" font-size="16">연간 현금수지 · 2년 차 흑자 (만원)</text>
 <text x="13" y="50" fill="#087b60" font-size="13">━ 협상안 적용</text>
 <text x="133" y="50" fill="#596b76" font-size="13">┄ 기존 조건 유지</text>
 <path d="M45 202.9H343" stroke="#dce5df"/>
@@ -34,7 +34,7 @@
 <circle cx="256" cy="181.9" r="3.5" fill="#596b76"/>
 <circle cx="320" cy="179.8" r="3.5" fill="#596b76"/>
 <text x="320" y="195.8" text-anchor="middle" font-size="13" font-weight="700" fill="#596b76">−247</text>
-<text x="12" y="276" font-weight="700" font-size="16">기회비용 포함 월 손익 (만원)</text>
+<text x="12" y="276" font-weight="700" font-size="16">월 경제적 손익 · 4년 차 손익분기 (만원)</text>
 <path d="M45 414.5H343" stroke="#dce5df"/>
 <text x="41" y="418.5" text-anchor="end" font-size="12">−200</text>
 <path d="M45 377.0H343" stroke="#dce5df"/>

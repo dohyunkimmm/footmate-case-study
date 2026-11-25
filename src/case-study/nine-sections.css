@@ -1137,3 +1137,5 @@ body{-webkit-font-smoothing:antialiased}
   box-sizing: border-box;
   min-block-size: 44px;
 }
+
+@media(min-width:900px){.case-profit-summary{grid-template-columns:repeat(3,minmax(0,1fr))}}

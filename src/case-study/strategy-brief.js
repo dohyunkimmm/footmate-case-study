@@ -48,12 +48,12 @@
     }
     wrapper.appendChild(cards);
     block.appendChild(wrapper);
-    target.appendChild(block);
+    (target.querySelector('#evidence-investment') || target).appendChild(block);
   }
   if (!document.getElementById('strategy-deck')) {
     attachBrief('#section-02', ['gtm'], '시장 진입');
     attachBrief('#section-03', ['corpdev'], '제휴·인수 검토');
-    attachBrief('#section-08', ['portfolio', 'kpi', 'equity'], '사업 포트폴리오·성과 관리·투자 판단', true);
+    attachBrief('#section-08', ['portfolio', 'kpi', 'equity'], '사업 포트폴리오·성과 관리·투자 판단');
     const restoreSectionHash = () => {
       if (!/^#section-\d{2}$/.test(location.hash)) return;
       const target = document.getElementById(location.hash.slice(1));
@@ -85,6 +85,7 @@
     stage.replaceChildren();
     const article = document.createElement('article');
     article.className = 'fm-presentation-slide';
+    article.dataset.slide = slide.id;
     article.setAttribute('aria-label', (active + 1) + '번째 슬라이드');
     article.innerHTML = '<p class="fm-deck-phase"></p><h2 tabindex="-1" class="fm-deck-title"></h2><p class="fm-deck-subtitle"></p><div class="fm-deck-decision"><strong></strong></div><ul class="fm-deck-points"></ul><p class="fm-deck-source"></p>';
     article.querySelector('.fm-deck-phase').textContent = slide.phase;

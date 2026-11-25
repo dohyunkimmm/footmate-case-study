@@ -72,3 +72,5 @@
 .fm-strategy-cards .fm-strategy-evidence{color:#52636d}
 .fm-deck-points{gap:18px}
 @media(max-width:800px){.fm-strategy-cards article h4{font-size:18px}.fm-strategy-more{padding:0 13px}.fm-deck-points{gap:15px}}
+
+.fm-presentation-slide:is([data-slide=corpdev],[data-slide=portfolio]) .fm-deck-points{font-size:clamp(16px,1.6vw,22px);line-height:1.6;gap:1.15em}

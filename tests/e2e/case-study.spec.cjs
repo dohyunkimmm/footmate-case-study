@@ -133,7 +133,7 @@ test('05 and 08 keep one representative table visible and preserve expandable ev
     await sensitivity.locator('summary').click();
     await expect(sensitivity.locator('table').first()).toBeVisible();
     const report=plan.locator('details').filter({has:page.getByText('월간 성과 보고 예시',{exact:true})});
-    await expect(report.locator('table')).toHaveCount(2);
+    await expect(report.locator('section').filter({has:page.getByText('월간 성과 보고 예시',{exact:true})}).locator('table')).toHaveCount(2);
     await report.locator('summary').click();
     await expect(report.locator('table').first()).toBeVisible();
     await expect(plan).toContainText('현금 461만원');
@@ -280,12 +280,12 @@ test('implementation decisions stay readable inside the case study',async({page}
   await page.goto('/#section-06');
   const it=page.locator('#section-06');
   await expect(it.locator('.decision-card')).toHaveCount(3);
-  const evidence=it.locator('details').filter({has:page.getByText('기능별 확인 결과',{exact:true})});
+  const evidence=it.locator('details').filter({has:page.getByText('기능 구현·후속 검증',{exact:true})});
   await evidence.locator('summary').click();
   const table=evidence.locator('.table-wrap[aria-label="구현·검증 요약"]');
   await expect(table).toBeVisible();
   await expect(table).toContainText('결제·정산');
-  const reasoning=it.locator('details').filter({has:page.getByText('참가·정원 관리의 설계 이유',{exact:true})});
+  const reasoning=it.locator('details').filter({has:page.getByText('참가·정원 설계 근거',{exact:true})});
   await reasoning.locator('summary').click();
   await expect(reasoning).toContainText('잔여 자리');
   for (const width of [390,1440]) {
@@ -904,7 +904,7 @@ test('report density and evidence hierarchy stay readable and source-backed',asy
   await expect(page.locator('#section-05 #case-profit-model')).toHaveCount(1);
   await expect(page.locator('#section-08 .case-cash-chart')).toHaveCount(1);
   await expect(page.locator('#section-05 details.case-extra:not([open])')).toHaveCount(2);
-  await expect(page.locator('#section-08 details.case-extra:not([open])')).toHaveCount(4);
+  await expect(page.locator('#section-08 details.case-extra:not([open])')).toHaveCount(3);
   const market=page.locator('#section-02 .source-note a[href*="mcst.go.kr"]');
   const partner=page.locator('#section-03 .case-research-link a');
   await expect(market).toHaveCount(1);
@@ -1043,7 +1043,7 @@ test('numeric groups stay inline and financial charts follow their mobile summar
     for(const [deck,chartIndex] of [['report',8],['strategy',3]]){
       await page.goto('/src/case-study/materials.html?preview=1&mode=slides&deck='+deck+'&slide='+chartIndex);
       const note=page.locator('#slide-keypoint');
-      await expect(note).toContainText('연간 투자 후 현금수지 흑자 2년 차 / 기회비용 포함 월 손익분기 4년 차');
+      await expect(note).toContainText(deck === 'report' ? '8주 검증 결과와 30일 재참가율로 확대를 심사' : '연간 투자 후 현금수지 흑자 2년 차 / 기회비용 포함 월 손익분기 4년 차');
       if(width===390){
         await expect.poll(()=>page.locator('#slide').evaluate(img=>img.currentSrc.endsWith('financial-mobile.svg')&&img.complete&&img.naturalWidth>0)).toBe(true);
         const image=await page.locator('#slide').boundingBox();
