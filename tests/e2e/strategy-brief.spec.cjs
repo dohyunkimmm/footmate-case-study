@@ -26,7 +26,7 @@ test('Strategy summaries preserve the existing nine-section and 31-table report'
   await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('시설·서비스 8건');
   await page.locator('#section-08 .fm-strategy-more summary').click();
   await expect(page.locator('#section-08 .fm-strategy-cards article')).toHaveCount(3);
-  await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('인수 검토는 권리·비용 확인 후 별도 심사');
+  await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('인수 후보의 권리·비용 확인');
   await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('4년 차 월 +0.6만원');
 
   await expect(page.locator('h1')).toHaveCount(1);
