@@ -1,4 +1,16 @@
-# FootMate `main` 목록·문서 정합성 점검 (2026-11-20)
+# FootMate `main` 목록·문서 정합성 점검 (2026-11-20~25)
+
+## 최신 점검 (2026-11-25)
+
+- 점검 기준: [`main` `5a7b3c1`](https://github.com/dohyunkimmm/footmate-case-study/commit/5a7b3c1944fd095d1ee9e23b62fa74796a4a8b97), 재귀 트리 `truncated=false`. 파일 **117개·디렉터리 15개**, 루트 파일 7개·최상위 폴더 5개. 분포: `.github/` 4, `docs/` 12, `qa/` 16, `src/` 75, `tests/` 3, 루트 7.
+- [#62](https://github.com/dohyunkimmm/footmate-case-study/pull/62)·[#63](https://github.com/dohyunkimmm/footmate-case-study/pull/63)·[#64](https://github.com/dohyunkimmm/footmate-case-study/pull/64)의 본문·발표자료 중복 정리, 탐색 문구 및 정보 밀도 개선과 11월 25일 손익 모델 안내 문구 간결화가 반영됐다. [기준 커밋 QA #45535449317](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/45535449317) 성공.
+- 열린 PR 및 일반 이슈 0건. 점검 시 브랜치 2개(`main`, `verify/live-workbook-20261125`); 검증 브랜치는 ahead 1 / behind 0으로 일회성 워크플로만 추가한다. [운영 XLSX 검증 #45536282043](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/45536282043) 성공: 운영 다운로드의 Git blob SHA가 기준 모델 `b41d66e766bfb5711e2239685fcf5d17ae612537`와 일치했다. 전체 운영 배포 SHA 일치는 별도 확인 대상이며 해당 검증 워크플로는 main에 병합하지 않는다.
+- 동일 Git blob SHA 3쌍: `src/case-study/previews/strategy/`의 `decision-2.jpg` / `slide-2.jpg`, `decision-3.jpg` / `slide-3.jpg`, `decision-4.jpg` / `slide-4.jpg`. 기존 미리보기 URL과 재생성 경로를 보존하기 위해 유지한다. 명백한 임시 확장자·캐시 파일 없음; 안전한 삭제 대상은 확정되지 않았다.
+- 문서 갱신은 기존 파일만 수정하며 본문, 사업 가정, PPTX/XLSX, 미리보기와 QA 기준은 변경하지 않는다. 새 커밋 QA 및 배포는 별도 검증한다.
+
+---
+
+아래는 2026-11-20 당시 점검 및 후속 운영 배포 기록입니다.
 
 ## 후속 운영 배포 확인 (2026-11-20)
 

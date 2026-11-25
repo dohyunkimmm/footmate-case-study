@@ -8,18 +8,28 @@
 **발표자료:** [웹 발표 6장](src/case-study/strategy-brief.html) · [PPTX 다운로드](src/case-study/downloads/footmate_strategy_p0_p2.pptx) · [본문 보고서](index.html). 사업 가정은 실제 성과와 구분합니다.
 
 
-## 2026-11-20 후속 확인 · 운영 배포 일치
+## 현재 main · 2026-11-25 목록·문서 동기화
+
+- 점검 기준: [`main` `5a7b3c1`](https://github.com/dohyunkimmm/footmate-case-study/commit/5a7b3c1944fd095d1ee9e23b62fa74796a4a8b97), 재귀 트리 `truncated=false`. 파일 **117개·디렉터리 15개**, 루트 파일 7개·최상위 폴더 5개. 분포: `.github/` 4, `docs/` 12, `qa/` 16, `src/` 75, `tests/` 3, 루트 7.
+- [#62](https://github.com/dohyunkimmm/footmate-case-study/pull/62)·[#63](https://github.com/dohyunkimmm/footmate-case-study/pull/63)·[#64](https://github.com/dohyunkimmm/footmate-case-study/pull/64)의 본문·발표자료 중복 정리, 탐색 문구 및 정보 밀도 개선과 11월 25일 손익 모델 안내 문구 간결화가 반영됐다. [기준 커밋 QA #45535449317](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/45535449317) 성공.
+- 열린 PR 및 일반 이슈 0건. 점검 시 브랜치 2개(`main`, `verify/live-workbook-20261125`); 검증 브랜치는 ahead 1 / behind 0으로 일회성 워크플로만 추가한다. [운영 XLSX 검증 #45536282043](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/45536282043) 성공: 운영 다운로드의 Git blob SHA가 기준 모델 `b41d66e766bfb5711e2239685fcf5d17ae612537`와 일치했다. 전체 운영 배포 SHA 일치는 별도 확인 대상이며 해당 검증 워크플로는 main에 병합하지 않는다.
+- 동일 Git blob SHA 3쌍: `src/case-study/previews/strategy/`의 `decision-2.jpg` / `slide-2.jpg`, `decision-3.jpg` / `slide-3.jpg`, `decision-4.jpg` / `slide-4.jpg`. 기존 미리보기 URL과 재생성 경로를 보존하기 위해 유지한다. 명백한 임시 확장자·캐시 파일 없음; 안전한 삭제 대상은 확정되지 않았다.
+- 문서 갱신은 기존 파일만 수정하며 본문, 사업 가정, PPTX/XLSX, 미리보기와 QA 기준은 변경하지 않는다. 새 커밋 QA 및 배포는 별도 검증한다.
+
+상세 기준 및 이전 기록: [저장소 점검 기록](docs/REPOSITORY-STATUS-20261120.md).
+
+## 2026-11-20 후속 확인 · 운영 배포 일치 (과거 기록)
 
 - [문서 동기화 PR #60](https://github.com/dohyunkimmm/footmate-case-study/pull/60)은 보고서·문서 QA 통과 후 `main`에 [`f95fc2e`](https://github.com/dohyunkimmm/footmate-case-study/commit/f95fc2ee6b4f8381ee4cba8964ba999b25791544)로 병합됐습니다. 해당 커밋의 [FootMate Case Study QA](https://github.com/dohyunkimmm/footmate-case-study/actions)도 성공했습니다.
 - Cloudflare Workers Builds 최신 실행 `dc05eb74-03a9-4282-9abc-180b6b25d380`은 **성공**했고, 연결된 `main` 커밋이 `f95fc2e`로 정확히 일치합니다. Workers 배포 `4ed8a696-6f4b-4c90-afb9-9ba38f5907b8`에서 해당 버전 `375ea6ff-905b-4f6c-89e8-fd1a80510cc0`이 **100% 배포**됐습니다.
 - 아래 파일 수·브랜치 점검은 해당 시점의 스냅샷입니다. 배포 기록은 최신 [저장소 점검 문서](docs/REPOSITORY-STATUS-20261120.md)에 별도 기록하며, 후속 문서 PR 병합 시 새 커밋 배포 여부는 다시 검증합니다.
 
-## 현재 `main` · 2026-11-20 목록·문서 동기화
+## 2026-11-20 목록·문서 동기화 (과거 스냅샷)
 
 - 최신 점검 기준 [`acfc7c0a`](https://github.com/dohyunkimmm/footmate-case-study/commit/acfc7c0a1ee8a060ede1c6e59b4a2deb2545d613)에서 **파일 116개·디렉터리 15개**, 이번 현황 문서 1개 추가 반영 후 **117개·15개**입니다. `.github/` 4 · `docs/` 12 · `qa/` 16 · `src/` 75 · `tests/` 3 · 루트 7개입니다.
 - 열린 PR은 점검 당시 **0건**, 브랜치는 **`main` 하나**였습니다. 동일 Git blob SHA 중복 **0쌍**이며, 참조 확인 없이 삭제할 파일은 없습니다.
 - 11월 18~19일에는 본문 09의 실증·중단·투자 재심사 기준, 손익분기 대비 예상 예약의 구분, 발표·표 가독성 개선이 반영됐습니다. [최신 `main` QA #44494670082](https://github.com/dohyunkimmm/footmate-case-study/actions/runs/44494670082)는 성공했으나 문서 PR의 신규 검사·운영 배포 일치 여부는 별도 검증 대상입니다.
-- 경로별 목록·미반영 여부·보존 기준은 [2026-11-20 저장소 점검 기록](docs/REPOSITORY-STATUS-20261120.md)을 우선합니다. 아래 11월 11~17일 파일 수와 QA 정보는 **각 날짜의 과거 기록**입니다.
+- 당시 경로별 목록·미반영 여부·보존 기준은 [저장소 점검 기록](docs/REPOSITORY-STATUS-20261120.md)의 11월 20일 기록을 참조합니다. 아래 11월 11~17일 파일 수와 QA 정보는 **각 날짜의 과거 기록**입니다.
 
 ## 검증 및 변경 이력
 
