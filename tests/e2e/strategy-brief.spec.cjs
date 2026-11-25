@@ -9,7 +9,7 @@ test('Strategy summaries preserve the existing nine-section and 31-table report'
   await expect(page.locator('.toc-item')).toHaveCount(9);
   await expect(page.locator('.track table')).toHaveCount(31);
   await expect(page.locator('#section-02 .fm-strategy-addendum')).toContainText('시장 진입');
-  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('운영권과 시설 사용권부터 확인한다');
+  await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('제휴 협의 전 확인할 권리');
   await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('성장·투자 논리');
   await expect(page.locator('#section-08 .fm-strategy-links')).toHaveCount(0);
   const resources=page.locator('#section-01 #attachments');
@@ -26,7 +26,7 @@ test('Strategy summaries preserve the existing nine-section and 31-table report'
   await expect(page.locator('#section-03 .fm-strategy-addendum')).toContainText('시설·서비스 8건');
   await page.locator('#section-08 .fm-strategy-more summary').click();
   await expect(page.locator('#section-08 .fm-strategy-cards article')).toHaveCount(3);
-  await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('5→12→20→28→36곳');
+  await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('인수 검토는 권리·비용 확인 후 별도 심사');
   await expect(page.locator('#section-08 .fm-strategy-addendum')).toContainText('4년 차 월 +0.6만원');
 
   await expect(page.locator('h1')).toHaveCount(1);
@@ -44,7 +44,7 @@ for(const width of [320,390,1440]){
     await expect(page.locator('.fm-deck-back')).toHaveText('← 본문으로');
     await expect(page.locator('.fm-deck-downloads a').nth(1)).toHaveText('다른 발표자료 보기');
     expect(await page.locator('body').innerText()).not.toMatch(/본문 발표자료로|&#x20;|사업성·중장기 전략 발표 보기/);
-    await expect(page.locator('.fm-deck-title')).toHaveText('검증 후 투자');
+    await expect(page.locator('.fm-deck-title')).toHaveText('8주 실증 예산 461만원');
     await expect(page.locator('#strategy-number')).toHaveText('01 / 06');
     await expect(page.locator('#strategy-picker option')).toHaveCount(6);
     if(width>800){
@@ -54,11 +54,11 @@ for(const width of [320,390,1440]){
 
     await expect(page.locator('.fm-deck-points li')).toHaveCount(3);
     await expect(page.locator('.fm-deck-points')).toContainText('약 −38.7만원');
-    await expect(page.locator('.fm-deck-points')).toContainText('변동비 별도 승인');
+    await expect(page.locator('.fm-deck-points')).toContainText('변동비는 별도 승인');
     await expect(page.locator('.fm-deck-points')).toContainText('인력 기회비용 포함 약 −238.7만원');
     await page.locator('#strategy-picker').selectOption('2');
-    await expect(page.locator('.fm-deck-title')).toHaveText('운영권과 시설 사용권부터 확인한다');
-    await expect(page.locator('.fm-deck-subtitle')).toHaveText('수원·용인 후보 시설 2곳의 운영 주체와 계약 조건');
+    await expect(page.locator('.fm-deck-title')).toHaveText('제휴 협의 전 확인할 권리');
+    await expect(page.locator('.fm-deck-subtitle')).toHaveText('수원·용인 후보 시설 2곳');
     await expect(page.locator('.fm-deck-points')).toContainText('공개자료 비교 대상');
     await expect(page.locator('.fm-deck-points')).toContainText('실사 미진행');
     await page.locator('#strategy-picker').selectOption('4');
@@ -77,7 +77,7 @@ for(const width of [320,390,1440]){
     await expect(page.locator('#strategy-deck + .fm-deck-downloads')).toHaveCount(1);
     await expect(page.locator('.fm-deck-top')).not.toContainText('사업 전략');
     await expect(page.locator('.fm-deck-main')).not.toContainText('재무 수치와 성장 전망은 사업 가정');
-    const slideTitles=['검증 후 투자','한 생활권에서 시작','운영권과 시설 사용권부터 확인한다','제휴형을 먼저 검증','예약 수와 수익성을 함께 관리','확대 조건과 자원배분'];
+    const slideTitles=['8주 실증 예산 461만원','한 생활권에서 시작','제휴 협의 전 확인할 권리','제휴형을 먼저 검증','예약 수와 수익성을 함께 관리','확대 조건과 자원배분'];
     for(const [i,heading] of slideTitles.entries()){
       await page.locator('#strategy-picker').selectOption(String(i));
       await expect(page.locator('#strategy-deck h2')).toHaveText(heading);

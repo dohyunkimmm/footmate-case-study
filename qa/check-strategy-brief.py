@@ -103,10 +103,10 @@ assert "Long-list · 조사 대상 8건" not in enhancement
 assert "461만원" not in enhancement
 assert "−387,160" not in enhancement
 assert "−38.7만원" in slides[0]["bullets"][1]
-assert "461만원" in slides[0]["bullets"][2] and "별도 승인" in slides[0]["bullets"][2]
+assert "461만원" in slides[0]["title"] and "별도 승인" in slides[0]["bullets"][2]
 assert "8건" in slides[2]["bullets"][0] and "공개자료 비교 대상" in slides[2]["bullets"][0]
 assert "실사 미진행" in slides[2]["bullets"][2]  # One factual status qualification
-assert slides[2]["takeaway"] == "운영권·안전·정산 조건을 충족한 후보부터 협의한다."
+assert slides[2]["takeaway"] == "안전·정산 조건을 충족한 후보부터 협의"
 assert "30일 재참가" in slides[4]["bullets"][1]
 assert "30일 추적 완료자" in slides[4]["bullets"][1]
 assert "기회비용 포함" in slides[5]["bullets"][1]
@@ -114,9 +114,9 @@ assert "인력 기회비용 포함 약 −238.7만원" in slides[0]["bullets"][1
 assert "인력 기회비용 포함 손익 가정" in slides[5]["bullets"][1]
 assert "플랫폼 경유 예약" in slides[4]["bullets"][0]
 assert "월 마감 3일 내" in slides[4]["bullets"][2]
-assert "5→12→20→28→36곳" in slides[3]["bullets"][2]
-assert slides[0]["takeaway"] == "공급 유지율·완료 예약·건당 공헌이익으로 투자 규모를 결정한다."
-assert slides[2]["subtitle"] == "수원·용인 후보 시설 2곳의 운영 주체와 계약 조건"
+assert "권리·비용 확인" in slides[3]["bullets"][2]
+assert slides[0]["takeaway"] == "공급 유지율·완료 예약·건당 공헌이익으로 후속 투자 심사"
+assert slides[2]["subtitle"] == "수원·용인 후보 시설 2곳"
 assert slides[5]["title"] == "확대 조건과 자원배분"
 assert not any(term in public_slide_text for term in ("노동 기회비용", "관측 기간을 마친 고객", "경유→", "미진행 미진행", "P0–P2"))
 original = (CASE / "nine-sections.js").read_text(encoding="utf-8")

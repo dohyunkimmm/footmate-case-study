@@ -94,7 +94,7 @@ assert [item["title"] for item in report_viewer] == [
 ]
 assert [item["title"] for item in strategy_viewer] == [
     "5개년 성장 전략", "공급 확대와 투자 우선순위",
-    "수수료·결제 조건에 따른 공헌이익 개선", "연차별 손익 전망",
+    "계약 조건별 예약당 공헌이익", "연차별 손익 전망",
     "경영 성과 관리와 전략적 자원 배분", "성장 규모보다 수익성 있는 확대를 우선"
 ]
 for label, viewer, pptx_slides in (

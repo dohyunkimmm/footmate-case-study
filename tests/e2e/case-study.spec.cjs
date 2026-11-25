@@ -136,7 +136,7 @@ test('05 and 08 keep one representative table visible and preserve expandable ev
     await expect(report.locator('table')).toHaveCount(2);
     await report.locator('summary').click();
     await expect(report.locator('table').first()).toBeVisible();
-    await expect(plan).toContainText('기본 현금 예산 461만원');
+    await expect(plan).toContainText('현금 461만원');
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   }
 });
@@ -263,7 +263,7 @@ test('expansion assumptions include added cost and supply loss without changing 
 test('investment evidence exposes budget scope and separates missing data from unmet targets',async({page})=>{
   await page.goto('/#section-08');
   const investment=page.locator('#section-08');
-  await expect(investment).toContainText('기본 현금 예산 461만원');
+  await expect(investment).toContainText('현금 461만원');
   await expect(investment).toContainText('기회비용 포함 831만원');
   const budget=investment.locator('details').filter({has:page.getByText('8주 예산·심사 기준',{exact:true})});
   await budget.locator('summary').click();
@@ -353,7 +353,7 @@ test('scenario hierarchy, input guidance and responsive readability evidence',as
     await page.setViewportSize({width,height:900}); await page.goto('/');
     await expect(page.locator('#section-01 .case-scenario-note')).toContainText('제휴 5곳');
     await expect(page.locator('#section-05 .reader-summary')).toContainText('수수료 12%, 결제비 0%');
-    await expect(page.locator('#section-08 .case-decision-points')).toContainText('기본 현금 예산 461만원');
+    await expect(page.locator('#section-08 .case-decision-points')).toContainText('현금 461만원');
     await expect(page.locator('#section-08 .case-decision-points')).toContainText('30일');
     const model=page.locator('#case-profit-model');
     await expect(model.locator('#case-profit-economic')).toHaveText('+5,640원');
@@ -932,7 +932,7 @@ test('all 15 legacy slide picker labels match PPTX titles and financial terminol
    '확장안도 초기 비용 포함 시 손익률 −11.4%','최종 판단 · 단계적 투자']},
   {query:'&deck=strategy',titles:[
    '5개년 성장 전략','공급 확대와 투자 우선순위',
-   '수수료·결제 조건에 따른 공헌이익 개선','연차별 손익 전망',
+   '계약 조건별 예약당 공헌이익','연차별 손익 전망',
    '경영 성과 관리와 전략적 자원 배분','성장 규모보다 수익성 있는 확대를 우선']}
  ];
  for(const width of [320,390,1440]){
