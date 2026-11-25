@@ -897,7 +897,7 @@ test('report density and evidence hierarchy stay readable and source-backed',asy
   await expect(page.locator('.slide')).toHaveCount(9);
   await expect(page.locator('.track table')).toHaveCount(31);
   await expect(page.locator('#section-09 .story-card')).toHaveCount(3);
-  await expect(page.locator('#section-09 .case-close-lead')).toContainText('확대·투자는');
+  await expect(page.locator('#section-09 .case-close-lead')).toContainText('한 생활권에서 운영자와 제휴해 유료 예약 수요를 검증한다.');
   await expect(page.locator('#section-09')).toContainText('적격 제휴 의향 2곳');
   await expect(page.locator('#section-09')).toContainText('중대 오류·예산 초과 시 중단');
   await expect(page.locator('#section-08 .case-period-note')).toContainText('2년 차부터 협상안을 적용');
