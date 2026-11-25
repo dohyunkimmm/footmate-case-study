@@ -56,7 +56,7 @@ const sections = [
     "name": "종합 판단·근거",
     "title": "검토 결론·후속 과제",
     "lead": "확대 전 점검 항목 · 건당 공헌이익·플랫폼 예약 비중·재참가 확인.",
-    "body": "<p class=\"case-close-lead\">한 생활권의 운영자 제휴 실증을 우선 검토한다. 확대·투자는 실측 수요와 손익 확인 전 보류한다.</p><div class=\"card-grid\"><article class=\"story-card\"><h2>실증 착수</h2><p>운영권·안전·정산 확인 및 적격 제휴 의향 2곳 확보 후 실증한다.</p></article><article class=\"story-card\"><h2>모집 조정</h2><p>충원율 75% 미달 시 경기 시간대와 모집 경로를 조정한다.</p></article><article class=\"story-card\"><h2>보류·재심사</h2><p>건당 공헌이익 0원 이하이면 확대 보류. 중대 오류·예산 초과 시 중단.</p></article></div><p class=\"decision\">8주 결과 보고·30일 추적 완료 후 재심사. 공급 계약과 취소·고객지원비 반영 손익을 확인한 뒤 단계적으로 확대한다.</p><p class=\"case-close-status\">제휴·투자 승인 및 사업 실적은 확인되지 않았다.</p>"
+    "body": "<p class=\"case-close-lead\">한 생활권에서 운영자와 제휴해 유료 예약 수요를 검증한다.</p><div class=\"card-grid\"><article class=\"story-card\"><h2>실증 착수</h2><p>운영권·안전·정산 확인 및 적격 제휴 의향 2곳 확보 후 실증한다.</p></article><article class=\"story-card\"><h2>모집 조정</h2><p>충원율 75% 미달 시 경기 시간대와 모집 경로를 조정한다.</p></article><article class=\"story-card\"><h2>보류·재심사</h2><p>건당 공헌이익이 0원 이하면 확대 보류. 중대 오류나 예산 초과 시 실증 중단.</p></article></div><p class=\"decision\">8주 결과 보고 후 30일 재참가 추적을 마치면 재심사한다. 공급 계약과 취소·고객지원비를 반영한 손익을 함께 검토한다.</p><p class=\"case-close-status\">제휴·투자 승인 및 사업 실적은 확인되지 않았다.</p>"
   }
 ];
   // 기존 9개 장·31개 표를 유지하면서 장기 전략을 선택형 상세 보기로 제공.
